@@ -25,7 +25,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     UserService userService;
 
     @Override
-    public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) {
         String token = req.getHeader("token");
         // メソッド以外は通る
         if(!(handler instanceof HandlerMethod)){
