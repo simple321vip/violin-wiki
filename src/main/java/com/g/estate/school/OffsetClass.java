@@ -22,6 +22,29 @@ public class OffsetClass {
      * jdk8 默认开启指针压缩，通过打印我们看到：
      * 普通的对象的对象头结构为 三个 object header 加一起一共为 12个字节。
      * 我们会看到 static 静态常量并没有打印出来。说明他不是对象所有的。对象也没有直接的指针指向静态变量。
+     * 涉及到偏移量的知识我们复习以下java基本类型的字节大小问题：
+     * 整数类型带符号的
+     * int 4个字节 即 00000000 00000000 00000000 00000000  -》0
+     *               01111111 11111111 11111111 11111111  -》31 次方 - 1
+     * short 2个字节-32768～32767
+     * long 8个字节
+     * byte 一个字节
+     *
+     * 浮点类型
+     * float 4个字节
+     * double 8个字节
+     *
+     * 字符型 不带符号和short的（0~65535）
+     * char 2个字节
+     *
+     * 布尔型
+     * boolean 1个字节
+     *
+     * 有人会说了 int的1 和 Boolean1 是怎么回事不能相等么？ 字节大小都不一样能相等么？
+     * int的1 在内存是这样：00000000 00000000 00000000 00000001
+     * boolean的1是这样的：00000001
+     *
+     *
      * @param args
      */
     public static void main(String[] args) {
@@ -36,7 +59,6 @@ public class OffsetClass {
 
         List<String> list = new ArrayList<>();
         System.out.println(ClassLayout.parseInstance(list).toPrintable());
-
 
     }
 
