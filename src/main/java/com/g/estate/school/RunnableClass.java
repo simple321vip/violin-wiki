@@ -2,6 +2,9 @@ package com.g.estate.school;
 
 import org.openjdk.jol.info.ClassLayout;
 
+import java.time.LocalDateTime;
+import java.util.Timer;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.IntStream;
 
 public class RunnableClass {
@@ -50,24 +53,106 @@ public class RunnableClass {
 //        }
 //        wait(delay);
 //        now = System.currentTimeMillis() - base;
+        // 可以看出 join方法本身就是 synchronized的 底层调用的是object的wait方法。
+        // 下面的代码例子很好解释了为什么说wait方法调用后，synchronized锁就没有了，另一个对象又可以调用wait方法，形成并联等待状态
+        // 如果有synchronized的话，第一个synchronized的 start后面应该是synchronized的 end，如果是这样的话，锁就是串联了。
+
+//        before
+//        synchronized的 start
+//        synchronized的 start
+//        synchronized的 end
+//        synchronized的 end
+//        -!-!-!-!-!-!-!-!
+//                -!-!-!-!-!-!-!-!
         Object object = new Object();
         Runnable runnable2 = () -> {
             synchronized (object) {
+                System.out.println("synchronized的 start");
                 try {
-                    object.wait();
+                    object.wait(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                System.out.println("synchronized的 end");
             }
             System.out.println("-!-!-!-!-!-!-!-!");
         };
         Thread thread = new Thread(runnable2);
         thread.start();
+
+        Thread thread3 = new Thread(runnable2);
+        thread3.start();
+
         System.out.println("before");
-        object.notify();
+
+        // notify 和 notifyAll 和 wait方法一样 都必须在同步代码块里使用，并且调用后锁就没有了。原因和wait一样。
+        synchronized (object) {
+            object.notifyAll();
+        }
+
+        Thread.currentThread().sleep(3000);
+
+
+        // 反过来 sleep  这个方法 会直接让出CPU，但不会释放锁我们在测试一下
+        Sleep sleep = new Sleep();
+        Sleep sleep2 = new Sleep();
+        sleep.start();
+        sleep2.start();
+        System.out.println("sleep.....");
+//        synchronized (Sleep.value) {
+//            Sleep.value.notify();
+//        }
+
+        sleep.sleep(1000);
+//        sleep2.sleep(2000);
+
+
+//        x1
+//                x2
+//        y3
+//                y4
 
 
 
+    }
+
+    static class Sleep extends Thread{
+
+        static AtomicLong value = new AtomicLong(1);
+
+        static boolean f = true;
+
+        @Override
+        public void run() {
+            System.out.println(this.getName() + "~" +value.getAndIncrement());
+
+//            synchronized (value) {
+//                try {
+//                    value.wait(10000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+
+            synchronized (value) {
+                System.out.println(this.getName() + " enter synchronized" + LocalDateTime.now());
+//                if (f) {
+//                    f = false;
+//                    try {
+//                        this.sleep(1000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+                for (int i = 0; i < 10000; i++) {
+                    System.out.print(1);
+                }
+                for (int i = 0; i < 100; i++) {
+                    System.out.println(this.getName() + "~" + value.getAndIncrement());
+                }
+                System.out.println(this.getName() + " exit synchronized" + LocalDateTime.now());
+            }
+        }
     }
 
 }
