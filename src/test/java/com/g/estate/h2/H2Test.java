@@ -1,6 +1,7 @@
 package com.g.estate.h2;
 
 import com.g.estate.controller.LocationController;
+import com.g.estate.service.LocationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +16,6 @@ public class H2Test {
 
     @Autowired
     private LocationController controller;
-
     @Before
     public void setup() {}
 
@@ -24,5 +24,7 @@ public class H2Test {
 
         controller.hello();
     }
+
+
 
 }
