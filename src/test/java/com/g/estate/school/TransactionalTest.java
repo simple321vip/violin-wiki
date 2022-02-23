@@ -1,17 +1,23 @@
 package com.g.estate.school;
 
+import com.g.estate.GEstateApplication;
 import com.g.estate.entity.Location;
 import com.g.estate.service.LocationService;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.IllegalTransactionStateException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-@SpringBootTest
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = GEstateApplication.class)
 public class TransactionalTest {
 
     @Autowired
@@ -30,7 +36,7 @@ public class TransactionalTest {
             locationService.get();
         } catch (Exception e) {
             // エラー断言
-//            assertEquals
+            assertEquals(e.getClass(), IllegalTransactionStateException.class);
         }
 
     }
@@ -47,4 +53,34 @@ public class TransactionalTest {
         // assert 断言
         assertEquals(actual, expected);
     }
+
+    /**
+     * トランザクション「never」にマークされたメソッドは必ずトランザクションを持っていないメソッド内で呼び出すこと
+     * locationService.neverTransactionTest　メソッド　は　トランザクションがないメソッド内で呼び出すので、エラーが発生しない
+     * 正常終了
+     */
+    @Test
+    public void testTran_never_N1() {
+        List<Location> actual = locationService.neverTransactionTest();
+        List<Location> expected = new ArrayList<>();
+        // assert 断言
+        assertEquals(actual, expected);
+    }
+
+    /**
+     * トランザクション「never」にマークされたメソッドは必ずトランザクションを持っていないメソッド内で呼び出すこと
+     * locationService.neverTransactionTest　メソッド　は　トランザクションがいるneverTransactionTestメソッド内で呼び出すので、エラーが発生する
+     * 異常終了
+     */
+    @Test
+    @Sql(value = "classpath:db/data.sql")
+    public void testTran_never_E1() {
+//        try {
+            locationService.requiredTransaction();
+//        } catch (Exception e) {
+//            System.out.println(1);
+//            e.printStackTrace(System.out);
+//        }
+    }
+
 }
