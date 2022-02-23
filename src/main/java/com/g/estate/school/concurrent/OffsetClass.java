@@ -1,4 +1,4 @@
-package com.g.estate.school;
+package com.g.estate.school.concurrent;
 
 import org.openjdk.jol.info.ClassLayout;
 

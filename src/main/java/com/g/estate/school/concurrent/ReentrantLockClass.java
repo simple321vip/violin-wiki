@@ -1,4 +1,4 @@
-package com.g.estate.school;
+package com.g.estate.school.concurrent;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;

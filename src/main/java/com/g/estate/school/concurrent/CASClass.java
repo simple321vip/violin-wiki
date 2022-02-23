@@ -1,6 +1,4 @@
-package com.g.estate.school;
-
-import java.util.stream.IntStream;
+package com.g.estate.school.concurrent;
 
 /**
  * CAS: compare and swap

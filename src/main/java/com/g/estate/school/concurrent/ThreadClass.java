@@ -1,4 +1,4 @@
-package com.g.estate.school;
+package com.g.estate.school.concurrent;
 
 public class ThreadClass {
 
@@ -60,7 +60,7 @@ public class ThreadClass {
 
         // Exception in thread "main" java.lang.IllegalThreadStateException
         //	at java.lang.Thread.setDaemon(Thread.java:1359)
-        //	at com.g.estate.school.ThreadClass.main(ThreadClass.java:14)
+        //	at com.g.estate.school.concurrent.ThreadClass.main(ThreadClass.java:14)
 
 
 
