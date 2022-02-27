@@ -78,23 +78,23 @@ public class AOPSampleClass {
     @Aspect
     @Component
     static class BuyAspectJ {
-        @Before("execution(* com.g.estate.school.transaction.AOPClass.IBuy.buy(..))")
+        @Before("execution(* com.g.estate.school.transaction.AOPSampleClass.IBuy.buy(..))")
         public void Before(){
             System.out.println("before.........");
         }
-        @After("execution(* com.g.estate.school.transaction.AOPClass.IBuy.buy(..))")
+        @After("execution(* com.g.estate.school.transaction.AOPSampleClass.IBuy.buy(..))")
         public void After(){
             System.out.println("after.........");
         }
-        @AfterReturning("execution(* com.g.estate.school.transaction.AOPClass.IBuy.buy(..))")
+        @AfterReturning("execution(* com.g.estate.school.transaction.AOPSampleClass.IBuy.buy(..))")
         public void AfterReturning(){
             System.out.println("afterReturning.........");
         }
-        @AfterThrowing("execution(* com.g.estate.school.transaction.AOPClass.IBuy.buy(..))")
+        @AfterThrowing("execution(* com.g.estate.school.transaction.AOPSampleClass.IBuy.buy(..))")
         public void AfterThrowing(){
             System.out.println("afterThrowing.........");
         }
-        @Around("execution(* com.g.estate.school.transaction.AOPClass.IBuy.buy(..))")
+        @Around("execution(* com.g.estate.school.transaction.AOPSampleClass.IBuy.buy(..))")
         public void Around(ProceedingJoinPoint pj){
         // 必须有ProceedingJoinPoint pj 参数，不写或者后面没有调用process方法，就会堵塞
             try {
@@ -107,7 +107,7 @@ public class AOPSampleClass {
         }
 
         // ----------------------------------------------------Dog advice
-        @Pointcut("execution(* com.g.estate.school.transaction.AOPClass.Sleep.sleep(..))")
+        @Pointcut("execution(* com.g.estate.school.transaction.AOPSampleClass.Sleep.sleep(..))")
         public void point(){
             System.out.println("i am oooooooooooooooo");
         }
@@ -143,7 +143,7 @@ public class AOPSampleClass {
 //        AOPClass.Boy
         // girl
 
-        Boy boy = context.getBean("AOPClass.Boy", Boy.class);
+        Boy boy = context.getBean("AOPSampleClass.Boy", Boy.class);
         Girl girl = context.getBean("girl", Girl.class);
         boy.buy();
         System.out.println("");
@@ -154,7 +154,7 @@ public class AOPSampleClass {
         System.out.println("--^^---^^^-^-^-^-^-^-^-^-^-^-^");
         System.out.println("");
 
-        Dog dog = context.getBean("AOPClass.Dog", Dog.class);
+        Dog dog = context.getBean("AOPSampleClass.Dog", Dog.class);
         dog.sleep(1);
 
     }

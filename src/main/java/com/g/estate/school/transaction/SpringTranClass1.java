@@ -37,8 +37,10 @@ public class SpringTranClass1 {
     主要的解析处理逻辑都在这个invokeWithinTransaction方法里。
 
     我们可以看到 这种设计方式，将自己和spring aop和spring bean 连接了起来。其实我本来想看spring事务传播的7种方式的是在做的结果。。。到现在还没找到。。
-
+    今天终于看到了事务传播的7种方式，根本不复杂，呀
+    这部分是在TransactionManager中实现的。
     下面是具体的源码记录把，可有可无的写了些。
+    https://blog.csdn.net/weixin_39309402/article/details/100877521
 
     AnnotationTransactionAttributeSource　の中身はSet<TransactionAnnotationParser> annotationParsersを維持している
     TransactionAnnotationParserはトランザクションアノテーションを解析している
