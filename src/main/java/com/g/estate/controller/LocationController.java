@@ -22,5 +22,12 @@ public class LocationController {
         return locationRepo.getLocationsByType("");
     }
 
+    @ResponseBody
+    @RequestMapping("/location/one")
+    public Location getOne() {
+        System.out.println("h2 test");
+        return locationRepo.getLocationsById("11");
+    }
+
 
 }

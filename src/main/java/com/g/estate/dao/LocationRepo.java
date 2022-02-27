@@ -10,4 +10,6 @@ import java.util.List;
 public interface LocationRepo extends JpaRepository<Location, Long> {
     List<Location> getLocationsByType(String type);
 
+    Location getLocationsById(String id);
+
 }

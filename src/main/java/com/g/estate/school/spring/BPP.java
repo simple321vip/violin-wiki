@@ -17,14 +17,19 @@ public class BPP implements BeanPostProcessor {
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        System.out.println(beanName);
-//        System.out.println("after instance created ! postProcessor before");
+        if (beanName.equals("bPP")) {
+            System.out.println("after instance created ! postProcessor before");
+        }
+
+//
         return bean;
     }
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-//        System.out.println("after instance created ! postProcessor after");
+        if (beanName.equals("bPP")) {
+            System.out.println("after instance created ! postProcessor after");
+        }
         return bean;
     }
 }
