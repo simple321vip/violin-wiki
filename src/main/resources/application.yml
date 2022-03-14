@@ -33,3 +33,8 @@ spring:
     console:
       path: /h2-console
       enabled: true
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false

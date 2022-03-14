@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
 @ComponentScan()
@@ -99,7 +100,7 @@ public class AOPSampleClass {
         // 必须有ProceedingJoinPoint pj 参数，不写或者后面没有调用process方法，就会堵塞
             try {
                 System.out.println("around..............begin");
-                pj.proceed();
+//                pj.proceed();
                 System.out.println("around..............end");
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
@@ -107,20 +108,25 @@ public class AOPSampleClass {
         }
 
         // ----------------------------------------------------Dog advice
-        @Pointcut("execution(* com.g.estate.school.transaction.AOPSampleClass.Sleep.sleep(..))")
-        public void point(){
-            System.out.println("i am oooooooooooooooo");
-        }
+//        @Pointcut("execution(* com.g.estate.school.transaction.AOPSampleClass.Sleep.sleep(..))")
+//        public void point(){
+//            System.out.println("i am oooooooooooooooo");
+//        }
+//
+//        @Before("point()")
+//        public void before() {
+//            System.out.println("Before ...");
+//        }
+//
+//        @After("point()")
+//        public void after() {
+//            System.out.println("After ...");
+//        }
 
-        @Before("point()")
-        public void before() {
-            System.out.println("Before ...");
-        }
-
-        @After("point()")
-        public void after() {
-            System.out.println("After ...");
-        }
+//        @After("ccccc()")
+//        public void addddfter() {
+//            System.out.println("After ...");
+//        }
 
     }
 
@@ -144,18 +150,18 @@ public class AOPSampleClass {
         // girl
 
         Boy boy = context.getBean("AOPSampleClass.Boy", Boy.class);
-        Girl girl = context.getBean("girl", Girl.class);
+//        Girl girl = context.getBean("girl", Girl.class);
         boy.buy();
-        System.out.println("");
-        System.out.println("--^^---^^^-^-^-^-^-^-^-^-^-^-^");
-        System.out.println("");
-        girl.buy();
-        System.out.println("");
-        System.out.println("--^^---^^^-^-^-^-^-^-^-^-^-^-^");
-        System.out.println("");
+//        System.out.println("");
+//        System.out.println("--^^---^^^-^-^-^-^-^-^-^-^-^-^");
+//        System.out.println("");
+//        girl.buy();
+//        System.out.println("");
+//        System.out.println("--^^---^^^-^-^-^-^-^-^-^-^-^-^");
+//        System.out.println("");
 
-        Dog dog = context.getBean("AOPSampleClass.Dog", Dog.class);
-        dog.sleep(1);
+//        Dog dog = context.getBean("AOPSampleClass.Dog", Dog.class);
+//        dog.sleep(1);
 
     }
 }
