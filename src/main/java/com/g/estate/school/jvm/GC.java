@@ -7,9 +7,9 @@ public class GC {
     我自己总结：
     jvm java虚拟机内存：
     分为 新生代 老年代 持久代，其中1.8以后持久代变成了原空间 持久代是存在jvm的一块内存，而元空间是存在本地内存的一块空间。
-    edan survivor S0 S1（8：1：1） minor GC 每次edan满了就会GC一次
+    edan survivor S0 S1（8：1：1） minor GC 每次edan满了就会young GC一次
     老年代 full GC  每次老年代满了，会进行一次full GC
-    System.gc() 系统会要求触发full GC 但不一定执行。
+    System.gc() 系统会要求触发full GC 但不一定执行。gc 通常是老年代满了才进行
 
     什么对象被GC认为是垃圾
     可达性分析法和程序计数法
@@ -20,6 +20,13 @@ public class GC {
 
 
     edan
+     */
+
+    /**
+     * https://docs.oracle.com/javase/7/docs/technotes/tools/share/jstat.html
+     * jstat -gc pid
+     * jstat -gcutil pid times
+     * @param args
      */
     public static void main(String[] args) {
 
