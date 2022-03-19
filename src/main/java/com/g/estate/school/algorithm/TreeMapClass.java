@@ -18,7 +18,7 @@ public class TreeMapClass {
         LinkedHashMap linkedHashMap = new LinkedHashMap();
         // LinkedHashMap 的父类 是 HashMap ，
 
-        Set<String> set = new HashSet<>();
+//        Set<String> set = new HashSet<>();
         // HashSet 维护了一个HashMap
 
         // 注意 MAP 是顶级接口 ，Set并不是顶级接口，Set的顶级接口是Iterable，该接口维护了一个Iterator
