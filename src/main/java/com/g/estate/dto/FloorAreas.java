@@ -1,4 +1,4 @@
-package com.g.estate.DTO;
+package com.g.estate.dto;
 
 import lombok.Getter;
 import lombok.Setter;
