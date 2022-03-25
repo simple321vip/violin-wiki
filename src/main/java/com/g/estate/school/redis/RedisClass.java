@@ -2,6 +2,7 @@ package com.g.estate.school.redis;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.params.SetParams;
 
 import java.util.Random;
@@ -70,6 +71,8 @@ public class RedisClass {
 
     static {
         // シングル　クライアント　は実際使わないです。
+        // JedisPoolConfig config = new JedisPoolConfig();
+
         jedisPool = new JedisPool();
 
     }
