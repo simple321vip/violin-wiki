@@ -6,6 +6,7 @@
 		<groupId>com.g.estate</groupId>
 		<artifactId>G-Parent</artifactId>
 		<version>1.0-SNAPSHOT</version>
+		<relativePath>../g-parent</relativePath>
 	</parent>
 	<artifactId>G-ESTATE</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
