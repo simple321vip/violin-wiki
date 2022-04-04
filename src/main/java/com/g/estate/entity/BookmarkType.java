@@ -10,22 +10,13 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "bookmark")
-public class Bookmark {
+@Table(name = "bookmark_type")
+public class BookmarkType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "bk_id")
-    private long id;
-
-    @Column(name = "delete_flg")
-    private String deleteFlg;
-
     @Column(name = "bk_type_id")
     private long typeId;
 
-    @Column(name = "comment")
-    private String comment;
-
-    @Column(name = "url")
-    private String url;
+    @Column(name = "bk_type_name")
+    private String typeName;
 }
