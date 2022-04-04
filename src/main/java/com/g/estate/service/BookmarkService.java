@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.g.estate.utils.Constant.FALSE_FLAG;
+import static com.g.estate.utils.Constant.TRUE_FLAG;
 
 @Service
 @RequiredArgsConstructor
@@ -46,13 +47,21 @@ public class BookmarkService {
 
         QBookmark qBookmark = QBookmark.bookmark;
         QBookmarkType qBookmarkType = QBookmarkType.bookmarkType;
-        QBean<BookmarkVo> viewObject = Projections.bean(BookmarkVo.class, qBookmarkType.typeName, qBookmark.comment, qBookmark.url);
+        Expression<?>[] selectItems = new Expression[]{
+                qBookmark.id,
+                qBookmark.typeId,
+                qBookmarkType.typeName,
+                qBookmark.comment,
+                qBookmark.url
+        };
+        QBean<BookmarkVo> viewObject = Projections.bean(BookmarkVo.class, selectItems);
 
         result = jpaQueryFactory
                 .select(viewObject)
                 .from(qBookmark)
                 .innerJoin(qBookmarkType)
                 .on(qBookmark.typeId.eq(qBookmarkType.typeId))
+                .where(qBookmark.deleteFlg.eq(FALSE_FLAG))
                 .orderBy(qBookmark.id.asc())
                 // 执行查询
                 .fetch();
@@ -65,6 +74,9 @@ public class BookmarkService {
      * @param bookmarkIn 11
      */
     public void insertBookmark(BookmarkIn bookmarkIn) {
+        if (bookmarkIn.getId() != -1) {
+
+        }
         Bookmark bookmark = new Bookmark();
         bookmark.setTypeId(bookmarkIn.getTypeId());
         bookmark.setComment(bookmarkIn.getComment());
@@ -81,14 +93,26 @@ public class BookmarkService {
     @Transactional()
     public void updateBookmark(BookmarkIn bookmarkIn) {
         QBookmark qBookmark = QBookmark.bookmark;
-        qBookmark.comment.eq(bookmarkIn.getComment());
-        qBookmark.url.eq(bookmarkIn.getUrl());
-        qBookmark.typeId.eq(bookmarkIn.getTypeId());
         jpaQueryFactory.update(qBookmark)
                 .set(qBookmark.comment, bookmarkIn.getComment())
                 .set(qBookmark.typeId, bookmarkIn.getTypeId())
                 .set(qBookmark.url, bookmarkIn.getUrl())
                 .where(qBookmark.id.eq(bookmarkIn.getId()))
+                .execute();
+    }
+
+    /**
+     * bookmarkを削除する
+     * deleteFlg を　true　にする
+     *
+     * @param
+     */
+    @Transactional()
+    public void delete(long bkId) {
+        QBookmark qBookmark = QBookmark.bookmark;
+        jpaQueryFactory.update(qBookmark)
+                .set(qBookmark.deleteFlg, TRUE_FLAG)
+                .where(qBookmark.id.eq(bkId))
                 .execute();
     }
 
