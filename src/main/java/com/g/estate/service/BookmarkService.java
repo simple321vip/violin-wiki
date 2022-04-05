@@ -11,18 +11,17 @@ import com.g.estate.vo.BookmarkVo;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.QBean;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.g.estate.utils.Constant.FALSE_FLAG;
-import static com.g.estate.utils.Constant.TRUE_FLAG;
+import static com.g.estate.utils.Constant.*;
 
 @Service
 @RequiredArgsConstructor
@@ -38,13 +37,12 @@ public class BookmarkService {
     /**
      * bookmark全件検索
      *
-     * @param typeId
+     * @param typeIds
      * @return List<Bookmark>
      */
-    public List<BookmarkVo> getBookmarks(String typeId) {
+    public List<BookmarkVo> getBookmarks(Long[] typeIds, String comment) {
 
         List<BookmarkVo> result;
-
         QBookmark qBookmark = QBookmark.bookmark;
         QBookmarkType qBookmarkType = QBookmarkType.bookmarkType;
         Expression<?>[] selectItems = new Expression[]{
@@ -54,14 +52,21 @@ public class BookmarkService {
                 qBookmark.comment,
                 qBookmark.url
         };
-        QBean<BookmarkVo> viewObject = Projections.bean(BookmarkVo.class, selectItems);
+        BooleanExpression searchConditions = qBookmark.deleteFlg.eq(FALSE_FLAG);
+        if (typeIds != null && typeIds.length != 0) {
+            searchConditions = searchConditions.and(qBookmarkType.typeId.in(typeIds));
+        }
+        if (StringUtils.hasLength(comment)) {
+            searchConditions = searchConditions.and(qBookmark.comment.like(LIKE_FIX + comment + LIKE_FIX));
+        }
 
+        QBean<BookmarkVo> viewObject = Projections.bean(BookmarkVo.class, selectItems);
         result = jpaQueryFactory
                 .select(viewObject)
                 .from(qBookmark)
                 .innerJoin(qBookmarkType)
                 .on(qBookmark.typeId.eq(qBookmarkType.typeId))
-                .where(qBookmark.deleteFlg.eq(FALSE_FLAG))
+                .where(searchConditions)
                 .orderBy(qBookmark.id.asc())
                 // 执行查询
                 .fetch();

@@ -6,5 +6,7 @@ public class Constant {
     public final static String TRUE_FLAG = "1";
     public final static String UNDEFINED_FLAG = "2";
 
+    public final static String LIKE_FIX = "%";
+
 
 }
