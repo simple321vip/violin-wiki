@@ -56,4 +56,20 @@ create table bookmark_type(
          bk_type_name char(20) default '' not null
   );
 
+drop table IF EXISTS blog;
+create table blog(
+         blog_id long primary key AUTO_INCREMENT,
+         blog_type_id long default 0 not null,
+         blog_title char(20) default '' not null,
+         blog_prex char(250) default '' not null,
+         delete_flg char(1) default '0' not null,
+         blog_text_path char(250) default '' not null
+  );
+
+drop table IF EXISTS blog_type;
+create table blog_type(
+         blog_type_id long primary key AUTO_INCREMENT,
+         blog_type_name char(20) default '' not null
+  );
+
 

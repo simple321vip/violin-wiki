@@ -36,3 +36,9 @@ INSERT INTO bookmark_type(bk_type_name) VALUES( 'Xml');
 INSERT INTO bookmark_type(bk_type_name) VALUES( '厨艺');
 
 INSERT INTO bookmark(bk_type_id, comment, delete_flg, url) VALUES(1, 'JAVA 面试精华', '0', 'www.hahaha/');
+INSERT INTO blog_type(blog_type_name) VALUES( '天道');
+INSERT INTO blog_type(blog_type_name) VALUES( '天幕红尘');
+INSERT INTO blog(blog_type_id, blog_title, delete_flg, blog_prex, blog_text_path) VALUES(1, '心理学', '0', '天道', 'asdasdasd');
+INSERT INTO blog(blog_type_id, blog_title, delete_flg, blog_prex) VALUES(1, '医学科', '0', '非自然死亡');
+INSERT INTO blog(blog_type_id, blog_title, delete_flg, blog_prex) VALUES(2, '精神科', '0', '私人定制');
+INSERT INTO blog(blog_type_id, blog_title, delete_flg, blog_prex) VALUES(2, '外壳', '0', '外壳风云');
