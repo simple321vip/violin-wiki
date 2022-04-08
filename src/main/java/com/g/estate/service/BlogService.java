@@ -56,8 +56,7 @@ public class BlogService {
                 qBlog.id,
                 qBlog.typeId.as("blogTypeId"),
                 qBlog.blogTitle,
-                qBlogType.typeName.as("blogTypeName"),
-                qBlog.blogText
+                qBlogType.typeName.as("blogTypeName")
         };
         QBean<BlogVo> viewObject = Projections.bean(BlogVo.class, selectItems);
         result = jpaQueryFactory.select(viewObject)
