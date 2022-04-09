@@ -18,7 +18,7 @@ public class SectionVo {
     @JsonProperty("user_id")
     private long userId;
 
-    @JsonProperty("section_id")
+    @JsonProperty("section_name")
     private String sectionName;
 
     @JsonProperty("page_list")

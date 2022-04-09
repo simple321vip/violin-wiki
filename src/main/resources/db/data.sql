@@ -42,3 +42,10 @@ INSERT INTO blog(blog_type_id, blog_title, delete_flg, blog_prex, blog_text_path
 INSERT INTO blog(blog_type_id, blog_title, delete_flg, blog_prex) VALUES(1, '医学科', '0', '非自然死亡');
 INSERT INTO blog(blog_type_id, blog_title, delete_flg, blog_prex) VALUES(2, '精神科', '0', '私人定制');
 INSERT INTO blog(blog_type_id, blog_title, delete_flg, blog_prex) VALUES(2, '外壳', '0', '外壳风云');
+
+INSERT INTO section(user_id, section_name) VALUES(2, '日常メモ');
+INSERT INTO section(user_id, section_name) VALUES(2, '技術関連');
+INSERT INTO page(section_id, page_name, page_path) VALUES(1, 'myholiday', '/pwds/');
+INSERT INTO page(section_id, page_name, page_path) VALUES(1, 'セキュリティ', '/sec/');
+INSERT INTO page(section_id, page_name, page_path) VALUES(2, 'java', '/ddd/');
+INSERT INTO page(section_id, page_name, page_path) VALUES(2, 'Xml', '/xxxx/');
