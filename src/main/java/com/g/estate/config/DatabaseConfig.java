@@ -6,6 +6,8 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 import javax.sql.DataSource;
+import java.util.Map;
+import java.util.Properties;
 
 @Configuration
 public class DatabaseConfig {
@@ -18,4 +20,8 @@ public class DatabaseConfig {
 //                .addScript("xxx.sql")
 //                .build();
 //    }
+    public static final Properties properties = System.getProperties();
+    static {
+        properties.setProperty("BLOG_FOLDER_HOME", "E:\\Project\\g-estate");
+    }
 }

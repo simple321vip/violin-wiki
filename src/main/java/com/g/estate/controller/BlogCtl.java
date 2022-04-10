@@ -24,11 +24,20 @@ public class BlogCtl {
         return new ResponseEntity<>(blogService.getBlogs(), HttpStatus.OK);
     }
 
+//    @ResponseBody
+//    @RequestMapping("/blog/{blog_id}")
+//    public ResponseEntity<Void> blog(@PathVariable(value = "blog_id", required = false) Long blogId
+//    ) {
+//        blogService.getBlog(blogId);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
+
     @ResponseBody
     @RequestMapping("/blog/{blog_id}")
-    public ResponseEntity<List<BlogVo>> blog(@PathVariable(value = "blog_id", required = false) Long blogId
+    public ResponseEntity<Void> getBlog(@PathVariable(value = "blog_id", required = false) Long blogId
     ) {
-        return new ResponseEntity<>(blogService.getBlogs(), HttpStatus.OK);
+        blogService.getBlog(blogId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
