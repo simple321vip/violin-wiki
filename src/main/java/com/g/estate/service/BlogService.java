@@ -11,7 +11,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
+import java.io.*;
 import java.util.List;
 
 import static com.g.estate.utils.Constant.FALSE_FLAG;
@@ -69,12 +69,28 @@ public class BlogService {
         if (result.size() == 0) {
             return new BlogVo();
         }
-        return result.get(0);
+        BlogVo vo = result.get(0);
+        this.getBlogDetail(vo);
+        return vo;
     }
 
-    public File getBlogDetail(Long blogId) {
+    private void getBlogDetail(BlogVo vo) {
         String filePath = System.getProperty("BLOG_FOLDER_HOME");
-        return null;
+
+        BufferedReader br;
+        StringBuilder sb = new StringBuilder();
+        try {
+            br = new BufferedReader(new FileReader(new File(filePath + "\\README.md")));
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line).append(System.getProperty("line.separator"));
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        vo.setBlogText(sb.toString());
     }
 
 }

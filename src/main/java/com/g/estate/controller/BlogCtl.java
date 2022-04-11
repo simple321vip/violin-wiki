@@ -34,10 +34,9 @@ public class BlogCtl {
 
     @ResponseBody
     @RequestMapping("/blog/{blog_id}")
-    public ResponseEntity<Void> getBlog(@PathVariable(value = "blog_id", required = false) Long blogId
+    public ResponseEntity<BlogVo> getBlog(@PathVariable(value = "blog_id") Long blogId
     ) {
-        blogService.getBlog(blogId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(blogService.getBlog(blogId), HttpStatus.OK);
     }
 
 }

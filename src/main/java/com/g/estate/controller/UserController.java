@@ -11,18 +11,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/record")
+@RequestMapping("/api/vi")
 @CrossOrigin
 public class UserController {
 
     private final UserService userService;
 
     private final TokenService tokenService;
-
-    @RequestMapping("/login")
-    public String login(){
-        return "ddd";
-    }
 
     @PostMapping("/authorize")
     @PassToken

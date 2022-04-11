@@ -49,3 +49,5 @@ INSERT INTO page(section_id, page_name, page_path) VALUES(1, 'myholiday', '/pwds
 INSERT INTO page(section_id, page_name, page_path) VALUES(1, 'セキュリティ', '/sec/');
 INSERT INTO page(section_id, page_name, page_path) VALUES(2, 'java', '/ddd/');
 INSERT INTO page(section_id, page_name, page_path) VALUES(2, 'Xml', '/xxxx/');
+
+--INSERT INTO g_user (user_id, user_name, user_password) VALUES('xiaoguan', '胡乱写的', 'mb83201048');
