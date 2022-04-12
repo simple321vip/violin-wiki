@@ -9,7 +9,7 @@ import lombok.Setter;
 public class BookmarkIn {
 
     @JsonProperty("bk_id")
-    private long id;
+    private String id;
 
     @JsonProperty("bk_type_id")
     private long typeId;

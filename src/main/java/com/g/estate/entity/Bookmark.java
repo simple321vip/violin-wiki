@@ -10,12 +10,11 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "bookmark")
+@Table(name = "t_bookmark")
 public class Bookmark {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bk_id")
-    private long id;
+    private String id;
 
     @Column(name = "delete_flg")
     private String deleteFlg;

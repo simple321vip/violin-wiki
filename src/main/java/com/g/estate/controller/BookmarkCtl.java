@@ -48,7 +48,7 @@ public class BookmarkCtl {
     }
 
     @DeleteMapping("/bookmark/delete/{bk_id}")
-    public ResponseEntity<Void> updateBookmark(@PathVariable("bk_id") long bkId) {
+    public ResponseEntity<Void> updateBookmark(@PathVariable("bk_id") String bkId) {
         bookmarkService.delete(bkId);
         return new ResponseEntity<>(HttpStatus.OK);
     }

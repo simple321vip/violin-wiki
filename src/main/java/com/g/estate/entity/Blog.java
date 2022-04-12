@@ -10,19 +10,18 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "blog")
+@Table(name = "t_blog")
 public class Blog {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "blog_id")
-    private long id;
+    private String id;
 
     @Column(name = "delete_flg")
     private String deleteFlg;
 
     @Column(name = "blog_type_id")
-    private long typeId;
+    private String typeId;
 
     @Column(name = "blog_title")
     private String blogTitle;

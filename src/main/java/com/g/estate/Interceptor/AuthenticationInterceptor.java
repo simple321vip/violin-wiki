@@ -16,6 +16,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
+import java.util.Optional;
 
 /**
  * Interceptor トーケンの検証
@@ -54,12 +55,12 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 } catch (JWTDecodeException j) {
                     throw new RuntimeException("401");
                 }
-                User user = userService.findUserById(userId);
-                if (user == null) {
+                Optional<User> user = userService.findUserById(userId);
+                if (!user.isPresent()) {
                     throw new RuntimeException("用户不存在，请重新登录");
                 }
                 // トーケン認証
-                JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getPassword())).build();
+                JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.get().getPassword())).build();
                 try {
                     jwtVerifier.verify(token);
                 } catch (JWTVerificationException e) {

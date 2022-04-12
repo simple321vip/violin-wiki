@@ -10,10 +10,10 @@ import lombok.*;
 @NoArgsConstructor
 public class BlogVo {
     @JsonProperty("blog_id")
-    private long id;
+    private String id;
 
     @JsonProperty("blog_type_id")
-    private long blogTypeId;
+    private String blogTypeId;
 
     @JsonProperty("blog_type_name")
     private String blogTypeName;

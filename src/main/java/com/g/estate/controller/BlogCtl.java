@@ -19,7 +19,7 @@ public class BlogCtl {
 
     @ResponseBody
     @RequestMapping("/blog")
-    public ResponseEntity<List<BlogVo>> blogs(@RequestParam(value = "type_id", required = false) Long[] typeId,
+    public ResponseEntity<List<BlogVo>> blogs(@RequestParam(value = "type_id", required = false) String[] typeId,
                                               @RequestParam(value = "comment", required = false) String comment) {
         return new ResponseEntity<>(blogService.getBlogs(), HttpStatus.OK);
     }
@@ -34,7 +34,7 @@ public class BlogCtl {
 
     @ResponseBody
     @RequestMapping("/blog/{blog_id}")
-    public ResponseEntity<BlogVo> getBlog(@PathVariable(value = "blog_id") Long blogId
+    public ResponseEntity<BlogVo> getBlog(@PathVariable(value = "blog_id") String blogId
     ) {
         return new ResponseEntity<>(blogService.getBlog(blogId), HttpStatus.OK);
     }

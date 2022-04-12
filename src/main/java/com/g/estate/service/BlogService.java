@@ -2,6 +2,7 @@ package com.g.estate.service;
 
 import com.g.estate.entity.QBlog;
 import com.g.estate.entity.QBlogType;
+import com.g.estate.utils.NumberEnum;
 import com.g.estate.vo.BlogVo;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
@@ -9,6 +10,7 @@ import com.querydsl.core.types.QBean;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -21,6 +23,9 @@ import static com.g.estate.utils.Constant.FALSE_FLAG;
 public class BlogService {
 
     private final JPAQueryFactory jpaQueryFactory;
+
+    @Autowired
+    private NumberService numberService;
 
     public List<BlogVo> getBlogs() {
 
@@ -47,7 +52,7 @@ public class BlogService {
         return result;
     }
 
-    public BlogVo getBlog(Long blogId) {
+    public BlogVo getBlog(String blogId) {
         List<BlogVo> result;
         QBlog qBlog = QBlog.blog;
         QBlogType qBlogType = QBlogType.blogType;
@@ -91,6 +96,13 @@ public class BlogService {
             e.printStackTrace();
         }
         vo.setBlogText(sb.toString());
+    }
+
+
+    public void insertBlog() {
+        String blogId = numberService.getNumberId(NumberEnum.T_BLOG);
+
+
     }
 
 }

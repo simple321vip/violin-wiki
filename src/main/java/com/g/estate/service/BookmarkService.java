@@ -7,12 +7,14 @@ import com.g.estate.entity.BookmarkType;
 import com.g.estate.entity.QBookmark;
 import com.g.estate.entity.QBookmarkType;
 import com.g.estate.io.BookmarkIn;
+import com.g.estate.utils.NumberEnum;
 import com.g.estate.vo.BookmarkVo;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.QBean;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,10 @@ import static com.g.estate.utils.Constant.*;
 public class BookmarkService {
 
     private final JPAQueryFactory jpaQueryFactory;
+
+    @Autowired
+    private NumberService numberService;
+
     @Autowired
     private BookmarkRepo bookmarkRepo;
 
@@ -79,10 +85,9 @@ public class BookmarkService {
      * @param bookmarkIn 11
      */
     public void insertBookmark(BookmarkIn bookmarkIn) {
-        if (bookmarkIn.getId() != -1) {
-
-        }
+        String bkId = numberService.getNumberId(NumberEnum.T_BOOKMARK);
         Bookmark bookmark = new Bookmark();
+        bookmark.setId(bkId);
         bookmark.setTypeId(bookmarkIn.getTypeId());
         bookmark.setComment(bookmarkIn.getComment());
         bookmark.setUrl(bookmarkIn.getUrl());
@@ -113,7 +118,7 @@ public class BookmarkService {
      * @param
      */
     @Transactional()
-    public void delete(long bkId) {
+    public void delete(String bkId) {
         QBookmark qBookmark = QBookmark.bookmark;
         jpaQueryFactory.update(qBookmark)
                 .set(qBookmark.deleteFlg, TRUE_FLAG)
