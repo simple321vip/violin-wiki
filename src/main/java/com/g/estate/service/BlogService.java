@@ -6,6 +6,7 @@ import com.g.estate.entity.QSection;
 import com.g.estate.io.BlogTypeIn;
 import com.g.estate.io.BookmarkIn;
 import com.g.estate.utils.NumberEnum;
+import com.g.estate.vo.BlogBoxVo;
 import com.g.estate.vo.BlogVo;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
@@ -18,7 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.g.estate.utils.Constant.FALSE_FLAG;
 
@@ -130,6 +133,43 @@ public class BlogService {
                 .set(qBlogType.typeName, input.getBlogTypeName())
                 .where(qBlogType.typeId.eq(input.getBlogTypeId()))
                 .execute();
+    }
+
+    public List<BlogBoxVo> getUserBlogs() {
+        String user = "";
+        List<BlogVo> result;
+        QBlog qBlog = QBlog.blog;
+        QBlogType qBlogType = QBlogType.blogType;
+        BooleanExpression searchConditions =
+                qBlog.deleteFlg.eq(FALSE_FLAG)
+                .and(qBlogType.updaterId.eq(user));
+        Expression<?>[] selectItems = new Expression[] {
+                qBlog.id,
+                qBlog.typeId.as("blogTypeId"),
+                qBlog.blogTitle,
+                qBlog.blogPrex,
+                qBlogType.typeName.as("blogTypeName")
+        };
+        QBean<BlogVo> viewObject = Projections.bean(BlogVo.class, selectItems);
+        result = jpaQueryFactory.select(viewObject)
+                .from(qBlog)
+                .innerJoin(qBlogType)
+                .on(qBlog.typeId.eq(qBlogType.typeId))
+                .where(searchConditions)
+                .fetch();
+
+        return result.stream()
+                .collect(Collectors.groupingBy(BlogVo::getBlogTypeId))
+                .entrySet()
+                .stream().map(record -> {
+                    BlogBoxVo blogBoxVo = new BlogBoxVo();
+                    BlogVo vo = record.getValue().get(0);
+                    List<BlogVo> blogs = new ArrayList<>(record.getValue());
+                    blogBoxVo.setBlogVoList(blogs);
+                    blogBoxVo.setBlogTypeId(record.getKey());
+                    blogBoxVo.setBlogTypeName(vo.getBlogTypeName());
+                    return blogBoxVo;
+                }).collect(Collectors.toList());
     }
 
 }

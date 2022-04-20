@@ -35,8 +35,14 @@ public class BlogCtl {
 
 
     @PostMapping(value = "/blog/update_blog_type", produces = {"application/json"})
-    public ResponseEntity<Void> updateSection(@Valid @RequestBody() BlogTypeIn input) {
+    public ResponseEntity<Void> updateBlogType(@Valid @RequestBody() BlogTypeIn input) {
         blogService.updateBlogTypeName(input);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/blog/insert_blog_type", produces = {"application/json"})
+    public ResponseEntity<Void> insertBlogType(@Valid @RequestBody() BlogTypeIn input) {
+        blogService.insertBlog(input);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
