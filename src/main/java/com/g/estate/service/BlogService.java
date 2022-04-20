@@ -2,6 +2,9 @@ package com.g.estate.service;
 
 import com.g.estate.entity.QBlog;
 import com.g.estate.entity.QBlogType;
+import com.g.estate.entity.QSection;
+import com.g.estate.io.BlogTypeIn;
+import com.g.estate.io.BookmarkIn;
 import com.g.estate.utils.NumberEnum;
 import com.g.estate.vo.BlogVo;
 import com.querydsl.core.types.Expression;
@@ -12,6 +15,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
 import java.util.List;
@@ -98,11 +102,34 @@ public class BlogService {
         vo.setBlogText(sb.toString());
     }
 
+    @Transactional()
+    public void insertBlog(BlogTypeIn input) {
+        QBlogType qBlogType = QBlogType.blogType;
+        String user = "";
+        List<?> result = jpaQueryFactory
+                .selectOne()
+                .from(qBlogType)
+                .where(qBlogType.updaterId.eq(user).and(qBlogType.typeName.eq(input.getBlogTypeName())))
+                .fetch();
+        if (result.isEmpty()) {
+            String blogTypeId = numberService.getNumberId(NumberEnum.T_BLOG_TYPE);
+            jpaQueryFactory
+                    .insert(qBlogType)
+                    .columns()
+                    .values(blogTypeId, input.getBlogTypeName())
+                    .execute();
+        } else {
+            // TODO update_error
+        }
+    }
 
-    public void insertBlog() {
-        String blogId = numberService.getNumberId(NumberEnum.T_BLOG);
-
-
+    @Transactional()
+    public void updateBlogTypeName(BlogTypeIn input) {
+        QBlogType qBlogType = QBlogType.blogType;
+        jpaQueryFactory.update(qBlogType)
+                .set(qBlogType.typeName, input.getBlogTypeName())
+                .where(qBlogType.typeId.eq(input.getBlogTypeId()))
+                .execute();
     }
 
 }

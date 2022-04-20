@@ -19,4 +19,10 @@ public class BlogType {
 
     @Column(name = "blog_type_name")
     private String typeName;
+
+    @Column(name = "updater_id")
+    private String updaterId;
+
+    @Column(name = "update_time")
+    private String updateTime;
 }

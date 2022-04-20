@@ -41,13 +41,17 @@ create table t_blog(
          blog_title char(20) default '' not null,
          blog_prex char(250) default '' not null,
          delete_flg char(1) default '0' not null,
-         blog_text_path char(250) default '' not null
+         blog_text_path char(250) default '' not null,
+         updater_id CHAR(20) default '' not null,
+         update_time DATETIME default CURRENT_TIMESTAMP not null
   );
 
 drop table IF EXISTS blog_type;
 create table blog_type(
          blog_type_id CHAR(16) primary key,
-         blog_type_name char(20) default '' not null
+         blog_type_name char(20) default '' not null,
+         updater_id CHAR(20) default '' not null,
+         update_time DATETIME default CURRENT_TIMESTAMP not null
   );
 drop table IF EXISTS t_blog_seq;
 create table t_blog_seq (
