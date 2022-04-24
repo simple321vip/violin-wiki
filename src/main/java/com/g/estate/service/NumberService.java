@@ -3,7 +3,6 @@ package com.g.estate.service;
 import com.g.estate.dao.BlogSeqRepo;
 import com.g.estate.dao.BlogTypeSeqRepo;
 import com.g.estate.dao.BookmarkSeqRepo;
-import com.g.estate.entity.Blog;
 import com.g.estate.entity.BlogSeq;
 import com.g.estate.entity.BlogTypeSeq;
 import com.g.estate.entity.BookmarkSeq;

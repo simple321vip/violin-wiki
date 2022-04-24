@@ -1,6 +1,5 @@
 package com.g.estate.dao;
 
-import com.g.estate.entity.Blog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

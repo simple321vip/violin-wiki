@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
   servlet:
     context-path: /
 
@@ -12,8 +12,12 @@ spring:
     schema: classpath:db/schema.sql
     data: classpath:db/data.sql
     initialization-mode: always
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/violin
+      transactionEnabled: true
 
-#  datasource:
+  #  datasource:
 #    name: estate
 #    url: jdbc:mysql://localhost:3306/estate?characterEncoding=utf-8&serverTimezone=GMT%2B8
 #    username: root

@@ -10,10 +10,10 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class BlogTypeIn {
 
-    @JsonProperty("blog_type_id")
-    private String blogTypeId;
+    @JsonProperty("btId")
+    private String btId;
 
-    @JsonProperty("blog_type_name")
+    @JsonProperty("btName")
     @NotNull
-    private String blogTypeName;
+    private String btName;
 }

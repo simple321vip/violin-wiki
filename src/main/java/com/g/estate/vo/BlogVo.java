@@ -9,21 +9,21 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BlogVo {
-    @JsonProperty("blog_id")
-    private String id;
+    @JsonProperty("bid")
+    private String bid;
 
-    @JsonProperty("blog_type_id")
-    private String blogTypeId;
+    @JsonProperty("auto_save_control")
+    private int autoSaveControl;
 
-    @JsonProperty("blog_type_name")
-    private String blogTypeName;
-
-    @JsonProperty("blog_title")
-    private String blogTitle;
+    @JsonProperty("title")
+    private String title;
 
     @JsonProperty("blog_prex")
     private String blogPrex;
 
-    @JsonProperty("blog_text")
-    private String blogText;
+    @JsonProperty("content")
+    private String content;
+
+    @JsonProperty("btId")
+    private String btId;
 }

@@ -12,11 +12,11 @@ import java.util.List;
 @NoArgsConstructor
 public class BlogBoxVo {
 
-    @JsonProperty("blog_type_id")
-    private String blogTypeId;
+    @JsonProperty("btId")
+    private String btId;
 
-    @JsonProperty("blog_type_name")
-    private String blogTypeName;
+    @JsonProperty("btName")
+    private String btName;
 
     @JsonProperty("blog_list")
     private List<BlogVo> blogVoList;
