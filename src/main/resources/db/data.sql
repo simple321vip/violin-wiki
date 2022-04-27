@@ -1,6 +1,8 @@
 INSERT INTO bookmark_type(bk_type_name) VALUES( '未分类');
 INSERT INTO bookmark_type(bk_type_name) VALUES( 'Java');
 INSERT INTO bookmark_type(bk_type_name) VALUES( 'Xml');
+INSERT INTO bookmark_type(bk_type_name) VALUES( '计算机网络');
+INSERT INTO bookmark_type(bk_type_name) VALUES( '云计算');
 INSERT INTO bookmark_type(bk_type_name) VALUES( '厨艺');
 
 --INSERT INTO bookmark(bk_type_id, comment, delete_flg, url) VALUES(1, '【尚硅谷】2022版Kafka3.x教程', '0', 'https://www.bilibili.com/video/BV1vr4y1677k?p=10');

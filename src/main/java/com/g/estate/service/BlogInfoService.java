@@ -4,6 +4,7 @@ import com.g.estate.entity.BlogInfo;
 import com.g.estate.entity.BlogType;
 import com.g.estate.io.BlogIn;
 import com.g.estate.io.BlogTypeIn;
+import com.g.estate.utils.Constant;
 import com.g.estate.utils.NumberEnum;
 import com.g.estate.vo.BlogBoxVo;
 import com.g.estate.vo.BlogVo;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -122,7 +125,8 @@ public class BlogInfoService {
         model.setUpdateTime("");
         mongoTemplate.save(model);
         BlogIn blogIn = new BlogIn();
-        blogIn.setBid(btId);
+        blogIn.setBlogTypeId(btId);
+        blogIn.setTitle(LocalDate.now().format(Constant.FORMATTER_DATE));
         BlogVo vo = this.insertContent(blogIn);
         BlogBoxVo box = new BlogBoxVo();
         box.setBtId(btId);
@@ -165,8 +169,8 @@ public class BlogInfoService {
             return result;
         } else {
             String btId = docs.stream().findFirst().get().getBtId();
-
-            Criteria c2 = Criteria.where("btId").is(btId);
+            List<String> btIds = docs.stream().map(BlogType::getBtId).collect(Collectors.toList());
+            Criteria c2 = Criteria.where("btId").in(btIds);
             Query q2 = Query.query(c2);
             q2.fields().exclude("content");
             List<BlogInfo> blogs = mongoTemplate.find(q2, BlogInfo.class);
@@ -177,18 +181,18 @@ public class BlogInfoService {
                 BlogBoxVo box = new BlogBoxVo();
                 box.setBtId(type.getBtId());
                 box.setBtName(type.getBtName());
+                List<BlogVo> blogVos = blogs.stream().filter(doc -> doc.getBtId().equals(type.getBtId())).map(doc -> {
+                    BlogVo vo = new BlogVo();
+                    vo.setBid(doc.getBid());
+                    vo.setTitle(doc.getTitle());
+//            vo.setAutoSaveControl();
+                    vo.setBtId(doc.getBtId());
+                    return vo;
+                }).collect(Collectors.toList());
+                box.setBlogVoList(blogVos);
                 return box;
             }).collect(Collectors.toList());
-            List<BlogVo> r2 = blogs.stream().filter(doc -> doc.getBtId().equals(btId)).map(doc -> {
-                BlogVo vo = new BlogVo();
-                vo.setBid(doc.getBid());
-                vo.setTitle(doc.getTitle());
-//            vo.setAutoSaveControl();
-                vo.setBtId(doc.getBtId());
-                return vo;
-            }).collect(Collectors.toList());
-            result.get(0).setBlogVoList(r2);
-            r2.get(0).setContent(content);
+            result.get(0).getBlogVoList().get(0).setContent(content);
 
             return result;
         }

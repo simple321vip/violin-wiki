@@ -1,5 +1,7 @@
 package com.g.estate.utils;
 
+import java.time.format.DateTimeFormatter;
+
 public class Constant {
 
     public final static String FALSE_FLAG = "0";
@@ -7,6 +9,8 @@ public class Constant {
     public final static String UNDEFINED_FLAG = "2";
 
     public final static String LIKE_FIX = "%";
+
+    public final static DateTimeFormatter FORMATTER_DATE = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 
 }

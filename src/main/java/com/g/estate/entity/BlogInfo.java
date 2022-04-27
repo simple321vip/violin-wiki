@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.Binary;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.persistence.Id;
 import java.io.Serializable;
@@ -25,6 +24,4 @@ public class BlogInfo implements Serializable {
     private Binary content;
     private long size;
     private LocalDateTime updateDateTime;
-
-
 }
