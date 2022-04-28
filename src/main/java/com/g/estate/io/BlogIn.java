@@ -7,8 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BlogIn {
-    @JsonProperty("blog_type_id")
-    private String blogTypeId;
+    @JsonProperty("btId")
+    private String btId;
 
     @JsonProperty("title")
     private String title;

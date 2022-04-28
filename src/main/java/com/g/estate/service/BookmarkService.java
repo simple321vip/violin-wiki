@@ -9,6 +9,7 @@ import com.g.estate.entity.QBookmarkType;
 import com.g.estate.io.BookmarkIn;
 import com.g.estate.utils.NumberEnum;
 import com.g.estate.vo.BookmarkVo;
+import com.g.estate.vo.ResponsePageVo;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.QBean;
@@ -84,6 +85,7 @@ public class BookmarkService {
      *
      * @param bookmarkIn 11
      */
+    @Transactional
     public void insertBookmark(BookmarkIn bookmarkIn) {
         String bkId = numberService.getNumberId(NumberEnum.T_BOOKMARK);
         Bookmark bookmark = new Bookmark();

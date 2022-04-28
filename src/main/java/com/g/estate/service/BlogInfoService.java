@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -65,14 +64,14 @@ public class BlogInfoService {
         BlogInfo model = new BlogInfo();
         String bid = numberService.getNumberId(NumberEnum.T_BLOG);
         model.setTitle(input.getTitle());
-        model.setBtId(input.getBlogTypeId());
+        model.setBtId(input.getBtId());
         model.setBid(bid);
         model.setContent(new Binary("".getBytes(StandardCharsets.UTF_8)));
         mongoTemplate.save(model);
         BlogVo vo = new BlogVo();
         vo.setBid(bid);
         vo.setTitle(input.getTitle());
-        vo.setBid(input.getBlogTypeId());
+        vo.setBid(input.getBtId());
         vo.setContent("");
         return vo;
     }
@@ -83,6 +82,7 @@ public class BlogInfoService {
      * @param input 更新内容
      * @return long 高新
      */
+    @Transactional
     public long updateContent(BlogIn input) {
         Criteria criteria = Criteria.where("bid").is(input.getBid());
         Query query = Query.query(criteria);
@@ -103,6 +103,7 @@ public class BlogInfoService {
      * @param bid 削除bid
      * @return void
      */
+    @Transactional
     public void deleteContent(String bid) {
         Criteria criteria = Criteria.where("bid").is(bid);
         Query query = Query.query(criteria);
@@ -125,7 +126,7 @@ public class BlogInfoService {
         model.setUpdateTime("");
         mongoTemplate.save(model);
         BlogIn blogIn = new BlogIn();
-        blogIn.setBlogTypeId(btId);
+        blogIn.setBtId(btId);
         blogIn.setTitle(LocalDate.now().format(Constant.FORMATTER_DATE));
         BlogVo vo = this.insertContent(blogIn);
         BlogBoxVo box = new BlogBoxVo();
@@ -155,6 +156,7 @@ public class BlogInfoService {
     /**
      * ブログタイプ一覧取得する
      */
+    @Transactional
     public List<BlogBoxVo> listAll() {
         String owner = "xiaoguan";
         Criteria criteria = Criteria.where("owner").is(owner);
