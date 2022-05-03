@@ -22,6 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.g.estate.utils.Constant.*;
@@ -87,7 +89,7 @@ public class BookmarkService {
      */
     @Transactional
     public void insertBookmark(BookmarkIn bookmarkIn) {
-        String bkId = numberService.getNumberId(NumberEnum.T_BOOKMARK);
+        String bkId = LocalDateTime.now().format(FORMATTER_DATETIME) + numberService.getNumberId(NumberEnum.T_BOOKMARK);
         Bookmark bookmark = new Bookmark();
         bookmark.setId(bkId);
         bookmark.setTypeId(bookmarkIn.getTypeId());

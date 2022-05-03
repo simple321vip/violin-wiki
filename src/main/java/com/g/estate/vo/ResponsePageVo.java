@@ -15,13 +15,5 @@ public class ResponsePageVo {
     private int pagePer;
 
 
-    public class ResponsePageVoBuilder{
-
-        private int page;
-        private int total;
-        private int pagePer;
-
-
-    }
 
 }

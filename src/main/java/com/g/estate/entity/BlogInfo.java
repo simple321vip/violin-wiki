@@ -2,6 +2,7 @@ package com.g.estate.entity;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.Binary;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "t_blog")
+@Builder
 public class BlogInfo implements Serializable {
     @Id
     private String bid;

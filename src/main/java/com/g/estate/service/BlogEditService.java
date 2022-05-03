@@ -19,17 +19,21 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.g.estate.utils.Constant.FORMATTER_DATETIME;
+
 @Service
 //@NoArgsConstructor
 @RequiredArgsConstructor
-public class BlogInfoService {
+public class BlogEditService {
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -62,7 +66,7 @@ public class BlogInfoService {
     @Transactional
     public BlogVo insertContent(BlogIn input) {
         BlogInfo model = new BlogInfo();
-        String bid = numberService.getNumberId(NumberEnum.T_BLOG);
+        String bid = LocalDateTime.now().format(FORMATTER_DATETIME) + numberService.getNumberId(NumberEnum.T_BLOG);
         model.setTitle(input.getTitle());
         model.setBtId(input.getBtId());
         model.setBid(bid);
@@ -119,8 +123,11 @@ public class BlogInfoService {
     @Transactional
     public BlogBoxVo insertBlogType(BlogTypeIn input) {
         BlogType model = new BlogType();
-        String btId = numberService.getNumberId(NumberEnum.T_BLOG_TYPE);
+        String btId = LocalDateTime.now().format(FORMATTER_DATETIME) + numberService.getNumberId(NumberEnum.T_BLOG_TYPE);
         model.setBtName("未分类");
+        if (StringUtils.hasLength(input.getBtName())) {
+            model.setBtName(input.getBtName());
+        }
         model.setBtId(btId);
         model.setOwner("xiaoguan");
         model.setUpdateTime("");
@@ -131,7 +138,7 @@ public class BlogInfoService {
         BlogVo vo = this.insertContent(blogIn);
         BlogBoxVo box = new BlogBoxVo();
         box.setBtId(btId);
-        box.setBtName("未分类");
+        box.setBtName(model.getBtName());
         List<BlogVo> vos = new ArrayList<>(1);
         vos.add(vo);
         box.setBlogVoList(vos);
@@ -151,6 +158,27 @@ public class BlogInfoService {
                 .set("btName", input.getBtName());
 
         mongoTemplate.updateFirst(query, update, BlogType.class);
+    }
+
+    /**
+     * 該当btIdに所属するBlogs及びBlogTypeを削除する
+     *
+     * @param btId BlogTypeId
+     */
+    @Transactional()
+    public void deleteBlogType(String btId) throws Exception {
+        Criteria criteria1 = Criteria.where("owner").is("xiaoguan");
+        Query query1 = Query.query(criteria1);
+        long count = mongoTemplate.count(query1, "t_blog_type");
+        if (count > 1) {
+            Criteria criteria = Criteria.where("btId").is(btId);
+            Query query = Query.query(criteria);
+
+            mongoTemplate.remove(query, "t_blog");
+            mongoTemplate.remove(query, "t_blog_type");
+        } else {
+            throw new Exception("削除でき来ない");
+        }
     }
 
     /**
