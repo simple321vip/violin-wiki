@@ -19,4 +19,7 @@ public class BlogIn {
     @JsonProperty("content")
     private String content;
 
+    @JsonProperty("autoSave")
+    private String autoSave;
+
 }

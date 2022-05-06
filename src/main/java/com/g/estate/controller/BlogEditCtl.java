@@ -24,7 +24,7 @@ public class BlogEditCtl {
     private BlogEditService blogEditService;
 
     /**
-     * 在线显示文件
+     * bidで該当blogの内容を取得する
      */
     @GetMapping("/blog/content/{id}")
     @ResponseBody

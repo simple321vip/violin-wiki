@@ -27,4 +27,8 @@ public class BlogVo {
 
     @JsonProperty("btId")
     private String btId;
+
+    @JsonProperty("autoSave")
+    private String autoSave;
+
 }

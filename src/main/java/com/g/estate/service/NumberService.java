@@ -9,6 +9,7 @@ import com.g.estate.entity.BookmarkSeq;
 import com.g.estate.utils.NumberEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class NumberService {
@@ -20,6 +21,7 @@ public class NumberService {
     @Autowired
     private BlogTypeSeqRepo blogTypeSeqRepo;
 
+    @Transactional
     public String getNumberId(NumberEnum table) {
 
         String numberId = null;
@@ -32,6 +34,7 @@ public class NumberService {
             case "t_blog":
                 BlogSeq seq2 = new BlogSeq();
                 numberId = String.format("%014d", blogSeqRepo.save(seq2).getBlogSeqId());
+                break;
             case "t_blog_type":
                 BlogTypeSeq seq3 = new BlogTypeSeq();
                 numberId = String.format("%014d", blogTypeSeqRepo.save(seq3).getBlogTypeSeqId());
