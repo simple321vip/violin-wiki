@@ -75,7 +75,7 @@ public class BlogEditService {
         BlogVo vo = new BlogVo();
         vo.setBid(bid);
         vo.setTitle(input.getTitle());
-        vo.setBid(input.getBtId());
+        vo.setBtId(input.getBtId());
         vo.setContent("");
         return vo;
     }
