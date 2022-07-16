@@ -15,7 +15,7 @@ import java.util.List;
 
 @Controller
 @CrossOrigin
-@RequestMapping("/api/vi")
+@RequestMapping("/api/v1")
 public class OneNoteCtl {
 
     @Autowired

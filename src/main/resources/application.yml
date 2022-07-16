@@ -14,7 +14,7 @@ spring:
     initialization-mode: always
   data:
     mongodb:
-      uri: mongodb://localhost:27017/violin
+      uri: mongodb://mongo:27017/violin
       transactionEnabled: true
 
   #  datasource:

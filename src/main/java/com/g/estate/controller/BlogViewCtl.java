@@ -15,7 +15,7 @@ import java.util.List;
 
 @Controller
 @CrossOrigin
-@RequestMapping("/api/vi/reader")
+@RequestMapping("/api/v1/reader")
 public class BlogViewCtl {
 
     @Autowired

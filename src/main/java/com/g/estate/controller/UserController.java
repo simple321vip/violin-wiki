@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/vi")
+@RequestMapping("/api/v1")
 @CrossOrigin
 public class UserController {
 

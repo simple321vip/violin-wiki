@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @CrossOrigin
-@RequestMapping("/api/vi")
+@RequestMapping("/api/v1")
 public class BookmarkCtl {
 
     @Autowired

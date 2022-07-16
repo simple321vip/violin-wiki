@@ -17,7 +17,7 @@ import java.util.List;
 
 @Controller
 @CrossOrigin
-@RequestMapping("/api/vi/author")
+@RequestMapping("/api/v1/author")
 public class BlogEditCtl {
 
     @Autowired
