@@ -34,7 +34,6 @@ public class OauthController {
     @Autowired
     private BaiduConf BaiduConf;
 
-
     @GetMapping("/getBaiDuCode")
     public ResponseEntity<String> getBaiDuCode() {
 
