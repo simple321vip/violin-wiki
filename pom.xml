@@ -116,17 +116,17 @@
             <version>2.0.2</version>
             <scope>compile</scope>
         </dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-oauth2</artifactId>
-			<version>2.2.5.RELEASE</version>
-		</dependency>
-
+        <dependency>
+            <groupId>com.g.estate</groupId>
+            <artifactId>violin-auth</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
 
     </dependencies>
 
 	<build>
-		<finalName>GHome</finalName>
+		<finalName>auth</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

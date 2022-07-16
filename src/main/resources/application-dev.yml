@@ -1,0 +1,18 @@
+server:
+  auth:
+    redirect-ip: http://localhost:3000/
+  mongo:
+    service: localhost
+spring:
+  datasource:
+    url: jdbc:h2:~/db;MODE=MYSQL
+    driver-class-name: org.h2.Driver
+    username: guan
+    password: 123456
+    schema: classpath:db/schema.sql
+    data: classpath:db/data.sql
+    initialization-mode: always
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/violin
+      transactionEnabled: true
