@@ -4,8 +4,7 @@ server:
     context-path: /auth
 spring:
   profiles:
-    active: dev
-
+    active: prod
   #  datasource:
 #    name: estate
 #    url: jdbc:mysql://localhost:3306/estate?characterEncoding=utf-8&serverTimezone=GMT%2B8
@@ -47,3 +46,13 @@ redis:
     min-idle: 0
     # 从连接池中获取连接最大等待时间（默认为-1，单位为毫秒，负数表示无限）
     max-wait: -1
+
+BaiDu:
+  AppID: 26202308
+  AppKey: WksD0FOVAp8zSRV62qNKxtnCexArVPOf
+  SecretKey: NWNjqHPRzzZeBcYXh2dNNkMqjZgdEcZY
+  RedirectUri: https://www.violin-home.cn/auth/api/v1/authorize/baidu
+  Scope: basic
+  AuthorizeUri: http://openapi.baidu.com/oauth/2.0/authorize
+  QrCode: 1
+  AccessToken: https://openapi.baidu.com/oauth/2.0/token

@@ -7,7 +7,6 @@ import org.springframework.context.annotation.PropertySource;
 
 @Data
 @Configuration
-@PropertySource("baidu.properties")
 public class BaiduConf {
 
     @Value("${BaiDu.AppID}")
@@ -33,7 +32,4 @@ public class BaiduConf {
 
     @Value("${BaiDu.AccessToken}")
     private String accessToken;
-
-
-
 }
