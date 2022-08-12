@@ -1,12 +1,10 @@
 package cn.violin.home.book.service;
 
 import cn.violin.home.book.entity.*;
-import cn.violin.home.book.dao.BookmarkRepo;
 import cn.violin.home.book.dao.BookmarkTypeRepo;
 import cn.violin.home.book.io.BookmarkIn;
 import cn.violin.home.book.utils.NumberEnum;
 import cn.violin.home.book.vo.BookmarkVo;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +26,8 @@ import static cn.violin.home.book.utils.Constant.*;
 @RequiredArgsConstructor
 public class BookmarkService {
 
-    private final JPAQueryFactory jpaQueryFactory;
-
     @Autowired
     private NumberService numberService;
-
-    @Autowired
-    private BookmarkRepo bookmarkRepo;
 
     @Autowired
     private BookmarkTypeRepo bookmarkTypeRepo;

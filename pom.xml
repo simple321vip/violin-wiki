@@ -10,7 +10,6 @@
 	<properties>
 		<java.version>8</java.version>
 		<springboot.version>2.5.2</springboot.version>
-		<swagger.version>2.6.1</swagger.version>
 		<failOnMissingWebXml>false</failOnMissingWebXml>
 		<!-- 文件拷贝时的编码 jenkins 使用时 产生乱码问题 -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -67,25 +66,22 @@
 			<optional>true</optional>
 		</dependency>
 
+		<!--	for jdk 9 and higher, jdk remove javaee api, so we need to add dependency	-->
 		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>${swagger.version}</version>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.1</version>
 		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>${swagger.version}</version>
-		</dependency>
+
 		<dependency>
 			<groupId>com.auth0</groupId>
 			<artifactId>java-jwt</artifactId>
-			<version>3.4.0</version>
+			<version>3.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
-			<version>1.2.51</version>
+			<version>1.2.80</version>
 		</dependency>
 		<!--QueryDSL支持-->
 		<dependency>
@@ -110,7 +106,7 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>2.1.210</version>
+			<version>1.4.200</version>
 			<scope>runtime</scope>
 		</dependency>
         <dependency>
