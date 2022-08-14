@@ -14,8 +14,6 @@ podTemplate(label: label, containers: [
 
     def imageTag = "v1.00"
     def registryUrl = "ccr.ccs.tencentyun.com"
-    def docker_user = "10002454003"
-    def docker_password = "Mb83201048"
     def imageEndpoint = "violin/violin-book"
     def image = "${registryUrl}/${imageEndpoint}:${imageTag}"
 
@@ -30,13 +28,13 @@ podTemplate(label: label, containers: [
     }
     stage('镜像构建') {
       withCredentials([[$class: 'UsernamePasswordMultiBinding',
-        credentialsId: 'docker-auth',
+        credentialsId: '8eb5126b-6a2f-4644-add0-bc2a669e663d',
         usernameVariable: 'DOCKER_USER',
         passwordVariable: 'DOCKER_PASSWORD']]) {
           container('docker') {
             echo "3. 构建 Docker 镜像阶段"
             sh """
-              docker login ${registryUrl} --username=${docker_user} -p ${docker_password}
+              docker login ${registryUrl} --username=${DOCKER_USER} -p ${DOCKER_PASSWORD}
               docker build -t ${image} .
               docker push ${image}
               """
