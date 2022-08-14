@@ -1,7 +1,8 @@
-def label = "maven"
+def label = "slave"
 
 podTemplate(label: label, containers: [
   containerTemplate(name: 'maven', image: 'maven:3.6-openjdk-slim', command: 'cat', ttyEnabled: true),
+  containerTemplate(name: 'docker', image: 'docker:20.10.17-git', command: 'cat', ttyEnabled: true),
 ], serviceAccount: 'service-jenkins', volumes: [
   hostPathVolume(mountPath: '/home/jenkins/.kube', hostPath: '/root/.kube'),
   hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
@@ -19,6 +20,14 @@ podTemplate(label: label, containers: [
         echo "代码编译打包阶段"
         sh 'mvn install'
         sh 'ls'
+      }
+    }
+    stage('镜像构建') {
+      container('docker') {
+        echo "镜像构建阶段"
+        script {
+          dockerImage = docker.build + "violin-book:v1.00"
+        }
       }
     }
   }
