@@ -12,7 +12,6 @@ podTemplate(label: label, containers: [
     def gitCommit = myRepo.GIT_COMMIT
     def gitBranch = myRepo.GIT_BRANCH
 
-    def image = 'ccr.ccs.tencentyun.com/violin/violin-tomcat:v1.00'
     def imageTag = "v1.00"
     def registryUrl = "ccr.ccs.tencentyun.com"
     def docker_user = "10002454003"
