@@ -18,6 +18,8 @@ podTemplate(label: label, containers: [
 	  git 'https://github.com/jenkinsci/kubernetes-plugin.git'
       container('maven') {
         echo "代码编译打包阶段"
+        sh 'mvn clear install'
+        sh 'ls'
       }
     }
   }
