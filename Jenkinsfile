@@ -17,7 +17,7 @@ podTemplate(label: label, containers: [
     stage('代码编译打包') {
       container('maven') {
         echo "代码编译打包阶段"
-        sh 'mvn clear install'
+        sh 'mvn install'
         sh 'ls'
       }
     }
