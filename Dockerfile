@@ -1,4 +1,4 @@
-FROM bitnami/tomcat:9.0.64-debian-11-r10
+FROM bitnami/8.5-debian-11
 
 ADD target/violin-book.war /opt/bitnami/tomcat/webapps
 
