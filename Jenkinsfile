@@ -12,23 +12,37 @@ podTemplate(label: label, containers: [
     def gitCommit = myRepo.GIT_COMMIT
     def gitBranch = myRepo.GIT_BRANCH
 
+    def image = 'ccr.ccs.tencentyun.com/violin/violin-tomcat:v1.00'
+    def imageTag = "v1.00"
+    def registryUrl = "ccr.ccs.tencentyun.com"
+    def docker_user = "10002454003"
+    def docker_password = "Mb83201048"
+    def imageEndpoint = "violin/violin-book"
+    def image = "${registryUrl}/${imageEndpoint}:${imageTag}"
+
     stage('单元测试') {
       echo "测试阶段"
     }
     stage('代码编译打包') {
       container('maven') {
         echo "代码编译打包阶段"
-        sh 'mvn install'
         sh 'ls'
       }
     }
     stage('镜像构建') {
-      container('docker') {
-        echo "镜像构建阶段"
-        script {
-          dockerImage = docker.build + "violin-book:v1.00"
+      withCredentials([[$class: 'UsernamePasswordMultiBinding',
+        credentialsId: 'docker-auth',
+        usernameVariable: 'DOCKER_USER',
+        passwordVariable: 'DOCKER_PASSWORD']]) {
+          container('docker') {
+            echo "3. 构建 Docker 镜像阶段"
+            sh """
+              docker login ${registryUrl} --username=${docker_user} -p ${docker_password}
+              docker build -t ${image} .
+              docker push ${image}
+              """
+          }
         }
-      }
     }
   }
 }
