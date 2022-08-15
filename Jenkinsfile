@@ -1,10 +1,12 @@
-def label = "slave"
+def label = "slave-${UUID.randomUUID().toString()}"
 
 podTemplate(label: label, containers: [
   containerTemplate(name: 'maven', image: 'maven:3.6-openjdk-slim', command: 'cat', ttyEnabled: true),
   containerTemplate(name: 'docker', image: 'docker:20.10.17-git', command: 'cat', ttyEnabled: true),
+  containerTemplate(name: 'kubectl', image: 'bitnami/kubectl:1.23.7', command: 'cat', ttyEnabled: true)
 ], serviceAccount: 'service-jenkins', volumes: [
   hostPathVolume(mountPath: '/home/jenkins/.kube', hostPath: '/root/.kube'),
+  hostPathVolume(mountPath: '/root/.m2', hostPath: '/root/.m2'),
   hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
 ]) {
   node(label) {
@@ -23,6 +25,7 @@ podTemplate(label: label, containers: [
     stage('代码编译打包') {
       container('maven') {
         echo "代码编译打包阶段"
+        sh 'maven install'
         sh 'ls'
       }
     }
