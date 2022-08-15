@@ -10,7 +10,19 @@ podTemplate(label: label, containers: [
   hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
 ]) {
   node(label) {
-    def myRepo = checkout scm
+    def myRepo = checkout([
+      $class: 'GitSCM',
+      branches: [[name: "*/dev"]],
+      doGenerateSubmoduleConfigurations: false,
+      extensions:  [[$class: 'CloneOption', noTags: false, reference: '', shallow: true, timeout: 1000]]+[[$class: 'CheckoutOption', timeout: 1000]],
+      submoduleCfg: [],
+      userRemoteConfigs: [[
+        credentialsId: '2448e943-479f-4796-b5a0-fd3bf22a5d30',
+        url: 'https://gitee.com/guan-xiangwei/violin-book.git'
+        ]]
+      ])
+
+
     def gitCommit = myRepo.GIT_COMMIT
     def gitBranch = myRepo.GIT_BRANCH
 
