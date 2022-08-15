@@ -1,4 +1,4 @@
-FROM bitnami/8.5-debian-11
+FROM ccr.ccs.tencentyun.com/violin/tomcat:8.5
 
 ADD target/violin-book.war /opt/bitnami/tomcat/webapps
 
