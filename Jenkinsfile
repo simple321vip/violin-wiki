@@ -1,7 +1,7 @@
 def label = "slave-${UUID.randomUUID().toString()}"
 
 podTemplate(label: label, containers: [
-  containerTemplate(name: 'maven', image: 'maven:3.6-openjdk-slim', command: 'cat', ttyEnabled: true),
+  containerTemplate(name: 'maven', image: 'maven:3.6.3-openjdk-11-slim', command: 'cat', ttyEnabled: true),
   containerTemplate(name: 'docker', image: 'docker:20.10.17-git', command: 'cat', ttyEnabled: true),
   containerTemplate(name: 'kubectl', image: 'bitnami/kubectl:1.23.7', command: 'cat', ttyEnabled: true)
 ], serviceAccount: 'jenkins-admin', volumes: [
