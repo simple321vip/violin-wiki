@@ -4,7 +4,7 @@ podTemplate(label: label, containers: [
   containerTemplate(name: 'maven', image: 'maven:3.6-openjdk-slim', command: 'cat', ttyEnabled: true),
   containerTemplate(name: 'docker', image: 'docker:20.10.17-git', command: 'cat', ttyEnabled: true),
   containerTemplate(name: 'kubectl', image: 'bitnami/kubectl:1.23.7', command: 'cat', ttyEnabled: true)
-], serviceAccount: 'service-jenkins', volumes: [
+], serviceAccount: 'jenkins-admin', volumes: [
   hostPathVolume(mountPath: '/home/jenkins/.kube', hostPath: '/root/.kube'),
   hostPathVolume(mountPath: '/root/.m2', hostPath: '/root/.m2'),
   hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
