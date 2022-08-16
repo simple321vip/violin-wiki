@@ -13,24 +13,68 @@ spec:
     runAsUser: 0
     privileged: true
   containers:
+  - name: "maven"
+    image: "maven:3.6.3-openjdk-11-slim"
+    imagePullPolicy: "IfNotPresent"
+    command:
+    - cat
+    tty: true
+    volumeMounts:
+    - name: "volume-m2"
+      mountPath: "/root/.m2/repository"
+      readOnly: false
+    - name: "maven-config"
+      mountPath: "/root/.m2"
+      readOnly: false
+    - mountPath: "/home/jenkins/agent"
+      name: "workspace-volume"
+      readOnly: false
+  - name: "docker"
+    image: "docker:20.10.17-git"
+    imagePullPolicy: "IfNotPresent"
+    command:
+    - cat
+    tty: true
+    volumeMounts:
+    - name: "volume-docker"
+      mountPath: "/var/run/docker.sock"
+      readOnly: false
+    - name: "workspace-volume"
+      mountPath: "/home/jenkins/agent"
+      readOnly: false
   - name: kubectl
     image: bitnami/kubectl:1.23.7
+    imagePullPolicy: "IfNotPresent"
     command:
     - cat
     tty: true
     securityContext:
       allowPrivilegeEscalation: true
+    volumeMounts:
+      - name: "volume-kube"
+        mountPath: "/home/jenkins/.kube"
+        readOnly: false
+      - name: "workspace-volume"
+        mountPath: "/home/jenkins/agent"
+        readOnly: false
+  volumes:
+  - name: "volume-m2"
+    hostPath:
+      path: "/root/.m2/repository"
+  - name: "maven-config"
+    configMap:
+      name: maven-config
+  - name: "volume-docker"
+    hostPath:
+      path: "/var/run/docker.sock"
+  - name: "volume-kube"
+    hostPath:
+      path: "/root/.kube"
+  - name: "workspace-volume"
+    emptyDir:
+      medium: ""
 """,
-    containers: [
-        containerTemplate(name: 'maven', image: 'maven:3.6.3-openjdk-11-slim', command: 'cat', ttyEnabled: true),
-        containerTemplate(name: 'docker', image: 'docker:20.10.17-git', command: 'cat', ttyEnabled: true)
-    ],
-    serviceAccount: 'jenkins-admin',
-    volumes: [
-        hostPathVolume(mountPath: '/home/jenkins/.kube', hostPath: '/root/.kube'),
-        hostPathVolume(mountPath: '/root/.m2', hostPath: '/root/.m2'),
-        hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
-    ]
+    serviceAccount: 'jenkins-admin'
 ) {
   node(label) {
     def myRepo = checkout([
@@ -44,7 +88,6 @@ spec:
         url: 'https://gitee.com/guan-xiangwei/violin-book.git'
         ]]
       ])
-
 
     def gitCommit = myRepo.GIT_COMMIT
     def gitBranch = myRepo.GIT_BRANCH
@@ -60,7 +103,7 @@ spec:
     stage('代码编译打包') {
       container('maven') {
         echo "代码编译打包阶段"
-        sh 'mvn install'
+        sh 'mvn clean package'
       }
     }
     stage('镜像构建') {
