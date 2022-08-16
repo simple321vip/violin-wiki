@@ -1,5 +1,14 @@
-FROM ccr.ccs.tencentyun.com/violin/tomcat:8.5
+FROM openjdk:11-jre-slim
 
-ADD target/violin-book.war /opt/bitnami/tomcat/webapps
+MAINTAINER XiangWeiGuan
 
-ENV ALLOW_EMPTY_PASSWORD=yes
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
+RUN echo 'Asia/Shanghai' >/etc/timezone
+
+ADD target/violin-book.jar /violin-book.jar
+
+# 设置暴露的端口号
+EXPOSE 8080
+
+ENTRYPOINT ["java","-jar","violin-book.jar"]
