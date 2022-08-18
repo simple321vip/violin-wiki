@@ -4,7 +4,7 @@ server:
     context-path: /auth
 spring:
   profiles:
-    active: prod
+    active: dev
   jpa:
     defer-datasource-initialization: true
     hibernate:

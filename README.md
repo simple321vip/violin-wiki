@@ -6,6 +6,8 @@
   localhost:8081/h2-console データベースUI画面
 - mongodb
   基于B-树的文档数据库，各个节点上都存有数据，单次查询速度极快
+  dev 環境：
+  C:\mongodb\bin\mongod --dbpath c:\data\db
   
 ### server
 - tomcat

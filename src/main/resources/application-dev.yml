@@ -16,3 +16,6 @@ spring:
     mongodb:
       uri: mongodb://localhost:27017/violin
       transactionEnabled: true
+
+constant:
+  docsify-workspace: E:\\

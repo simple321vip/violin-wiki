@@ -53,4 +53,16 @@ public class BlogViewCtl {
         return new ResponseEntity<>(vos, HttpStatus.OK);
     }
 
+    @GetMapping("/blogs/publish/all")
+    public ResponseEntity<Void> publishAll() {
+        blogViewService.publishAll();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/blogs/publish/{bid}")
+    public ResponseEntity<Void> publish(@PathVariable(value = "bid") String bid) {
+        blogViewService.publish(bid);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
