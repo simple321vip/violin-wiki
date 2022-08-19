@@ -1,4 +1,4 @@
-package cn.violin.home.book.Task;
+package cn.violin.home.book.task;
 
 import cn.violin.home.book.entity.BlogInfo;
 import lombok.Getter;
