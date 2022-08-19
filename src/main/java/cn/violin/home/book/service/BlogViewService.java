@@ -144,9 +144,13 @@ public class BlogViewService {
             collect.forEach((btId, values) -> {
                 Optional<BlogType> blogType = bts.stream().filter(bt -> bt.getBtId().equals(btId)).findFirst();
                 String btName = blogType.get().getBtName();
+                try {
+                    finalWriter.write("* " + btName);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 values.forEach(value -> {
                     try {
-                        finalWriter.write("* " + btName);
                         finalWriter.newLine();
                         finalWriter.write("  * [" + value.getTitle() + "](" + btId + "/" + value.getBid() + ".md" + ")");
                         finalWriter.newLine();
