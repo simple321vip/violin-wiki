@@ -18,3 +18,13 @@ spring:
       transactionEnabled: true
 constant:
   docsify-workspace: /home/docsify/docs/docs/
+
+BaiDu:
+  AppID: 26202308
+  AppKey: WksD0FOVAp8zSRV62qNKxtnCexArVPOf
+  SecretKey: NWNjqHPRzzZeBcYXh2dNNkMqjZgdEcZY
+  RedirectUri: https://www.violin-home.cn/auth/api/v1/authorize/baidu
+  Scope: basic
+  AuthorizeUri: http://openapi.baidu.com/oauth/2.0/authorize
+  QrCode: 1
+  AccessToken: https://openapi.baidu.com/oauth/2.0/token

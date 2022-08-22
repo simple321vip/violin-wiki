@@ -19,3 +19,13 @@ spring:
 
 constant:
   docsify-workspace: E:\\
+
+BaiDu:
+  AppID: 27103657
+  AppKey: BIukdHDXeNPmIXe96GA6OOXGgnP5GEhM
+  SecretKey: rFnbg0rnz41UOrSGkGZ0hOISku0sqDOc
+  RedirectUri: http://localhost:8080/auth/api/v1/authorize/baidu
+  Scope: basic
+  AuthorizeUri: http://openapi.baidu.com/oauth/2.0/authorize
+  QrCode: 1
+  AccessToken: https://openapi.baidu.com/oauth/2.0/token

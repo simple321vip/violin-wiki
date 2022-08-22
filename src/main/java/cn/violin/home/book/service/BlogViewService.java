@@ -64,6 +64,7 @@ public class BlogViewService {
         return docs.stream().map(doc -> BlogVo.builder()
                 .bid(doc.getBid())
                 .title(doc.getTitle())
+                .content(new String(doc.getContent().getData(), StandardCharsets.UTF_8))
                 .build()).collect(Collectors.toList());
     }
 
