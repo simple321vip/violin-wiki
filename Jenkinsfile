@@ -96,7 +96,6 @@ spec:
 
     stage('单元测试') {
       echo "测试阶段"
-      ls
     }
     stage('代码编译打包') {
       container('maven') {
@@ -126,6 +125,7 @@ spec:
         ]) {
             container('kubectl') {
                 echo "查看 K8S 集群 Pod 列表"
+                sh 'kubectl delete deployment violin-book'
                 sh 'kubectl apply -f violin-book-dev.yaml'
                 sh 'kubectl get pod -n dev -owide | grep violin-book'
             }
