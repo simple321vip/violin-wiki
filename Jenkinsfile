@@ -77,7 +77,7 @@ spec:
     serviceAccount: 'jenkins-admin'
 ) {
   node(label) {
-    def myRepo = checkout([
+    def violin_book_repo = checkout([
       $class: 'GitSCM',
       branches: [[name: "*/dev"]],
       doGenerateSubmoduleConfigurations: false,
@@ -89,9 +89,6 @@ spec:
         ]]
       ])
 
-    def gitCommit = myRepo.GIT_COMMIT
-    def gitBranch = myRepo.GIT_BRANCH
-
     def imageTag = "v1.00"
     def registryUrl = "ccr.ccs.tencentyun.com"
     def imageEndpoint = "violin/violin-book"
@@ -99,6 +96,7 @@ spec:
 
     stage('单元测试') {
       echo "测试阶段"
+      ls
     }
     stage('代码编译打包') {
       container('maven') {
@@ -128,7 +126,8 @@ spec:
         ]) {
             container('kubectl') {
                 echo "查看 K8S 集群 Pod 列表"
-                sh 'kubectl get pods -A'
+                sh 'kubectl apply -f violin-book-dev.yaml'
+                sh 'kubectl get pod -n dev -owide | grep violin-book'
             }
         }
     }
