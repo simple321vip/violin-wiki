@@ -7,8 +7,8 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import cn.violin.home.book.entity.User;
-import cn.violin.home.book.service.UserService;
+import cn.violin.home.book.entity.Tenant;
+import cn.violin.home.book.service.TenantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -23,7 +23,7 @@ import java.util.Optional;
  */
 public class AuthenticationInterceptor implements HandlerInterceptor {
     @Autowired
-    UserService userService;
+    TenantService tenantService;
 
     @Override
     public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) {
@@ -55,12 +55,13 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 } catch (JWTDecodeException j) {
                     throw new RuntimeException("401");
                 }
-                Optional<User> user = userService.findUserById(userId);
-                if (!user.isPresent()) {
-                    throw new RuntimeException("用户不存在，请重新登录");
-                }
+//                Optional<Tenant> tenant = tenantService.findUserById(userId);
+//                if (!tenant.isPresent()) {
+//                    throw new RuntimeException("用户不存在，请重新登录");
+//                }
                 // トーケン認証
-                JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.get().getPassword())).build();
+//                JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(tenant.get().getPassword())).build();
+                JWTVerifier jwtVerifier =null;
                 try {
                     jwtVerifier.verify(token);
                 } catch (JWTVerificationException e) {

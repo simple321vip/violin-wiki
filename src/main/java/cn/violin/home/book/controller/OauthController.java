@@ -1,6 +1,7 @@
 package cn.violin.home.book.controller;
 
-
+import cn.violin.home.book.entity.Tenant;
+import cn.violin.home.book.service.TenantService;
 import com.alibaba.fastjson.JSONObject;
 import cn.violin.home.book.config.BaiduConf;
 import cn.violin.home.book.vo.UserInfoVo;
@@ -34,6 +35,9 @@ public class OauthController {
     @Autowired
     private BaiduConf BaiduConf;
 
+    @Autowired
+    private TenantService tenantService;
+
     @GetMapping("/getBaiDuCode")
     public ResponseEntity<String> getBaiDuCode() {
 
@@ -55,34 +59,27 @@ public class OauthController {
         if (response.getStatusLine().getStatusCode() == 200) {
 
             StringBuilder redirect = new StringBuilder();
-            redirect.append(REDIRECT_IP + "/?token=");
+            redirect.append(REDIRECT_IP + "?token=");
             HttpEntity entity = response.getEntity();
             JSONObject object = JSONObject.parseObject(EntityUtils.toString(entity));
             String accessToken = object.getString("access_token");
             redirect.append(accessToken);
             System.out.println(accessToken);
+            Tenant tenant = tenantService.getTenant(accessToken);
+            tenantService.checkAndUpdate(tenant);
             resp.sendRedirect(redirect.toString());
         }
     }
 
     @GetMapping("/user_info")
     public ResponseEntity<UserInfoVo> getUInfo(@RequestParam(value = "token") String token) throws IOException {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        String uInfoUrl = "https://pan.baidu.com/rest/2.0/xpan/nas?method=uinfo&access_token=" +
-                token;
-        HttpGet httpGetUInfo = new HttpGet(uInfoUrl);
-        CloseableHttpResponse response = httpClient.execute(httpGetUInfo);
-        if (response.getStatusLine().getStatusCode() == 200) {
-            HttpEntity uInfoEntity = response.getEntity();
-            JSONObject uInfoObject = JSONObject.parseObject(EntityUtils.toString(uInfoEntity));
-            UserInfoVo build = UserInfoVo.builder()
-                    .uk(uInfoObject.getString("uk"))
-                    .baiduName(uInfoObject.getString("baidu_name"))
-                    .netdiskName(uInfoObject.getString("netdisk_name"))
-                    .avatarUrl(uInfoObject.getString("avatar_url"))
-                    .build();
-            return new ResponseEntity<>(build, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        Tenant tenant = tenantService.getTenantFromTTenant(token);
+        UserInfoVo build = UserInfoVo.builder()
+                .uk(tenant.getId())
+                .baiduName(tenant.getAccount())
+                .netdiskName(tenant.getStorageAccount())
+                .avatarUrl(tenant.getAvatarUrl())
+                .build();
+        return new ResponseEntity<>(build, HttpStatus.OK);
     }
 }
