@@ -7,6 +7,7 @@ import cn.violin.home.book.utils.RedisUtils;
 import com.alibaba.fastjson.JSONObject;
 import cn.violin.home.book.config.BaiduConf;
 import cn.violin.home.book.vo.UserInfoVo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -27,6 +28,7 @@ import java.util.Optional;
 @Controller
 @CrossOrigin
 @RequestMapping("/api/v1")
+@Slf4j
 public class OauthController {
 
     @Value("${server.auth.redirect-ip}")
@@ -66,7 +68,10 @@ public class OauthController {
             String accessToken = object.getString("access_token");
             redirect.append(accessToken);
 
+            log.info(accessToken);
             Tenant tenant = tenantService.getTenant(accessToken);
+            log.info(tenant.toString());
+
             Optional<Tenant> optional = tenantService.checkAndUpdate(tenant, accessToken);
 
             if (optional.isPresent()) {

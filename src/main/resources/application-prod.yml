@@ -41,3 +41,7 @@ redis:
     max-idle: 8
     min-idle: 0
     max-wait: -1
+
+logging:
+  config: classpath:logback-spring:
+  path: /log
