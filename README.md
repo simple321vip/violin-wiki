@@ -7,7 +7,8 @@
 - mongodb
   基于B-树的文档数据库，各个节点上都存有数据，单次查询速度极快
   dev 環境：
-  C:\mongodb\bin\mongod --dbpath c:\data\db
+    cd "E:\Program Files\mongodb\bin"
+    .\mongod --dbpath "E:\Program Files\mongodb\data\db"
   
 ### server
 - tomcat

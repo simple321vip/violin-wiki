@@ -1,7 +1,9 @@
 package cn.violin.home.book.controller;
 
+import cn.violin.home.book.annotation.PassToken;
 import cn.violin.home.book.entity.Tenant;
 import cn.violin.home.book.service.TenantService;
+import cn.violin.home.book.utils.RedisUtils;
 import com.alibaba.fastjson.JSONObject;
 import cn.violin.home.book.config.BaiduConf;
 import cn.violin.home.book.vo.UserInfoVo;
@@ -16,13 +18,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 @Controller
 @CrossOrigin
@@ -45,6 +45,7 @@ public class OauthController {
     }
 
     @GetMapping("/authorize/baidu")
+    @PassToken
     public void qrAuthorize(@RequestParam(value = "code") String code, HttpServletResponse resp) throws IOException {
         StringBuilder authorizeUrl = new StringBuilder();
         authorizeUrl.append(BaiduConf.getAccessToken())
@@ -64,22 +65,44 @@ public class OauthController {
             JSONObject object = JSONObject.parseObject(EntityUtils.toString(entity));
             String accessToken = object.getString("access_token");
             redirect.append(accessToken);
-            System.out.println(accessToken);
+
             Tenant tenant = tenantService.getTenant(accessToken);
-            tenantService.checkAndUpdate(tenant);
-            resp.sendRedirect(redirect.toString());
+            Optional<Tenant> optional = tenantService.checkAndUpdate(tenant, accessToken);
+
+            if (optional.isPresent()) {
+                resp.sendRedirect(redirect.toString());
+            } else {
+                resp.sendRedirect(REDIRECT_IP + "?token=");
+            }
+
         }
     }
 
     @GetMapping("/user_info")
-    public ResponseEntity<UserInfoVo> getUInfo(@RequestParam(value = "token") String token) throws IOException {
+    @PassToken
+    public ResponseEntity<UserInfoVo> getUInfo(@RequestParam(value = "token") String token) {
+
         Tenant tenant = tenantService.getTenantFromTTenant(token);
+
         UserInfoVo build = UserInfoVo.builder()
-                .uk(tenant.getId())
+                .id(tenant.getId())
+                .account(tenant.getAccount())
                 .baiduName(tenant.getAccount())
                 .netdiskName(tenant.getStorageAccount())
                 .avatarUrl(tenant.getAvatarUrl())
                 .build();
         return new ResponseEntity<>(build, HttpStatus.OK);
+    }
+
+    @GetMapping("/logout/{id}")
+    public ResponseEntity<Void> logout(@PathVariable(value = "id") String id) {
+
+        boolean result = tenantService.reToken(id);
+
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
     }
 }

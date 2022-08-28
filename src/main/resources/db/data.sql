@@ -1,9 +1,11 @@
 INSERT INTO bookmark_type(bk_type_name) VALUES( '未分类');
 INSERT INTO bookmark_type(bk_type_name) VALUES( 'Java');
-INSERT INTO bookmark_type(bk_type_name) VALUES( 'Xml');
-INSERT INTO bookmark_type(bk_type_name) VALUES( '计算机网络');
-INSERT INTO bookmark_type(bk_type_name) VALUES( '云计算');
-INSERT INTO bookmark_type(bk_type_name) VALUES( '厨艺');
+INSERT INTO bookmark_type(bk_type_name) VALUES( '数据库');
+INSERT INTO bookmark_type(bk_type_name) VALUES( 'python');
+INSERT INTO bookmark_type(bk_type_name) VALUES( 'JavaScripts');
+INSERT INTO bookmark_type(bk_type_name) VALUES( 'kubernetes');
+INSERT INTO bookmark_type(bk_type_name) VALUES( 'Public cloud');
+INSERT INTO bookmark_type(bk_type_name) VALUES( 'archive');
 
 INSERT INTO section(user_id, section_name) VALUES(2, '日常メモ');
 INSERT INTO section(user_id, section_name) VALUES(2, '技術関連');

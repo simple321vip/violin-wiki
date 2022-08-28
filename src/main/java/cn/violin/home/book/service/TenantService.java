@@ -1,6 +1,7 @@
 package cn.violin.home.book.service;
 
 import cn.violin.home.book.entity.Tenant;
+import cn.violin.home.book.utils.RedisUtils;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -15,12 +16,11 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-
-import static cn.violin.home.book.utils.Constant.AUTHORITY_LEVEL_TWO;
-
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 /**
- *
+ * nothing
  */
 @Service
 public class TenantService {
@@ -28,12 +28,17 @@ public class TenantService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    @Autowired
+    private RedisUtils redis;
+
 
     /**
-     *
-     * @param
+     * this method is to query the third party login user is legal and exists.
+     * to return a Optional object to controller that will set redirect uri to front side.
+     * @param tenant the third party BAIDUで登録するユーザー
+     * @return Optional
      */
-    public void checkAndUpdate(Tenant tenant) {
+    public Optional<Tenant> checkAndUpdate(Tenant tenant, String token) {
 
         Criteria criteria = Criteria.where("id").is(tenant.getId());
         Query query = Query.query(criteria);
@@ -41,22 +46,15 @@ public class TenantService {
         Tenant tenantEntity = mongoTemplate.findOne(query, Tenant.class);
 
         if (tenantEntity != null) {
-
-        } else {
-            tenantEntity = Tenant.builder()
-                    .id(tenant.getId())
-                    .account(tenant.getAccount())
-                    .storageAccount(tenant.getStorageAccount())
-                    .authority(AUTHORITY_LEVEL_TWO).build();
-            mongoTemplate.insert(tenantEntity);
+            redis.set(tenantEntity.getId(), token, 1, TimeUnit.DAYS);
         }
+        return Optional.ofNullable(tenantEntity);
     }
 
     /**
-     *
-     * @param token
-     * @return
-     * @throws IOException
+     * use token to select tenant information from the third party of baidu
+     * @param token token
+     * @return the tenant information
      */
     public Tenant getTenant(String token) throws IOException {
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -67,6 +65,7 @@ public class TenantService {
         if (response.getStatusLine().getStatusCode() == 200) {
             HttpEntity uInfoEntity = response.getEntity();
             JSONObject uInfoObject = JSONObject.parseObject(EntityUtils.toString(uInfoEntity));
+
             Tenant tenant = Tenant.builder()
                     .id(uInfoObject.getString("uk"))
                     .account(uInfoObject.getString("baidu_name"))
@@ -80,21 +79,31 @@ public class TenantService {
     }
 
     /**
-     *
-     * @param token
-     * @return
+     * query token from t_tenant
+     * @param token token
+     * @return the result of query result
      */
     public Tenant getTenantFromTTenant(String token) {
 
         String id = "3272499474";
+        System.out.println(token);
 
         Criteria criteria = Criteria.where("id").is(id);
 
         Query query = Query.query(criteria);
 
-        Tenant tenant = mongoTemplate.findOne(query, Tenant.class);
+        return mongoTemplate.findOne(query, Tenant.class);
+    }
 
-        return tenant;
+    /**
+     * to delete token for tenant id.
+     *
+     * @param id tenant id
+     * @return status logout status
+     */
+    public boolean reToken(String id) {
+        // System.out.println(redis.get(id));
+        return redis.delete(id);
     }
 
 }

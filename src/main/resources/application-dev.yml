@@ -29,3 +29,15 @@ BaiDu:
   AuthorizeUri: http://openapi.baidu.com/oauth/2.0/authorize
   QrCode: 1
   AccessToken: https://openapi.baidu.com/oauth/2.0/token
+
+redis:
+  database: 3
+  host: localhost
+  port: 6379
+  password:
+  timeout: 0
+  pool:
+    max-active: 8
+    max-idle: 8
+    min-idle: 0
+    max-wait: -1

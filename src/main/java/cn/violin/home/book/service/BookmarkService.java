@@ -45,15 +45,13 @@ public class BookmarkService {
      */
     public List<BookmarkVo> getBookmarks(Long[] typeIds, String comment, String isDelete) {
 
-        String owner = "xiaoguan";
-        Criteria criteria = Criteria.where("owner").is(owner);
+        Criteria criteria = Criteria.where("deleteFlg").is(isDelete);
         if (StringUtils.hasLength(comment)) {
             criteria.and("comment").is(comment);
         }
         if (typeIds != null && typeIds.length != 0) {
             criteria.and("typeId").in(typeIds);
         }
-        criteria.and("isDelete").is(isDelete);
         Query query = Query.query(criteria);
         List<Bookmark> bookmarks = mongoTemplate.find(query, Bookmark.class);
 
