@@ -3,6 +3,7 @@ package cn.violin.home.book.service;
 import cn.violin.home.book.entity.Tenant;
 import cn.violin.home.book.utils.RedisUtils;
 import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -23,6 +24,7 @@ import java.util.concurrent.TimeUnit;
  * nothing
  */
 @Service
+@Slf4j
 public class TenantService {
 
     @Autowired
@@ -44,7 +46,7 @@ public class TenantService {
         Query query = Query.query(criteria);
 
         Tenant tenantEntity = mongoTemplate.findOne(query, Tenant.class);
-
+        log.info("tenantEntity:", tenantEntity);
         if (tenantEntity != null) {
             redis.set(tenantEntity.getId(), token, 1, TimeUnit.DAYS);
         }
