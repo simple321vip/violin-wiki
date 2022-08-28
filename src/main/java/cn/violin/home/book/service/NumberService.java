@@ -6,6 +6,7 @@ import cn.violin.home.book.dao.BlogSeqRepo;
 import cn.violin.home.book.dao.BlogTypeSeqRepo;
 import cn.violin.home.book.dao.BookmarkSeqRepo;
 import cn.violin.home.book.entity.BlogTypeSeq;
+import cn.violin.home.book.entity.BookmarkType;
 import cn.violin.home.book.utils.NumberEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,8 +1,8 @@
 package cn.violin.home.book.service;
 
 import cn.violin.home.book.entity.*;
-import cn.violin.home.book.dao.BookmarkTypeRepo;
 import cn.violin.home.book.io.BookmarkIn;
+import cn.violin.home.book.io.BookmarkTypeIn;
 import cn.violin.home.book.utils.NumberEnum;
 import cn.violin.home.book.vo.BookmarkVo;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +28,6 @@ public class BookmarkService {
 
     @Autowired
     private NumberService numberService;
-
-    @Autowired
-    private BookmarkTypeRepo bookmarkTypeRepo;
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -116,6 +113,21 @@ public class BookmarkService {
      * @return List<BookmarkType> 11
      */
     public List<BookmarkType> getBookmarkTypes() {
-        return bookmarkTypeRepo.findAll();
+        return mongoTemplate.findAll(BookmarkType.class);
     }
+
+    /**
+     * bookmarkTypeを登録する
+     *
+     * @param bookmarkTypeIn 11
+     */
+    @Transactional
+    public void insertBookmarkType(BookmarkTypeIn bookmarkTypeIn) {
+        String id = LocalDateTime.now().format(FORMATTER_DATETIME);
+        BookmarkType bookmarkType = new BookmarkType();
+        bookmarkType.setTypeId(id);
+        bookmarkType.setTypeName(bookmarkTypeIn.getTypeName());
+        mongoTemplate.save(bookmarkType);
+    }
+
 }
