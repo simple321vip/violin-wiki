@@ -43,5 +43,5 @@ redis:
     max-wait: -1
 
 logging:
-  config: classpath:logback-spring:
+  config: classpath:logback-spring.xml
   path: /log
