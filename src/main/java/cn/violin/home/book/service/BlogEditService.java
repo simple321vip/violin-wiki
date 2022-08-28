@@ -129,7 +129,6 @@ public class BlogEditService {
             model.setBtName(input.getBtName());
         }
         model.setBtId(btId);
-        model.setOwner("xiaoguan");
         model.setUpdateTime("");
         mongoTemplate.save(model);
         BlogIn blogIn = new BlogIn();

@@ -28,14 +28,6 @@ public class BookmarkCtl {
         return new ResponseEntity<>(bookmarkService.getBookmarks(typeId, comment, "0"), HttpStatus.OK);
     }
 
-    @ResponseBody
-    @RequestMapping("/master/bookmark/type")
-    public List<String> bookmarkType() {
-        return bookmarkService.getBookmarkTypes().stream()
-                .map(item -> item.getTypeId() + "|" + item.getTypeName()).collect(Collectors.toList());
-    }
-
-
     @PutMapping("/bookmark/insert")
     public ResponseEntity<Void> putBookmark(@Valid @RequestBody() BookmarkIn input) {
         bookmarkService.insertBookmark(input);
@@ -51,6 +43,33 @@ public class BookmarkCtl {
     @DeleteMapping("/bookmark/delete/{bk_id}")
     public ResponseEntity<Void> updateBookmark(@PathVariable("bk_id") String bkId) {
         bookmarkService.delete(bkId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/bookmark_type/insert")
+    public ResponseEntity<Void> putBookmarkType(@Valid @RequestBody() BookmarkIn input) {
+        bookmarkService.insertBookmarkType(input);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @RequestMapping("/bookmark_type")
+    public List<String> bookmarkType() {
+        return bookmarkService.getBookmarkTypes().stream()
+                .map(item -> item.getTypeId() + "|" + item.getTypeName()).collect(Collectors.toList());
+    }
+
+    @ResponseBody
+    @DeleteMapping("/bookmark_type")
+    public ResponseEntity<Void> deleteBookmarkType(@PathVariable("bookmark_type_id") String typeId) {
+        bookmarkService.deleteBookmarkType(typeId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @PostMapping("/bookmark_type")
+    public ResponseEntity<Void> deleteBookmarkType(@Valid @RequestBody() BookmarkIn input) {
+        bookmarkService.editBookmarkType(input);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

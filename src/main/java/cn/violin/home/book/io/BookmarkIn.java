@@ -22,4 +22,7 @@ public class BookmarkIn {
 
     @JsonProperty("delete_flg")
     private String deleteFlg;
+
+    @JsonProperty("bookmark_type_name")
+    private String typeName;
 }

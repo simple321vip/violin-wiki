@@ -2,7 +2,6 @@ package cn.violin.home.book.service;
 
 import cn.violin.home.book.entity.*;
 import cn.violin.home.book.io.BookmarkIn;
-import cn.violin.home.book.io.BookmarkTypeIn;
 import cn.violin.home.book.utils.NumberEnum;
 import cn.violin.home.book.vo.BookmarkVo;
 import lombok.RequiredArgsConstructor;
@@ -119,15 +118,43 @@ public class BookmarkService {
     /**
      * bookmarkTypeを登録する
      *
-     * @param bookmarkTypeIn 11
+     * @param input 11
      */
     @Transactional
-    public void insertBookmarkType(BookmarkTypeIn bookmarkTypeIn) {
+    public void insertBookmarkType(BookmarkIn input) {
         String id = LocalDateTime.now().format(FORMATTER_DATETIME);
         BookmarkType bookmarkType = new BookmarkType();
         bookmarkType.setTypeId(id);
-        bookmarkType.setTypeName(bookmarkTypeIn.getTypeName());
+        bookmarkType.setTypeName(input.getTypeName());
         mongoTemplate.save(bookmarkType);
+    }
+
+    /**
+     * delete bookmarkType by type_id
+     *
+     * @param typeId bookmark_type_id
+     */
+    @Transactional
+    public void deleteBookmarkType(String typeId) {
+//        String id = LocalDateTime.now().format(FORMATTER_DATETIME);
+//        BookmarkType bookmarkType = new BookmarkType();
+//        bookmarkType.setTypeId(id);
+//        bookmarkType.setTypeName(input.getTypeName());
+//        mongoTemplate.save(bookmarkType);
+    }
+
+    /**
+     * delete bookmarkType by type_id
+     *
+     * @param input bookmark_type_id
+     */
+    @Transactional
+    public void editBookmarkType(BookmarkIn input) {
+//        String id = LocalDateTime.now().format(FORMATTER_DATETIME);
+//        BookmarkType bookmarkType = new BookmarkType();
+//        bookmarkType.setTypeId(id);
+//        bookmarkType.setTypeName(input.getTypeName());
+//        mongoTemplate.save(bookmarkType);
     }
 
 }
