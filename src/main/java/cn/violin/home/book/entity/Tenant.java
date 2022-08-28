@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Builder
 public class Tenant {
 
-    private String id;
+    private String tenantId;
 
     private String account;
 

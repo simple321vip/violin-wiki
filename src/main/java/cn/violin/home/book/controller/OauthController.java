@@ -3,7 +3,6 @@ package cn.violin.home.book.controller;
 import cn.violin.home.book.annotation.PassToken;
 import cn.violin.home.book.entity.Tenant;
 import cn.violin.home.book.service.TenantService;
-import cn.violin.home.book.utils.RedisUtils;
 import com.alibaba.fastjson.JSONObject;
 import cn.violin.home.book.config.BaiduConf;
 import cn.violin.home.book.vo.UserInfoVo;
@@ -90,7 +89,7 @@ public class OauthController {
         Tenant tenant = tenantService.getTenantFromTTenant(token);
 
         UserInfoVo build = UserInfoVo.builder()
-                .id(tenant.getId())
+                .id(tenant.getTenantId())
                 .account(tenant.getAccount())
                 .baiduName(tenant.getAccount())
                 .netdiskName(tenant.getStorageAccount())

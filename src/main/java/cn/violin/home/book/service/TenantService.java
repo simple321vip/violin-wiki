@@ -42,13 +42,13 @@ public class TenantService {
      */
     public Optional<Tenant> checkAndUpdate(Tenant tenant, String token) {
 
-        Criteria criteria = Criteria.where("id").is(tenant.getId());
+        Criteria criteria = Criteria.where("tenantId").is(tenant.getTenantId());
         Query query = Query.query(criteria);
 
         Tenant tenantEntity = mongoTemplate.findOne(query, Tenant.class);
         log.info("tenantEntity:", tenantEntity);
         if (tenantEntity != null) {
-            redis.set(tenantEntity.getId(), token, 1, TimeUnit.DAYS);
+            redis.set(tenantEntity.getTenantId(), token, 1, TimeUnit.DAYS);
         }
         return Optional.ofNullable(tenantEntity);
     }
@@ -69,7 +69,7 @@ public class TenantService {
             JSONObject uInfoObject = JSONObject.parseObject(EntityUtils.toString(uInfoEntity));
 
             Tenant tenant = Tenant.builder()
-                    .id(uInfoObject.getString("uk"))
+                    .tenantId(uInfoObject.getString("uk"))
                     .account(uInfoObject.getString("baidu_name"))
                     .storageAccount(uInfoObject.getString("netdisk_name"))
                     .avatarUrl(uInfoObject.getString("avatar_url"))
@@ -87,10 +87,8 @@ public class TenantService {
      */
     public Tenant getTenantFromTTenant(String token) {
 
-        String id = "3272499474";
-        System.out.println(token);
-
-        Criteria criteria = Criteria.where("id").is(id);
+        String tenantId = "3272499474";
+        Criteria criteria = Criteria.where("tenantId").is(tenantId);
 
         Query query = Query.query(criteria);
 

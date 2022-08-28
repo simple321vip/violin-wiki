@@ -1,0 +1,35 @@
+2022-08-28 23:58:53.379 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 2696 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-28 23:58:53.381 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: prod
+2022-08-28 23:58:55.259 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-28 23:58:55.259 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-28 23:58:55.260 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-28 23:58:55.366 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-28 23:58:55.396 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-28 23:58:55.590 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-28 23:58:55.737 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-28 23:58:55.779 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-28 23:58:55.886 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-28 23:58:55.988 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-28 23:58:56.477 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-28 23:58:56.606 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[mongo:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-28 23:58:57.717 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2022-08-28 23:58:57.742 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Started GEstateApplication in 4.835 seconds (JVM running for 5.368)
+2022-08-28 23:58:58.934 [cluster-ClusterId{value='630b90c047ddb44bdaea2871', description='null'}-mongo:27017] INFO  org.mongodb.driver.cluster - Exception in monitor thread while connecting to server mongo:27017
+com.mongodb.MongoSocketException: 不知道这样的主机。 (mongo)
+	at com.mongodb.ServerAddress.getSocketAddresses(ServerAddress.java:211)
+	at com.mongodb.internal.connection.SocketStream.initializeSocket(SocketStream.java:75)
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:65)
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:143)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.lookupServerDescription(DefaultServerMonitor.java:188)
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:144)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.net.UnknownHostException: 不知道这样的主机。 (mongo)
+	at java.base/java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+	at java.base/java.net.InetAddress$PlatformNameService.lookupAllHostAddr(InetAddress.java:929)
+	at java.base/java.net.InetAddress.getAddressesFromNameService(InetAddress.java:1515)
+	at java.base/java.net.InetAddress$NameServiceAddresses.get(InetAddress.java:848)
+	at java.base/java.net.InetAddress.getAllByName0(InetAddress.java:1505)
+	at java.base/java.net.InetAddress.getAllByName(InetAddress.java:1364)
+	at java.base/java.net.InetAddress.getAllByName(InetAddress.java:1298)
+	at com.mongodb.ServerAddress.getSocketAddresses(ServerAddress.java:203)
+	... 6 common frames omitted
