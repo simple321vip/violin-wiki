@@ -126,7 +126,7 @@ spec:
         ]) {
             container('kubectl') {
                 echo "查看 K8S 集群 Pod 列表"
-                sh 'kubectl delete deployment violin-book'
+                sh 'kubectl delete deployment violin-book -n dev'
                 sh 'kubectl apply -f violin-book-dev.yaml'
                 sh 'kubectl get pod -n dev -owide | grep violin-book'
             }
