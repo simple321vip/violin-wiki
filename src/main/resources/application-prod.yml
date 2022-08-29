@@ -16,6 +16,7 @@ spring:
     mongodb:
       uri: mongodb://mongo:27017/violin
       transactionEnabled: true
+
 constant:
   docsify-workspace: /home/docsify/docs/docs/
 

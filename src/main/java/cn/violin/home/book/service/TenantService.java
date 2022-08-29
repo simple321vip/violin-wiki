@@ -1,7 +1,7 @@
 package cn.violin.home.book.service;
 
 import cn.violin.home.book.entity.Tenant;
-import cn.violin.home.book.utils.RedisUtils;
+import cn.violin.home.book.utils.JedisUtils;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
@@ -31,7 +31,7 @@ public class TenantService {
     private MongoTemplate mongoTemplate;
 
     @Autowired
-    private RedisUtils redis;
+    private JedisUtils redis;
 
 
     /**
@@ -45,9 +45,11 @@ public class TenantService {
         Criteria criteria = Criteria.where("tenantId").is(tenant.getTenantId());
         Query query = Query.query(criteria);
 
+        log.info("tenantId:" + tenant.getTenantId());
         Tenant tenantEntity = mongoTemplate.findOne(query, Tenant.class);
-        log.info("tenantEntity:", tenantEntity);
+        log.info("tenantEntity:" + tenantEntity);
         if (tenantEntity != null) {
+            log.info("set tenantId/token :" + tenantEntity + "/" + token);
             redis.set(tenantEntity.getTenantId(), token, 1, TimeUnit.DAYS);
         }
         return Optional.ofNullable(tenantEntity);
@@ -101,7 +103,7 @@ public class TenantService {
      * @param id tenant id
      * @return status logout status
      */
-    public boolean reToken(String id) {
+    public Long reToken(String id) {
         // System.out.println(redis.get(id));
         return redis.delete(id);
     }

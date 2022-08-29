@@ -1,10 +1,9 @@
 package cn.violin.home.book.Interceptor;
 
 import cn.violin.home.book.annotation.PassToken;
-import cn.violin.home.book.annotation.UserLoginToken;
-import cn.violin.home.book.utils.RedisUtils;
 
 import cn.violin.home.book.service.TenantService;
+import cn.violin.home.book.utils.JedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -12,6 +11,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
+import java.util.Optional;
 
 /**
  * Interceptor トーケンの検証
@@ -29,7 +29,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     TenantService tenantService;
 
     @Autowired
-    private RedisUtils redis;
+    private JedisUtils redis;
 
     @Override
     public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) {
@@ -56,12 +56,12 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 if (authorization == null || id == null) {
                     throw new RuntimeException("token or id is null, please login again");
                 }
-                String tokenNullable = redis.get(id);
+                Optional<String> tokenNullable = redis.get(id);
 
-                if (tokenNullable == null) {
+                if (!tokenNullable.isPresent()) {
                     throw new RuntimeException("token is expire, please login again");
                 }
-                if (!authorization.contains(tokenNullable)) {
+                if (!authorization.contains(tokenNullable.get())) {
                     throw new RuntimeException("token is wrong, please login again");
                 }
 //                return true;

@@ -1,0 +1,519 @@
+2022-08-29 01:10:14.807 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 1148 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-29 01:10:14.810 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: dev
+2022-08-29 01:10:16.871 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-29 01:10:16.872 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-29 01:10:16.872 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-29 01:10:16.989 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-29 01:10:17.023 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-29 01:10:17.232 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-29 01:10:17.380 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-29 01:10:17.426 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-29 01:10:17.540 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-29 01:10:17.649 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-29 01:10:18.215 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-29 01:10:18.343 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-29 01:10:18.406 [cluster-ClusterId{value='630ba17a949bf74cd7be7a6f', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:111}] to localhost:27017
+2022-08-29 01:10:18.406 [cluster-rtt-ClusterId{value='630ba17a949bf74cd7be7a6f', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:112}] to localhost:27017
+2022-08-29 01:10:18.407 [cluster-ClusterId{value='630ba17a949bf74cd7be7a6f', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=15860701}
+2022-08-29 01:10:19.610 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2022-08-29 01:10:19.656 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Started GEstateApplication in 5.392 seconds (JVM running for 6.036)
+2022-08-29 01:10:29.234 [http-nio-8080-exec-1] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-08-29 01:33:43.381 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-08-29 01:33:43.384 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-08-29 01:33:50.845 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 27752 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-29 01:33:50.848 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: dev
+2022-08-29 01:33:52.940 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-29 01:33:52.941 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-29 01:33:52.941 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-29 01:33:53.062 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-29 01:33:53.095 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-29 01:33:53.299 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-29 01:33:53.454 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-29 01:33:53.498 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-29 01:33:53.614 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-29 01:33:53.723 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-29 01:33:54.280 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-29 01:33:54.409 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-29 01:33:54.465 [cluster-ClusterId{value='630ba7020e47c5620ed28392', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:113}] to localhost:27017
+2022-08-29 01:33:54.465 [cluster-rtt-ClusterId{value='630ba7020e47c5620ed28392', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:114}] to localhost:27017
+2022-08-29 01:33:54.468 [cluster-ClusterId{value='630ba7020e47c5620ed28392', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=15148501}
+2022-08-29 01:33:55.633 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2022-08-29 01:33:55.765 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Started GEstateApplication in 5.435 seconds (JVM running for 6.061)
+2022-08-29 10:00:04.663 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-08-29 10:00:04.669 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-08-29 10:00:11.522 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 30804 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-29 10:00:11.524 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: dev
+2022-08-29 10:00:13.511 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-29 10:00:13.512 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-29 10:00:13.512 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-29 10:00:13.616 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-29 10:00:13.648 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-29 10:00:13.856 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-29 10:00:13.999 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-29 10:00:14.041 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-29 10:00:14.152 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-29 10:00:14.252 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-29 10:00:14.741 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-29 10:00:14.857 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-29 10:00:14.905 [cluster-rtt-ClusterId{value='630c1dae11423b734953fcd6', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:116}] to localhost:27017
+2022-08-29 10:00:14.905 [cluster-ClusterId{value='630c1dae11423b734953fcd6', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:115}] to localhost:27017
+2022-08-29 10:00:14.907 [cluster-ClusterId{value='630c1dae11423b734953fcd6', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=15303100}
+2022-08-29 10:00:15.930 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2022-08-29 10:00:15.956 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Started GEstateApplication in 4.905 seconds (JVM running for 5.431)
+2022-08-29 10:06:51.796 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 22136 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-29 10:06:51.799 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: dev
+2022-08-29 10:06:53.817 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-29 10:06:53.817 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-29 10:06:53.818 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-29 10:06:53.934 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-29 10:06:53.964 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-29 10:06:54.164 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-29 10:06:54.312 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-29 10:06:54.359 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-29 10:06:54.486 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-29 10:06:54.597 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-29 10:06:55.162 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-29 10:06:55.300 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-29 10:06:55.359 [cluster-ClusterId{value='630c1f3f21ef2b4a61bca4a1', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:118}] to localhost:27017
+2022-08-29 10:06:55.359 [cluster-rtt-ClusterId{value='630c1f3f21ef2b4a61bca4a1', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:117}] to localhost:27017
+2022-08-29 10:06:55.361 [cluster-ClusterId{value='630c1f3f21ef2b4a61bca4a1', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=16672400}
+2022-08-29 10:06:57.274 [restartedMain] INFO  cn.violin.home.book.config.RedisConfig - PONG
+2022-08-29 10:06:57.796 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2022-08-29 10:06:57.817 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Started GEstateApplication in 6.599 seconds (JVM running for 7.226)
+2022-08-29 10:11:25.426 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-08-29 10:11:25.433 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-08-29 10:11:29.582 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 28064 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-29 10:11:29.584 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: dev
+2022-08-29 10:11:31.659 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-29 10:11:31.660 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-29 10:11:31.661 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-29 10:11:31.768 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-29 10:11:31.818 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-29 10:11:32.040 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-29 10:11:32.201 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-29 10:11:32.249 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-29 10:11:32.366 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-29 10:11:32.477 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-29 10:11:33.053 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-29 10:11:33.188 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-29 10:11:33.244 [cluster-ClusterId{value='630c2055ff5cc7635c2b3f8e', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:119}] to localhost:27017
+2022-08-29 10:11:33.244 [cluster-rtt-ClusterId{value='630c2055ff5cc7635c2b3f8e', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:120}] to localhost:27017
+2022-08-29 10:11:33.247 [cluster-ClusterId{value='630c2055ff5cc7635c2b3f8e', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=16233300}
+2022-08-29 10:11:35.131 [restartedMain] INFO  cn.violin.home.book.config.RedisConfig - PONG
+2022-08-29 10:11:35.622 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2022-08-29 10:11:35.641 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Started GEstateApplication in 6.618 seconds (JVM running for 7.26)
+2022-08-29 10:18:42.218 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-08-29 10:18:42.224 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-08-29 10:18:45.931 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 17128 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-29 10:18:45.936 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: dev
+2022-08-29 10:18:48.061 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-29 10:18:48.061 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-29 10:18:48.062 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-29 10:18:48.173 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-29 10:18:48.204 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-29 10:18:48.401 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-29 10:18:48.549 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-29 10:18:48.592 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-29 10:18:48.708 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-29 10:18:48.816 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-29 10:18:49.371 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-29 10:18:49.504 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-29 10:18:49.563 [cluster-rtt-ClusterId{value='630c22098c96b35445fc525a', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:121}] to localhost:27017
+2022-08-29 10:18:49.563 [cluster-ClusterId{value='630c22098c96b35445fc525a', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:122}] to localhost:27017
+2022-08-29 10:18:49.566 [cluster-ClusterId{value='630c22098c96b35445fc525a', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=15817900}
+2022-08-29 10:18:53.848 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-08-29 10:18:53.872 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-08-29 10:18:53.874 [restartedMain] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2022-08-29 10:35:36.464 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 33288 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-29 10:35:36.470 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: dev
+2022-08-29 10:35:38.637 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-29 10:35:38.637 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-29 10:35:38.637 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-29 10:35:38.755 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-29 10:35:38.787 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-29 10:35:38.995 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-29 10:35:39.149 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-29 10:35:39.195 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-29 10:35:39.342 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-29 10:35:39.458 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-29 10:35:40.012 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-29 10:35:40.148 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-29 10:35:40.207 [cluster-ClusterId{value='630c25fcc0fbf2323cdb0606', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:124}] to localhost:27017
+2022-08-29 10:35:40.207 [cluster-rtt-ClusterId{value='630c25fcc0fbf2323cdb0606', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:123}] to localhost:27017
+2022-08-29 10:35:40.209 [cluster-ClusterId{value='630c25fcc0fbf2323cdb0606', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=17226300}
+2022-08-29 10:35:42.174 [restartedMain] INFO  cn.violin.home.book.config.RedisConfig - PONG
+2022-08-29 10:35:42.688 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2022-08-29 10:35:42.708 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Started GEstateApplication in 6.855 seconds (JVM running for 7.494)
+2022-08-29 10:37:09.757 [http-nio-8080-exec-1] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-08-29 10:47:23.452 [http-nio-8080-exec-4] INFO  cn.violin.home.book.controller.OauthController - 121.de4eb8f4360d39f461303b2713798d6f.Yl-aDcKjbYrBn6x-GX29K6WJ1g6v_LjYMUBQ-8O.V7NwwQ
+2022-08-29 10:47:23.810 [http-nio-8080-exec-4] INFO  cn.violin.home.book.controller.OauthController - Tenant(tenantId=3272499474, account=simple321vip, tel=null, authority=0, avatarUrl=https://dss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG/sys/portrait/item/netdisk.1.5c06f21b.hdlkaHPwjAxDruQqP0QJLg.jpg, storageAccount=)
+2022-08-29 10:47:23.862 [http-nio-8080-exec-4] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:3, serverValue:125}] to localhost:27017
+2022-08-29 10:47:23.899 [http-nio-8080-exec-4] INFO  cn.violin.home.book.service.TenantService - tenantEntity:
+2022-08-29 10:47:44.540 [http-nio-8080-exec-7] INFO  cn.violin.home.book.controller.OauthController - 121.109b1ad80bec00dd92d47b4bdb181725.Y7r1xGDUsLQWWv3lAnFjGHFy3nLdFvOuF7u5dOY.IqYKfw
+2022-08-29 10:47:44.809 [http-nio-8080-exec-7] INFO  cn.violin.home.book.controller.OauthController - Tenant(tenantId=3272499474, account=simple321vip, tel=null, authority=0, avatarUrl=https://dss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG/sys/portrait/item/netdisk.1.5c06f21b.hdlkaHPwjAxDruQqP0QJLg.jpg, storageAccount=)
+2022-08-29 10:47:44.811 [http-nio-8080-exec-7] INFO  cn.violin.home.book.service.TenantService - tenantEntity:
+2022-08-29 10:48:27.104 [http-nio-8080-exec-8] INFO  cn.violin.home.book.controller.OauthController - 121.3844e598cf5e7cf72e272b7e737f9a8b.YQ14ayS9lNySyTgXX47ZmVxdBJKIQgRa_1wAzZ5.AQydrQ
+2022-08-29 10:48:27.248 [http-nio-8080-exec-8] INFO  cn.violin.home.book.controller.OauthController - Tenant(tenantId=3272499474, account=simple321vip, tel=null, authority=0, avatarUrl=https://dss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG/sys/portrait/item/netdisk.1.5c06f21b.hdlkaHPwjAxDruQqP0QJLg.jpg, storageAccount=)
+2022-08-29 10:48:27.254 [http-nio-8080-exec-8] INFO  cn.violin.home.book.service.TenantService - tenantEntity:
+2022-08-29 10:50:50.897 [SpringApplicationShutdownHook] INFO  org.mongodb.driver.connection - Closed connection [connectionId{localValue:3, serverValue:125}] to localhost:27017 because the pool has been closed.
+2022-08-29 10:50:50.904 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-08-29 10:50:50.909 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-08-29 10:52:39.551 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 27044 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-29 10:52:39.553 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: dev
+2022-08-29 10:52:41.441 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-29 10:52:41.441 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-29 10:52:41.442 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-29 10:52:41.565 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-29 10:52:41.600 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-29 10:52:41.807 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-29 10:52:41.953 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-29 10:52:41.999 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-29 10:52:42.111 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-29 10:52:42.210 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-29 10:52:42.681 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-29 10:52:42.795 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-29 10:52:42.842 [cluster-rtt-ClusterId{value='630c29fa26aeb513b09be308', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:127}] to localhost:27017
+2022-08-29 10:52:42.842 [cluster-ClusterId{value='630c29fa26aeb513b09be308', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:126}] to localhost:27017
+2022-08-29 10:52:42.844 [cluster-ClusterId{value='630c29fa26aeb513b09be308', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=14538300}
+2022-08-29 10:52:44.643 [restartedMain] INFO  cn.violin.home.book.config.RedisConfig - PONG
+2022-08-29 10:52:45.056 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2022-08-29 10:52:45.075 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Started GEstateApplication in 5.98 seconds (JVM running for 6.526)
+2022-08-29 10:52:52.245 [http-nio-8080-exec-1] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-08-29 10:52:59.847 [http-nio-8080-exec-3] INFO  cn.violin.home.book.controller.OauthController - 121.96a2cadbc6095781dce2a55d7fc089c6.YnPj6q_HsUWg6QVdoLwMNN8Sj-_JQwWZ0jVk2iD.YHcV4w
+2022-08-29 10:53:00.017 [http-nio-8080-exec-3] INFO  cn.violin.home.book.controller.OauthController - Tenant(tenantId=3272499474, account=simple321vip, tel=null, authority=0, avatarUrl=https://dss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG/sys/portrait/item/netdisk.1.5c06f21b.hdlkaHPwjAxDruQqP0QJLg.jpg, storageAccount=)
+2022-08-29 10:53:00.019 [http-nio-8080-exec-3] INFO  cn.violin.home.book.service.TenantService - tenantId:
+2022-08-29 10:53:00.054 [http-nio-8080-exec-3] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:3, serverValue:128}] to localhost:27017
+2022-08-29 10:53:00.082 [http-nio-8080-exec-3] INFO  cn.violin.home.book.service.TenantService - tenantEntity:
+2022-08-29 10:53:00.082 [http-nio-8080-exec-3] INFO  cn.violin.home.book.service.TenantService - set tenantId/token :
+2022-08-29 10:54:08.643 [http-nio-8080-exec-7] INFO  cn.violin.home.book.controller.OauthController - 121.66136578668eca5955c91e18752d1873.Yn5FmSuVQQUQLkV5OAD1HVt2M1B5e-e0rZlJsEO.YbOQ3A
+2022-08-29 10:54:08.820 [http-nio-8080-exec-7] INFO  cn.violin.home.book.controller.OauthController - Tenant(tenantId=3272499474, account=simple321vip, tel=null, authority=0, avatarUrl=https://dss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG/sys/portrait/item/netdisk.1.5c06f21b.hdlkaHPwjAxDruQqP0QJLg.jpg, storageAccount=)
+2022-08-29 10:54:08.820 [http-nio-8080-exec-7] INFO  cn.violin.home.book.service.TenantService - tenantId:
+2022-08-29 10:54:08.822 [http-nio-8080-exec-7] INFO  cn.violin.home.book.service.TenantService - tenantEntity:
+2022-08-29 10:54:08.822 [http-nio-8080-exec-7] INFO  cn.violin.home.book.service.TenantService - set tenantId/token :
+2022-08-29 10:54:28.419 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 13016 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-29 10:54:28.423 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: dev
+2022-08-29 10:54:30.593 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-29 10:54:30.593 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-29 10:54:30.593 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-29 10:54:30.711 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-29 10:54:30.746 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-29 10:54:30.949 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-29 10:54:31.101 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-29 10:54:31.146 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-29 10:54:31.291 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-29 10:54:31.418 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-29 10:54:32.059 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-29 10:54:32.194 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-29 10:54:32.254 [cluster-rtt-ClusterId{value='630c2a680b204a3130a89db2', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:130}] to localhost:27017
+2022-08-29 10:54:32.254 [cluster-ClusterId{value='630c2a680b204a3130a89db2', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:129}] to localhost:27017
+2022-08-29 10:54:32.256 [cluster-ClusterId{value='630c2a680b204a3130a89db2', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=16059800}
+2022-08-29 10:54:34.148 [restartedMain] INFO  cn.violin.home.book.config.RedisConfig - PONG
+2022-08-29 10:54:34.652 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2022-08-29 10:54:34.671 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Started GEstateApplication in 6.823 seconds (JVM running for 7.484)
+2022-08-29 10:54:39.975 [http-nio-8080-exec-2] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-08-29 10:54:41.766 [http-nio-8080-exec-1] INFO  cn.violin.home.book.controller.OauthController - 121.afe22bae5ae3e67574d030c19fae2df4.YlWj4MLM_8uxNTcR13Jd5_dNoCpf_V6HDM8kvZT.iZECdA
+2022-08-29 10:55:10.927 [http-nio-8080-exec-1] INFO  cn.violin.home.book.controller.OauthController - Tenant(tenantId=3272499474, account=simple321vip, tel=null, authority=0, avatarUrl=https://dss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG/sys/portrait/item/netdisk.1.5c06f21b.hdlkaHPwjAxDruQqP0QJLg.jpg, storageAccount=)
+2022-08-29 10:55:53.795 [http-nio-8080-exec-1] INFO  cn.violin.home.book.service.TenantService - tenantId:
+2022-08-29 10:55:54.185 [http-nio-8080-exec-1] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:3, serverValue:131}] to localhost:27017
+2022-08-29 10:55:54.544 [http-nio-8080-exec-1] INFO  cn.violin.home.book.service.TenantService - tenantEntity:
+2022-08-29 10:55:54.546 [http-nio-8080-exec-1] INFO  cn.violin.home.book.service.TenantService - set tenantId/token :
+2022-08-29 11:00:14.805 [SpringApplicationShutdownHook] INFO  org.mongodb.driver.connection - Closed connection [connectionId{localValue:3, serverValue:131}] to localhost:27017 because the pool has been closed.
+2022-08-29 11:00:14.812 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-08-29 11:00:14.817 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-08-29 11:00:20.127 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 22832 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-29 11:00:20.129 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: dev
+2022-08-29 11:00:22.031 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-29 11:00:22.031 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-29 11:00:22.032 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-29 11:00:22.140 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-29 11:00:22.170 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-29 11:00:22.362 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-29 11:00:22.504 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-29 11:00:22.544 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-29 11:00:22.648 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-29 11:00:22.756 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-29 11:00:23.247 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-29 11:00:23.363 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-29 11:00:23.409 [cluster-rtt-ClusterId{value='630c2bc73234db5d2e255340', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:132}] to localhost:27017
+2022-08-29 11:00:23.409 [cluster-ClusterId{value='630c2bc73234db5d2e255340', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:133}] to localhost:27017
+2022-08-29 11:00:23.412 [cluster-ClusterId{value='630c2bc73234db5d2e255340', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=14145400}
+2022-08-29 11:00:25.166 [restartedMain] INFO  cn.violin.home.book.config.RedisConfig - PONG
+2022-08-29 11:00:25.598 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2022-08-29 11:00:25.616 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Started GEstateApplication in 5.943 seconds (JVM running for 6.471)
+2022-08-29 11:00:30.411 [http-nio-8080-exec-1] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-08-29 11:00:37.167 [http-nio-8080-exec-2] INFO  cn.violin.home.book.controller.OauthController - 121.8e551b131294016ed0c2f8b492f93bd9.YHwMns6E4u4NQ_RM5c6EQa6JgZE4P7X0tbJcs28.SCXxqg
+2022-08-29 11:00:37.345 [http-nio-8080-exec-2] INFO  cn.violin.home.book.controller.OauthController - Tenant(tenantId=3272499474, account=simple321vip, tel=null, authority=0, avatarUrl=https://dss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG/sys/portrait/item/netdisk.1.5c06f21b.hdlkaHPwjAxDruQqP0QJLg.jpg, storageAccount=)
+2022-08-29 11:00:37.347 [http-nio-8080-exec-2] INFO  cn.violin.home.book.service.TenantService - tenantId:3272499474
+2022-08-29 11:00:37.380 [http-nio-8080-exec-2] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:3, serverValue:134}] to localhost:27017
+2022-08-29 11:00:37.408 [http-nio-8080-exec-2] INFO  cn.violin.home.book.service.TenantService - tenantEntity:Tenant(tenantId=3272499474, account=simple321vip, tel=null, authority=2, avatarUrl=null, storageAccount=)
+2022-08-29 11:00:37.409 [http-nio-8080-exec-2] INFO  cn.violin.home.book.service.TenantService - set tenantId/token :Tenant(tenantId=3272499474, account=simple321vip, tel=null, authority=2, avatarUrl=null, storageAccount=)/121.8e551b131294016ed0c2f8b492f93bd9.YHwMns6E4u4NQ_RM5c6EQa6JgZE4P7X0tbJcs28.SCXxqg
+2022-08-29 11:04:23.732 [http-nio-8080-exec-7] INFO  cn.violin.home.book.controller.OauthController - 121.f1922c58f8646bb7f1ec365c11335cdd.YsXBfWpCTkys8YtZG61qbeG5662uojKTAXbI8MO.qbuq8w
+2022-08-29 11:04:23.888 [http-nio-8080-exec-7] INFO  cn.violin.home.book.controller.OauthController - Tenant(tenantId=3272499474, account=simple321vip, tel=null, authority=0, avatarUrl=https://dss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG/sys/portrait/item/netdisk.1.5c06f21b.hdlkaHPwjAxDruQqP0QJLg.jpg, storageAccount=)
+2022-08-29 11:04:23.888 [http-nio-8080-exec-7] INFO  cn.violin.home.book.service.TenantService - tenantId:3272499474
+2022-08-29 11:04:23.890 [http-nio-8080-exec-7] INFO  cn.violin.home.book.service.TenantService - tenantEntity:Tenant(tenantId=3272499474, account=simple321vip, tel=null, authority=2, avatarUrl=null, storageAccount=)
+2022-08-29 11:04:23.890 [http-nio-8080-exec-7] INFO  cn.violin.home.book.service.TenantService - set tenantId/token :Tenant(tenantId=3272499474, account=simple321vip, tel=null, authority=2, avatarUrl=null, storageAccount=)/121.f1922c58f8646bb7f1ec365c11335cdd.YsXBfWpCTkys8YtZG61qbeG5662uojKTAXbI8MO.qbuq8w
+2022-08-29 11:04:56.123 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 34952 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-29 11:04:56.126 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: dev
+2022-08-29 11:04:58.285 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-29 11:04:58.286 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-29 11:04:58.286 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-29 11:04:58.394 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-29 11:04:58.429 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-29 11:04:58.630 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-29 11:04:58.985 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-29 11:04:59.031 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-29 11:04:59.146 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-29 11:04:59.252 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-29 11:04:59.776 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-29 11:04:59.899 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-29 11:04:59.956 [cluster-ClusterId{value='630c2cdb1d221302cccf984b', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:135}] to localhost:27017
+2022-08-29 11:04:59.956 [cluster-rtt-ClusterId{value='630c2cdb1d221302cccf984b', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:136}] to localhost:27017
+2022-08-29 11:04:59.958 [cluster-ClusterId{value='630c2cdb1d221302cccf984b', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=14700900}
+2022-08-29 11:05:01.793 [restartedMain] INFO  cn.violin.home.book.config.RedisConfig - PONG
+2022-08-29 11:05:02.311 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2022-08-29 11:05:02.330 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Started GEstateApplication in 6.749 seconds (JVM running for 7.426)
+2022-08-29 14:19:18.388 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-08-29 14:19:18.397 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-08-29 14:27:14.246 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 28224 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-29 14:27:14.248 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: dev
+2022-08-29 14:27:16.279 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-29 14:27:16.279 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-29 14:27:16.279 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-29 14:27:16.401 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-29 14:27:16.447 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-29 14:27:16.676 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-29 14:27:16.842 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-29 14:27:16.908 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-29 14:27:17.053 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-29 14:27:17.158 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-29 14:27:17.690 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-29 14:27:17.815 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-29 14:27:17.863 [cluster-ClusterId{value='630c5c4547ef7e3773ffd02c', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:137}] to localhost:27017
+2022-08-29 14:27:17.863 [cluster-rtt-ClusterId{value='630c5c4547ef7e3773ffd02c', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:138}] to localhost:27017
+2022-08-29 14:27:17.865 [cluster-ClusterId{value='630c5c4547ef7e3773ffd02c', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=15254200}
+2022-08-29 14:27:18.564 [restartedMain] INFO  cn.violin.home.book.config.RedisConfig - JedisPool连接成功:redis	6379
+2022-08-29 14:27:19.026 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2022-08-29 14:27:19.052 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Started GEstateApplication in 5.33 seconds (JVM running for 6.023)
+2022-08-29 14:48:44.283 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 36668 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-29 14:48:44.286 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: dev
+2022-08-29 14:48:46.167 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-29 14:48:46.168 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-29 14:48:46.168 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-29 14:48:46.273 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-29 14:48:46.313 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-29 14:48:46.625 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-29 14:48:46.831 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-29 14:48:46.884 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-29 14:48:46.996 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-29 14:48:47.103 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-29 14:48:47.609 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-29 14:48:47.728 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-29 14:48:47.774 [cluster-rtt-ClusterId{value='630c614f15d0aa122fe01eab', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:140}] to localhost:27017
+2022-08-29 14:48:47.775 [cluster-ClusterId{value='630c614f15d0aa122fe01eab', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:139}] to localhost:27017
+2022-08-29 14:48:47.777 [cluster-ClusterId{value='630c614f15d0aa122fe01eab', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=14563300}
+2022-08-29 14:48:48.209 [restartedMain] INFO  cn.violin.home.book.config.RedisConfig - JedisPool连接成功:redis	6379
+2022-08-29 14:48:48.242 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-08-29 14:48:48.262 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-08-29 14:48:48.264 [restartedMain] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2022-08-29 14:51:10.637 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 35752 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-29 14:51:10.639 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: dev
+2022-08-29 14:51:12.580 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-29 14:51:12.580 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-29 14:51:12.580 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-29 14:51:12.676 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-29 14:51:12.715 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-29 14:51:12.904 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-29 14:51:13.048 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-29 14:51:13.092 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-29 14:51:13.199 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-29 14:51:13.292 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-29 14:51:13.797 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-29 14:51:13.918 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-29 14:51:13.966 [cluster-rtt-ClusterId{value='630c61e17e377674a607c2bc', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:141}] to localhost:27017
+2022-08-29 14:51:13.966 [cluster-ClusterId{value='630c61e17e377674a607c2bc', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:142}] to localhost:27017
+2022-08-29 14:51:13.968 [cluster-ClusterId{value='630c61e17e377674a607c2bc', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=15197200}
+2022-08-29 14:51:14.422 [restartedMain] INFO  cn.violin.home.book.config.RedisConfig - JedisPool连接成功:redis	6379
+2022-08-29 14:51:14.462 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-08-29 14:51:14.489 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-08-29 14:51:14.491 [restartedMain] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2022-08-29 14:51:46.840 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 34860 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-29 14:51:46.842 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: dev
+2022-08-29 14:51:48.648 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-29 14:51:48.649 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-29 14:51:48.649 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-29 14:51:48.742 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-29 14:51:48.772 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-29 14:51:48.968 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-29 14:51:49.108 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-29 14:51:49.150 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-29 14:51:49.271 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-29 14:51:49.372 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-29 14:51:49.870 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-29 14:51:49.993 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-29 14:51:50.043 [cluster-rtt-ClusterId{value='630c6205ae3e6047e4e81726', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:143}] to localhost:27017
+2022-08-29 14:51:50.043 [cluster-ClusterId{value='630c6205ae3e6047e4e81726', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:144}] to localhost:27017
+2022-08-29 14:51:50.045 [cluster-ClusterId{value='630c6205ae3e6047e4e81726', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=15288500}
+2022-08-29 14:51:50.512 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-08-29 14:51:50.540 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-08-29 14:51:50.542 [restartedMain] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2022-08-29 14:58:31.301 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 36024 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-29 14:58:31.303 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: dev
+2022-08-29 14:58:33.176 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-29 14:58:33.176 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-29 14:58:33.177 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-29 14:58:33.264 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-29 14:58:33.295 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-29 14:58:33.469 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-29 14:58:33.617 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-29 14:58:33.657 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-29 14:58:33.766 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-29 14:58:33.875 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-29 14:58:34.384 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-29 14:58:34.502 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-29 14:58:34.550 [cluster-rtt-ClusterId{value='630c639ae5112648dfc1e96a', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:145}] to localhost:27017
+2022-08-29 14:58:34.550 [cluster-ClusterId{value='630c639ae5112648dfc1e96a', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:146}] to localhost:27017
+2022-08-29 14:58:34.552 [cluster-ClusterId{value='630c639ae5112648dfc1e96a', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=15526500}
+2022-08-29 14:58:35.040 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-08-29 14:58:35.051 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-08-29 14:58:35.053 [restartedMain] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2022-08-29 15:04:58.637 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 39688 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-29 15:04:58.641 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: dev
+2022-08-29 15:05:00.498 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-29 15:05:00.499 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-29 15:05:00.499 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-29 15:05:00.594 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-29 15:05:00.634 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-29 15:05:00.830 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-29 15:05:00.983 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-29 15:05:01.029 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-29 15:05:01.141 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-29 15:05:01.239 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-29 15:05:01.827 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-29 15:05:01.959 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-29 15:05:02.010 [cluster-ClusterId{value='630c651d2b2a7014f90c2a26', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:147}] to localhost:27017
+2022-08-29 15:05:02.010 [cluster-rtt-ClusterId{value='630c651d2b2a7014f90c2a26', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:148}] to localhost:27017
+2022-08-29 15:05:02.012 [cluster-ClusterId{value='630c651d2b2a7014f90c2a26', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=15135200}
+2022-08-29 15:05:02.484 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-08-29 15:05:02.498 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-08-29 15:05:02.500 [restartedMain] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2022-08-29 15:05:23.855 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 1076 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-29 15:05:23.859 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: dev
+2022-08-29 15:05:25.642 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-29 15:05:25.642 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-29 15:05:25.642 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-29 15:05:25.735 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-29 15:05:25.766 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-29 15:05:25.967 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-29 15:05:26.112 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-29 15:05:26.156 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-29 15:05:26.265 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-29 15:05:26.373 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-29 15:05:26.920 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-29 15:05:27.048 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-29 15:05:27.096 [cluster-ClusterId{value='630c6537b5dfbb426df9c0eb', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:150}] to localhost:27017
+2022-08-29 15:05:27.096 [cluster-rtt-ClusterId{value='630c6537b5dfbb426df9c0eb', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:149}] to localhost:27017
+2022-08-29 15:05:27.098 [cluster-ClusterId{value='630c6537b5dfbb426df9c0eb', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=15235300}
+2022-08-29 15:05:27.557 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-08-29 15:05:27.577 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-08-29 15:05:27.579 [restartedMain] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2022-08-29 15:05:38.818 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 14536 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-29 15:05:38.821 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: dev
+2022-08-29 15:05:40.603 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-29 15:05:40.604 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-29 15:05:40.604 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-29 15:05:40.705 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-29 15:05:40.736 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-29 15:05:40.914 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-29 15:05:41.060 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-29 15:05:41.101 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-29 15:05:41.207 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-29 15:05:41.303 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-29 15:05:41.857 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-29 15:05:41.990 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-29 15:05:42.046 [cluster-rtt-ClusterId{value='630c654508cf914d77e82aae', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:151}] to localhost:27017
+2022-08-29 15:05:42.046 [cluster-ClusterId{value='630c654508cf914d77e82aae', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:152}] to localhost:27017
+2022-08-29 15:05:42.048 [cluster-ClusterId{value='630c654508cf914d77e82aae', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=16201900}
+2022-08-29 15:05:42.530 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-08-29 15:05:42.738 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-08-29 15:05:42.740 [restartedMain] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2022-08-29 15:05:54.865 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 6932 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-29 15:05:54.869 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: dev
+2022-08-29 15:05:56.672 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-29 15:05:56.673 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-29 15:05:56.673 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-29 15:05:56.778 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-29 15:05:56.811 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-29 15:05:57.038 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-29 15:05:57.184 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-29 15:05:57.227 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-29 15:05:57.341 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-29 15:05:57.440 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-29 15:05:57.924 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-29 15:05:58.048 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-29 15:05:58.098 [cluster-ClusterId{value='630c65569342be5115fe4a76', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:153}] to localhost:27017
+2022-08-29 15:05:58.098 [cluster-rtt-ClusterId{value='630c65569342be5115fe4a76', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:154}] to localhost:27017
+2022-08-29 15:05:58.100 [cluster-ClusterId{value='630c65569342be5115fe4a76', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=15687700}
+2022-08-29 15:05:58.592 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-08-29 15:05:58.800 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-08-29 15:05:58.802 [restartedMain] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2022-08-29 15:07:38.815 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 20856 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-29 15:07:38.818 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: dev
+2022-08-29 15:07:40.692 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-29 15:07:40.692 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-29 15:07:40.693 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-29 15:07:40.791 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-29 15:07:40.826 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-29 15:07:41.034 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-29 15:07:41.190 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-29 15:07:41.235 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-29 15:07:41.357 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-29 15:07:41.483 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-29 15:07:42.042 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-29 15:07:42.175 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-29 15:07:42.224 [cluster-rtt-ClusterId{value='630c65beff739856d49fc544', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:156}] to localhost:27017
+2022-08-29 15:07:42.224 [cluster-ClusterId{value='630c65beff739856d49fc544', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:155}] to localhost:27017
+2022-08-29 15:07:42.226 [cluster-ClusterId{value='630c65beff739856d49fc544', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=15043000}
+2022-08-29 15:07:44.728 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-08-29 15:07:44.741 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-08-29 15:07:44.743 [restartedMain] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2022-08-29 15:08:36.697 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 33312 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-29 15:08:36.708 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: dev
+2022-08-29 15:08:38.503 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-29 15:08:38.504 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-29 15:08:38.504 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-29 15:08:38.613 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-29 15:08:38.645 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-29 15:08:38.852 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-29 15:08:38.993 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-29 15:08:39.034 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-29 15:08:39.141 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-29 15:08:39.237 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-29 15:08:39.730 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-29 15:08:39.850 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-29 15:08:39.897 [cluster-rtt-ClusterId{value='630c65f73bccca5afef64490', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:158}] to localhost:27017
+2022-08-29 15:08:39.897 [cluster-ClusterId{value='630c65f73bccca5afef64490', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:157}] to localhost:27017
+2022-08-29 15:08:39.899 [cluster-ClusterId{value='630c65f73bccca5afef64490', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=15492300}
+2022-08-29 15:08:40.405 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2022-08-29 15:08:40.415 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2022-08-29 15:08:40.417 [restartedMain] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2022-08-29 15:10:53.855 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Starting GEstateApplication using Java 11.0.2 on DESKTOP-DQSF08N with PID 37024 (E:\Project\violin-book\target\classes started by simpl in E:\Project\violin-book)
+2022-08-29 15:10:53.858 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - The following profiles are active: dev
+2022-08-29 15:10:55.562 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-08-29 15:10:55.563 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-08-29 15:10:55.563 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.48]
+2022-08-29 15:10:55.665 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/auth] - Initializing Spring embedded WebApplicationContext
+2022-08-29 15:10:55.696 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2022-08-29 15:10:55.881 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2022-08-29 15:10:56.031 [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-29 15:10:56.075 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-08-29 15:10:56.178 [restartedMain] INFO  org.hibernate.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-29 15:10:56.273 [restartedMain] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-08-29 15:10:56.803 [restartedMain] INFO  o.h.e.t.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-29 15:10:56.933 [restartedMain] INFO  org.mongodb.driver.cluster - Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms'}
+2022-08-29 15:10:56.984 [cluster-ClusterId{value='630c668069c2374fbb22140e', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:160}] to localhost:27017
+2022-08-29 15:10:56.984 [cluster-rtt-ClusterId{value='630c668069c2374fbb22140e', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:159}] to localhost:27017
+2022-08-29 15:10:56.986 [cluster-ClusterId{value='630c668069c2374fbb22140e', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=15766700}
+2022-08-29 15:10:57.455 [restartedMain] INFO  cn.violin.home.book.config.RedisConfig - PONG
+2022-08-29 15:10:57.456 [restartedMain] INFO  cn.violin.home.book.config.RedisConfig - JedisPool连接成功:redis	6379
+2022-08-29 15:10:57.893 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2022-08-29 15:10:57.918 [restartedMain] INFO  cn.violin.home.book.GEstateApplication - Started GEstateApplication in 4.557 seconds (JVM running for 5.095)

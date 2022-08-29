@@ -101,12 +101,9 @@ public class OauthController {
     @GetMapping("/logout/{id}")
     public ResponseEntity<Void> logout(@PathVariable(value = "id") String id) {
 
-        boolean result = tenantService.reToken(id);
+        tenantService.reToken(id);
 
-        if (result) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-        }
+        return new ResponseEntity<>(HttpStatus.OK);
+
     }
 }
