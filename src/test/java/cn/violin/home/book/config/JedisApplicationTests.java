@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-@SpringBootTest
+//@SpringBootTest
 public class JedisApplicationTests {
 
 //    @Autowired
