@@ -15,28 +15,28 @@ import redis.clients.jedis.JedisPoolConfig;
 @Slf4j
 public class RedisConfig {
 
-    @Value("${redis.host}")
+    @Value("${violin.redis.host}")
     private String host;
 
-    @Value("${redis.port}")
+    @Value("${violin.redis.port}")
     private int port;
 
-    @Value("${redis.database}")
+    @Value("${violin.redis.database}")
     private int database;
 
-    @Value("${redis.pool.max-idle}")
+    @Value("${violin.redis.pool.max-idle}")
     private int maxIdle;
 
-    @Value("${redis.pool.min-idle}")
+    @Value("${violin.redis.pool.min-idle}")
     private int minIdle;
 
-    @Value("${redis.pool.max-active}")
+    @Value("${violin.redis.pool.max-active}")
     private int maxActive;
 
-    @Value("${redis.password}")
+    @Value("${violin.redis.password}")
     private String password;
 
-    @Value("${redis.timeout}")
+    @Value("${violin.redis.timeout}")
     private int timeout;
 
     @Bean
