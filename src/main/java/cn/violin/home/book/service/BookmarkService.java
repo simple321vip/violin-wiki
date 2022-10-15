@@ -16,7 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static cn.violin.home.book.utils.Constant.*;
@@ -39,22 +41,40 @@ public class BookmarkService {
      * @param isDelete　削除フラグ
      * @return List<Bookmark>
      */
-    public List<BookmarkVo> getBookmarks(Long[] typeIds, String comment, String isDelete) {
+    public List<BookmarkVo> getBookmarks(String[] typeIds, String comment, String isDelete) {
 
-        Criteria criteria = Criteria.where("deleteFlg").is(isDelete);
+        // 1. select bookmark_type
+        Criteria criteria1 = new Criteria();
+        if (typeIds != null && typeIds.length != 0) {
+            criteria1.and("typeId").in(typeIds);
+        }
+        Query query1 = Query.query(criteria1);
+        List<BookmarkType> bookmarkTypes= mongoTemplate.find(query1, BookmarkType.class);
+        Map<String, String> types = bookmarkTypes
+                .stream()
+                .collect(
+                        HashMap::new,
+                        (map, item)->map.put(item.getTypeId(), item.getTypeName()),
+                        HashMap::putAll
+                );
+
+        // 2. select bookmark
+        Criteria criteria2 = Criteria.where("deleteFlg").is(isDelete);
         if (StringUtils.hasLength(comment)) {
-            criteria.and("comment").is(comment);
+            criteria2.and("comment").is(comment);
         }
         if (typeIds != null && typeIds.length != 0) {
-            criteria.and("typeId").in(typeIds);
+            criteria2.and("typeId").in(typeIds);
         }
-        Query query = Query.query(criteria);
-        List<Bookmark> bookmarks = mongoTemplate.find(query, Bookmark.class);
+        Query query2 = Query.query(criteria2);
+        List<Bookmark> bookmarks = mongoTemplate.find(query2, Bookmark.class);
 
+        // 3. matching process
         return bookmarks.stream().map(bm -> BookmarkVo.builder()
                 .id(bm.getId())
                 .comment(bm.getComment())
                 .typeId(bm.getTypeId())
+                .typeName(types.get(bm.getTypeId()))
                 .url(bm.getUrl())
                 .build()).collect(Collectors.toList());
     }

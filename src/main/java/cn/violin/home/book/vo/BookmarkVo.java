@@ -16,7 +16,7 @@ public class BookmarkVo {
     private String id;
 
     @JsonProperty("bk_type_id")
-    private long typeId;
+    private String typeId;
 
     @JsonProperty("bk_type_name")
     private String typeName;

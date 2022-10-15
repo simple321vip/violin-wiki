@@ -15,7 +15,7 @@ public class Bookmark {
     @Id
     private String id;
     private String deleteFlg;
-    private long typeId;
+    private String typeId;
     private String comment;
     private String url;
 }

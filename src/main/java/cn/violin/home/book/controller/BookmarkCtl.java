@@ -23,7 +23,7 @@ public class BookmarkCtl {
 
     @ResponseBody
     @RequestMapping("/bookmark")
-    public ResponseEntity<List<BookmarkVo>> bookmark(@RequestParam(value = "type_id" ,required = false) Long[] typeId,
+    public ResponseEntity<List<BookmarkVo>> bookmark(@RequestParam(value = "type_id" ,required = false) String[] typeId,
                                                      @RequestParam(value = "comment") String comment) {
         return new ResponseEntity<>(bookmarkService.getBookmarks(typeId, comment, "0"), HttpStatus.OK);
     }

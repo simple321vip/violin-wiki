@@ -12,7 +12,7 @@ public class BookmarkIn {
     private String id;
 
     @JsonProperty("bk_type_id")
-    private long typeId;
+    private String typeId;
 
     @JsonProperty("url")
     private String url;

@@ -1,5 +1,24 @@
 ## プログラム紹介
-### データベース
+violin-book, a backend program to support for violin online edit function.
+
+### kubernetes
+we use kubernetes to deployment 
+> the violin-book is built on kubernetes.
+> service, storageclass, pvc, deployment
+
+### framework
+> springboot, jedis and so on. for more, we can see pom.xml
+ 
+### about security
+
+> baidu cloud oauth -> token -> redis + token
+> redis as a kubernetes service opened only for violin-book application that to save token as a cache one day. 
+
+### server
+
+> the backend server tomcat embedded in the springboot used.
+
+### database
 - h2
   java嵌入式数据，用于master数据的存储。 
   ip + port + context-path + url
@@ -9,18 +28,22 @@
   dev 環境：
     cd "E:\Program Files\mongodb\bin"
     .\mongod --dbpath "E:\Program Files\mongodb\data\db"
+- redis
+  as a cache database, we use it to save token.
   
-### server
-- tomcat
-  采用bitnami/tomcat镜像构建。Dockerfile 构建中
-
+  docker exec -it containerId /bin/sh
+  cd /usr/local/bin/
+  
+  config get requirepass
+  config set requirepass 123456
+  
 ### 功能介绍
 
 - blog
   基本功能完成
 
 - bookmark
-  基本功能完成
+  基本功能完成, 完善中
   
 - onenote部分
   建设中，
