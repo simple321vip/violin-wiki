@@ -38,10 +38,10 @@ public class BookmarkService {
      *
      * @param comment コメント
      * @param typeIds　bookmark type id リスト
-     * @param isDelete　削除フラグ
+     * @param deleteFlg　削除フラグ
      * @return List<Bookmark>
      */
-    public List<BookmarkVo> getBookmarks(String[] typeIds, String comment, String isDelete) {
+    public List<BookmarkVo> getBookmarks(String[] typeIds, String comment, String deleteFlg) {
 
         // 1. select bookmark_type
         Criteria criteria1 = new Criteria();
@@ -59,7 +59,7 @@ public class BookmarkService {
                 );
 
         // 2. select bookmark
-        Criteria criteria2 = Criteria.where("deleteFlg").is(isDelete);
+        Criteria criteria2 = Criteria.where("deleteFlg").is(deleteFlg);
         if (StringUtils.hasLength(comment)) {
             criteria2.and("comment").is(comment);
         }
@@ -122,7 +122,7 @@ public class BookmarkService {
 
         Criteria criteria = Criteria.where("id").is(id);
         Query query = Query.query(criteria);
-        Update update = Update.update("isDelete", TRUE_FLAG);
+        Update update = Update.update("deleteFlg", TRUE_FLAG);
         mongoTemplate.updateFirst(query, update, Bookmark.class);
     }
 

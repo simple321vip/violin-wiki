@@ -28,6 +28,14 @@ we use kubernetes to deployment
   dev 環境：
     cd "E:\Program Files\mongodb\bin"
     .\mongod --dbpath "E:\Program Files\mongodb\data\db"
+    
+  prod 环境：
+    docker exec -it containerid /bin/sh
+    mongo
+    db.collection.find().pretty()
+    db.collection.find({key1:value1})
+    
+    
 - redis
   as a cache database, we use it to save token.
   
