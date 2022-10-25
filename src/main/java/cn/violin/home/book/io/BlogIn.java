@@ -1,11 +1,13 @@
 package cn.violin.home.book.io;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 public class BlogIn {
     @JsonProperty("btId")
     private String btId;
@@ -21,5 +23,8 @@ public class BlogIn {
 
     @JsonProperty("autoSave")
     private String autoSave;
+
+    @JsonProperty("order")
+    private int order;
 
 }

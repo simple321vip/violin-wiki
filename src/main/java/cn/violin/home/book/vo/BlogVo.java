@@ -31,4 +31,7 @@ public class BlogVo {
     @JsonProperty("autoSave")
     private String autoSave;
 
+    @JsonProperty("order")
+    private int order;
+
 }

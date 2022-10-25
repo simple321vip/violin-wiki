@@ -15,7 +15,6 @@ public class JedisUtils {
     @Autowired
     private JedisPool jedisPool;
 
-
     public Optional<String> get(String key) {
         Jedis jedis = jedisPool.getResource();
         String value = jedis.get(key);
@@ -26,13 +25,16 @@ public class JedisUtils {
     public String set(String key, String value, int unit, TimeUnit timeout) {
         Jedis jedis = jedisPool.getResource();
         SetParams params = SetParams.setParams();
-
-        return jedis.set(key, value, params);
+        String statusCode = jedis.set(key, value, params);
+        jedis.close();
+        return statusCode;
     }
 
     public Long delete (String key) {
         Jedis jedis = jedisPool.getResource();
-        return jedis.del(key);
+        Long statusCode = jedis.del(key);
+        jedis.close();
+        return statusCode;
     }
 
 }

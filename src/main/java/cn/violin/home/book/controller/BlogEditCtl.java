@@ -1,5 +1,7 @@
 package cn.violin.home.book.controller;
 
+import cn.violin.home.book.annotation.CurrentUser;
+import cn.violin.home.book.entity.Tenant;
 import cn.violin.home.book.service.BlogEditService;
 import cn.violin.home.book.io.BlogIn;
 import cn.violin.home.book.io.BlogTypeIn;
@@ -56,9 +58,9 @@ public class BlogEditCtl {
 
     @GetMapping("/blog/list")
     @ResponseBody
-    public ResponseEntity<List<BlogBoxVo>> blogView() {
+    public ResponseEntity<List<BlogBoxVo>> blogView(@CurrentUser Tenant user) {
 
-        return new ResponseEntity<>(blogEditService.listAll(), HttpStatus.OK);
+        return new ResponseEntity<>(blogEditService.listAll(user.getTenantId()), HttpStatus.OK);
     }
 
     @PutMapping(value = "/blog_type", produces = {"application/json"})
@@ -84,6 +86,14 @@ public class BlogEditCtl {
     @ResponseBody
     public ResponseEntity<Void> updateBlogType(@Valid @RequestBody() BlogTypeIn input) {
         blogEditService.updateBlogTypeName(input);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/blog_types", produces = {"application/json"})
+    @ResponseBody
+    public ResponseEntity<Void> sortBlogType(@Valid @RequestBody() BlogTypeIn[] input) {
+
+        blogEditService.sortBlogType(input);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -17,4 +17,5 @@ public class BlogType {
     private String btName;
     private String owner;
     private String updateTime;
+    private int order;
 }

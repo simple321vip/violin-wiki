@@ -18,5 +18,11 @@ public class Constant {
     public final static DateTimeFormatter FORMATTER_DATE = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public final static DateTimeFormatter FORMATTER_DATETIME = DateTimeFormatter.ofPattern("yyyyMMddHHmmSS");
 
+    public final static String WORD_1= "你的世界";
+    public final static String WORD_2= "从这里开始";
+
+    // common column views
+    public final static String COLUMN_ORDER= "order";
+
 
 }

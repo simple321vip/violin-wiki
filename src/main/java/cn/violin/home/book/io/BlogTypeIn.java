@@ -16,4 +16,8 @@ public class BlogTypeIn {
     @JsonProperty("btName")
     @NotNull
     private String btName;
+
+    @JsonProperty("order")
+    @NotNull
+    private int order;
 }

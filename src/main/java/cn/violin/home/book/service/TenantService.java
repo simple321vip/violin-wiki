@@ -1,6 +1,8 @@
 package cn.violin.home.book.service;
 
+import cn.violin.home.book.dao.AuthMasterRepo;
 import cn.violin.home.book.entity.Tenant;
+import cn.violin.home.book.io.RegisterIn;
 import cn.violin.home.book.utils.JedisUtils;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +33,9 @@ public class TenantService {
     private MongoTemplate mongoTemplate;
 
     @Autowired
+    private AuthMasterRepo authMasterRepo;
+
+    @Autowired
     private JedisUtils redis;
 
 
@@ -40,7 +45,7 @@ public class TenantService {
      * @param tenant the third party BAIDUで登録するユーザー
      * @return Optional
      */
-    public Optional<Tenant> checkAndUpdate(Tenant tenant, String token) {
+    public Optional<Tenant> check(Tenant tenant) {
 
         Criteria criteria = Criteria.where("tenantId").is(tenant.getTenantId());
         Query query = Query.query(criteria);
@@ -48,10 +53,7 @@ public class TenantService {
         log.info("tenantId:" + tenant.getTenantId());
         Tenant tenantEntity = mongoTemplate.findOne(query, Tenant.class);
         log.info("tenantEntity:" + tenantEntity);
-        if (tenantEntity != null) {
-            log.info("set tenantId/token :" + tenantEntity + "/" + token);
-            redis.set(tenantEntity.getTenantId(), token, 1, TimeUnit.DAYS);
-        }
+
         return Optional.ofNullable(tenantEntity);
     }
 
@@ -106,6 +108,32 @@ public class TenantService {
     public Long reToken(String id) {
         // System.out.println(redis.get(id));
         return redis.delete(id);
+    }
+
+    /**
+     *
+     */
+    public boolean register(RegisterIn input) {
+
+        // auth_master から　
+        Optional<?> result = authMasterRepo.findById(input.getPhoneNumber());
+        if (result.isPresent()) {
+            Tenant tenant = Tenant.builder()
+                    .tenantId(input.getTenantId())
+                    .account(input.getAccount())
+                    .tel(input.getPhoneNumber())
+                    .authority(2)
+                    .storageAccount("")
+                    .avatarUrl("")
+                    .build();
+
+            Tenant tenant1 = mongoTemplate.save(tenant);
+            if (tenant1 != null) {
+                return true;
+            }
+            return false;
+        }
+        return false;
     }
 
 }

@@ -18,3 +18,6 @@ INSERT INTO page(section_id, page_name, page_path) VALUES(2, 'Xml', '111');
 
 delete from g_user;
 INSERT INTO g_user (user_id, user_name, user_password) VALUES('xiaoguan', '胡乱写的', 'mb83201048');
+
+delete from auth_master;
+INSERT INTO auth_master (phone_number) VALUES('13332247026');
