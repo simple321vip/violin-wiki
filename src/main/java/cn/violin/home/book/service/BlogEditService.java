@@ -2,6 +2,7 @@ package cn.violin.home.book.service;
 
 import cn.violin.home.book.entity.BlogInfo;
 import cn.violin.home.book.entity.BlogType;
+import cn.violin.home.book.entity.Tenant;
 import cn.violin.home.book.io.BlogIn;
 import cn.violin.home.book.io.BlogTypeIn;
 import cn.violin.home.book.utils.Constant;
@@ -21,12 +22,16 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.Valid;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -74,13 +79,14 @@ public class BlogEditService {
         model.setOrder(input.getOrder());
         model.setBid(bid);
         model.setContent(new Binary("".getBytes(StandardCharsets.UTF_8)));
-        mongoTemplate.save(model);
+        model.setUpdateDateTime(LocalDateTime.now().format(UPDATE_DATETIME));
+        BlogInfo blog = mongoTemplate.save(model);
         BlogVo vo = new BlogVo();
-        vo.setBid(bid);
-        vo.setTitle(input.getTitle());
-        vo.setBtId(input.getBtId());
+        vo.setBid(blog.getBid());
+        vo.setTitle(blog.getTitle());
+        vo.setBtId(blog.getBtId());
         vo.setContent("");
-        vo.setOrder(input.getOrder());
+        vo.setOrder(blog.getOrder());
         return vo;
     }
 
@@ -106,16 +112,68 @@ public class BlogEditService {
     }
 
     /**
-     * ブログ削除処理
+     * delete process
      *
-     * @param bid 削除bid
+     * @param bid
+     * @param btId
      */
     @Transactional
-    public void deleteContent(String bid) {
+    public boolean deleteContent(String bid, String btId) {
+
+        Query query = new Query();
+        query.addCriteria(Criteria.where("biId").is(btId));
+
+        long count = mongoTemplate.count(query, BlogInfo.class);
+        if (count <= 1) {
+            return false;
+        }
+
         Criteria criteria = Criteria.where("bid").is(bid);
-        Query query = Query.query(criteria);
-        mongoTemplate.remove(query, BlogInfo.class);
+        Query query2 = Query.query(criteria);
+        mongoTemplate.remove(query2, BlogInfo.class);
+
+        this.sortBlog(btId);
+
+        return true;
     }
+
+    /**
+     * sort process
+     *
+     * @param btId
+     */
+    @Transactional
+    public void sortBlog(String btId) {
+        Query query1 = new Query();
+        query1.addCriteria(Criteria.where("biId").is(btId));
+        List<BlogInfo> blogs = mongoTemplate.find(query1, BlogInfo.class);
+        AtomicInteger index = new AtomicInteger(0);
+        blogs.stream().sorted(Comparator.comparing(BlogInfo::getOrder)).forEach((blog) -> {
+            Criteria criteria = Criteria.where("bid").is(blog.getBid());
+            Query query2 = Query.query(criteria);
+            Update update = Update.update("bid", blog.getBid())
+                    .set(COLUMN_ORDER, index.intValue());
+            index.getAndIncrement();
+            mongoTemplate.updateFirst(query2, update, BlogType.class);
+        });
+    }
+
+    /**
+     * sort process
+     *
+     * @param input
+     */
+    @Transactional
+    public void sortBlogFromFront(BlogIn[] input) {
+        Stream.of(input).forEach(blog -> {
+            Criteria criteria = Criteria.where("bid").is(blog.getBid());
+            Query query = Query.query(criteria);
+            Update update = Update.update("bid", blog.getBid())
+                    .set(COLUMN_ORDER, blog.getOrder());
+            mongoTemplate.updateFirst(query, update, BlogInfo.class);
+        });
+    }
+
 
     /**
      * ブログ新規作成処理
@@ -124,30 +182,32 @@ public class BlogEditService {
      * @return content ドキュメントのコンテント
      */
     @Transactional
-    public BlogBoxVo insertBlogType(BlogTypeIn input) {
+    public BlogBoxVo insertBlogType(BlogTypeIn input, String tenantId) {
         BlogType model = new BlogType();
         String btId = LocalDateTime.now().format(FORMATTER_DATETIME) + numberService.getNumberId(NumberEnum.T_BLOG_TYPE);
-        model.setBtName("未分类");
+        model.setBtName(WORD_1);
         if (StringUtils.hasLength(input.getBtName())) {
             model.setBtName(input.getBtName());
         }
         model.setBtId(btId);
-        model.setUpdateTime("");
-        mongoTemplate.save(model);
-
+        model.setOrder(input.getOrder());
+        model.setOwner(tenantId);
+        model.setUpdateTime(LocalDateTime.now().format(UPDATE_DATETIME));
+        BlogType blogType = mongoTemplate.save(model);
 
         BlogVo vo = this.insertContent(
                 BlogIn.builder()
                         .btId(btId)
                         .title(LocalDate.now().format(Constant.FORMATTER_DATE))
+                        .order(0)
                         .build()
         );
-        BlogBoxVo box = new BlogBoxVo();
-        box.setBtId(btId);
-        box.setBtName(model.getBtName());
         List<BlogVo> vos = new ArrayList<>(1);
         vos.add(vo);
-        box.setBlogVoList(vos);
+        BlogBoxVo box = BlogBoxVo.builder().btId(blogType.getBtId())
+                .btName(blogType.getBtName())
+                .order(blogType.getOrder())
+                .blogVoList(vos).build();
         return box;
     }
 
@@ -221,15 +281,8 @@ public class BlogEditService {
         if (docs.isEmpty()) {
             BlogTypeIn in = new BlogTypeIn();
             in.setBtName(WORD_1);
-            BlogBoxVo box = this.insertBlogType(in);
-            BlogVo blogVo = this.insertContent(
-                    BlogIn.builder()
-                            .title(WORD_2)
-                            .btId(box.getBtId())
-                            .order(0).build()
-            );
+            BlogBoxVo box = this.insertBlogType(in, id);
             List<BlogVo> blogVos = new ArrayList<>(1);
-            blogVos.add(blogVo);
             box.setBlogVoList(blogVos);
             List<BlogBoxVo> result = new ArrayList<>(1);
             result.add(box);

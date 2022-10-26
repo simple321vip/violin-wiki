@@ -25,6 +25,6 @@ public class BlogInfo implements Serializable {
     private String contentType;
     private Binary content;
     private long size;
-    private LocalDateTime updateDateTime;
+    private String updateDateTime;
     private int order;
 }

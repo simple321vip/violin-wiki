@@ -8,6 +8,7 @@ import cn.violin.home.book.io.BlogTypeIn;
 import cn.violin.home.book.vo.BlogBoxVo;
 import cn.violin.home.book.vo.BlogContent;
 import cn.violin.home.book.vo.BlogVo;
+import cn.violin.home.book.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,8 +52,16 @@ public class BlogEditCtl {
 
     @DeleteMapping("/blog/{bid}")
     @ResponseBody
-    public ResponseEntity<Void> deleteBlog(@PathVariable(value = "bid") String bid) {
-        blogEditService.deleteContent(bid);
+    public ResponseEntity<ResultVo> deleteBlog(@PathVariable(value = "bid") String bid, @Valid @RequestBody BlogIn input) {
+        boolean result = blogEditService.deleteContent(bid, input.getBtId());
+        return new ResponseEntity<>(ResultVo.builder().processStatus(result).build(), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/blogs/{btId}", produces = {"application/json"})
+    @ResponseBody
+    public ResponseEntity<Void> sortBlog(@PathVariable(value = "btId") String btId, @Valid @RequestBody() BlogIn[] input) {
+
+        blogEditService.sortBlogFromFront(input);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -65,8 +74,8 @@ public class BlogEditCtl {
 
     @PutMapping(value = "/blog_type", produces = {"application/json"})
     @ResponseBody
-    public ResponseEntity<BlogBoxVo> createBlogType(@Valid @RequestBody() BlogTypeIn input) {
-        BlogBoxVo vo = blogEditService.insertBlogType(input);
+    public ResponseEntity<BlogBoxVo> createBlogType(@Valid @RequestBody() BlogTypeIn input, @CurrentUser Tenant user) {
+        BlogBoxVo vo = blogEditService.insertBlogType(input, user.getTenantId());
         return new ResponseEntity<>(vo, HttpStatus.OK);
     }
 
@@ -96,7 +105,5 @@ public class BlogEditCtl {
         blogEditService.sortBlogType(input);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
-
+    
 }
