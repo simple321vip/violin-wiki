@@ -16,4 +16,6 @@ public class BookmarkType {
     private String typeId;
 
     private String typeName;
+
+    private String owner;
 }

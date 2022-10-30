@@ -2,6 +2,7 @@ package cn.violin.home.book.controller;
 
 import cn.violin.home.book.annotation.PassToken;
 import cn.violin.home.book.entity.Tenant;
+import cn.violin.home.book.io.BlogIn;
 import cn.violin.home.book.io.RegisterIn;
 import cn.violin.home.book.service.TenantService;
 import cn.violin.home.book.utils.JedisUtils;
@@ -23,7 +24,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Optional;
@@ -90,6 +90,17 @@ public class OauthController {
             }
         }
         return "redirect:" + REDIRECT_IP + "sorryPage";
+    }
+
+    @PostMapping("/authorize")
+    @PassToken
+    public ResponseEntity<Void> authorize(@Valid @RequestBody() RegisterIn input) {
+
+        if (redis.get(input.getTenantId()).equals(input.getToken())) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @GetMapping("/user_info")

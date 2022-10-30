@@ -39,8 +39,8 @@ public class BlogEditCtl {
 
     @PutMapping("/blog/content")
     @ResponseBody
-    public ResponseEntity<BlogVo> newBlog(@Valid @RequestBody BlogIn input) {
-        return new ResponseEntity<>(blogEditService.insertContent(input), HttpStatus.OK);
+    public ResponseEntity<BlogVo> newBlog(@Valid @RequestBody BlogIn input, @CurrentUser Tenant tenant) {
+        return new ResponseEntity<>(blogEditService.insertContent(input, tenant), HttpStatus.OK);
     }
 
     @PostMapping("/blog/content")
@@ -52,9 +52,10 @@ public class BlogEditCtl {
 
     @DeleteMapping("/blog/{bid}")
     @ResponseBody
-    public ResponseEntity<ResultVo> deleteBlog(@PathVariable(value = "bid") String bid, @Valid @RequestBody BlogIn input) {
-        boolean result = blogEditService.deleteContent(bid, input.getBtId());
-        return new ResponseEntity<>(ResultVo.builder().processStatus(result).build(), HttpStatus.OK);
+    public ResponseEntity<BlogBoxVo> deleteBlog(@PathVariable(value = "bid") String bid, @Valid @RequestBody BlogIn input, @CurrentUser Tenant user) throws Exception {
+        input.setBid(bid);
+        BlogBoxVo result = blogEditService.deleteContent(input, user);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping(value = "/blogs/{btId}", produces = {"application/json"})
@@ -67,28 +68,27 @@ public class BlogEditCtl {
 
     @GetMapping("/blog/list")
     @ResponseBody
-    public ResponseEntity<List<BlogBoxVo>> blogView(@CurrentUser Tenant user) {
+    public ResponseEntity<List<BlogBoxVo>> blogView(@CurrentUser Tenant tenant) {
 
-        return new ResponseEntity<>(blogEditService.listAll(user.getTenantId()), HttpStatus.OK);
+        return new ResponseEntity<>(blogEditService.listAll(tenant), HttpStatus.OK);
     }
 
     @PutMapping(value = "/blog_type", produces = {"application/json"})
     @ResponseBody
-    public ResponseEntity<BlogBoxVo> createBlogType(@Valid @RequestBody() BlogTypeIn input, @CurrentUser Tenant user) {
-        BlogBoxVo vo = blogEditService.insertBlogType(input, user.getTenantId());
+    public ResponseEntity<BlogBoxVo> createBlogType(@Valid @RequestBody() BlogTypeIn input, @CurrentUser Tenant tenant) {
+        BlogBoxVo vo = blogEditService.insertBlogType(input, tenant);
         return new ResponseEntity<>(vo, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/blog_type", produces = {"application/json"})
     @ResponseBody
-    public ResponseEntity<Void> deleteBlogType(@Valid @RequestBody() BlogTypeIn input) {
+    public ResponseEntity<List<BlogBoxVo>> deleteBlogType(@Valid @RequestBody() BlogTypeIn input, @CurrentUser Tenant tenant) {
         try {
-            blogEditService.deleteBlogType(input.getBtId());
+            List<BlogBoxVo> result = blogEditService.deleteBlogType(input.getBtId(), tenant);
+            return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(value = "/blog_type", produces = {"application/json"})

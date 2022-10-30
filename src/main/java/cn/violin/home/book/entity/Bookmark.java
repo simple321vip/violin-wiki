@@ -1,6 +1,7 @@
 package cn.violin.home.book.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "t_bookmark")
+@Builder
 public class Bookmark {
     @Id
     private String id;
@@ -18,4 +20,5 @@ public class Bookmark {
     private String typeId;
     private String comment;
     private String url;
+    private String owner;
 }

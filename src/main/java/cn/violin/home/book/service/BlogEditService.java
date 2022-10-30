@@ -22,9 +22,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -68,24 +66,26 @@ public class BlogEditService {
      * ブログ新規作成処理
      *
      * @param input 新規作成に必要情報
+     * @param tenant
      * @return content ドキュメントのコンテント
      */
     @Transactional
-    public BlogVo insertContent(BlogIn input) {
+    public BlogVo insertContent(BlogIn input, Tenant tenant) {
         BlogInfo model = new BlogInfo();
         String bid = LocalDateTime.now().format(FORMATTER_DATETIME) + numberService.getNumberId(NumberEnum.T_BLOG);
         model.setTitle(input.getTitle());
         model.setBtId(input.getBtId());
         model.setOrder(input.getOrder());
         model.setBid(bid);
-        model.setContent(new Binary("".getBytes(StandardCharsets.UTF_8)));
+        model.setOwner(tenant.getTenantId());
+        model.setContent(new Binary("该写点什么么...".getBytes(StandardCharsets.UTF_8)));
         model.setUpdateDateTime(LocalDateTime.now().format(UPDATE_DATETIME));
         BlogInfo blog = mongoTemplate.save(model);
         BlogVo vo = new BlogVo();
         vo.setBid(blog.getBid());
         vo.setTitle(blog.getTitle());
         vo.setBtId(blog.getBtId());
-        vo.setContent("");
+        vo.setContent("该写点什么么...");
         vo.setOrder(blog.getOrder());
         return vo;
     }
@@ -112,51 +112,51 @@ public class BlogEditService {
     }
 
     /**
-     * delete process
+     * delete process and sort process
      *
-     * @param bid
-     * @param btId
+     * @param input
+     * @param user
+     *
+     * @return BlogBoxVo
      */
     @Transactional
-    public boolean deleteContent(String bid, String btId) {
+    public BlogBoxVo deleteContent(BlogIn input, Tenant user) throws Exception {
+        Query query = Query.query(Criteria.where("owner").is(user.getTenantId()));
+        query.addCriteria(Criteria.where("btId").is(input.getBtId()));
 
-        Query query = new Query();
-        query.addCriteria(Criteria.where("biId").is(btId));
-
+        // judge
         long count = mongoTemplate.count(query, BlogInfo.class);
         if (count <= 1) {
-            return false;
+            throw new Exception("削除でき来ない");
         }
 
-        Criteria criteria = Criteria.where("bid").is(bid);
-        Query query2 = Query.query(criteria);
+        // delete
+        Query query2 = Query.query(Criteria.where("bid").is(input.getBid()));
         mongoTemplate.remove(query2, BlogInfo.class);
 
-        this.sortBlog(btId);
-
-        return true;
-    }
-
-    /**
-     * sort process
-     *
-     * @param btId
-     */
-    @Transactional
-    public void sortBlog(String btId) {
-        Query query1 = new Query();
-        query1.addCriteria(Criteria.where("biId").is(btId));
-        List<BlogInfo> blogs = mongoTemplate.find(query1, BlogInfo.class);
+        // sort
+        List<BlogInfo> blogs = mongoTemplate.find(query, BlogInfo.class);
         AtomicInteger index = new AtomicInteger(0);
-        blogs.stream().sorted(Comparator.comparing(BlogInfo::getOrder)).forEach((blog) -> {
+        List<BlogVo> blogVos = blogs.stream().sorted(Comparator.comparing(BlogInfo::getOrder)).map((blog) -> {
             Criteria criteria = Criteria.where("bid").is(blog.getBid());
-            Query query2 = Query.query(criteria);
+            Query query4 = Query.query(criteria);
             Update update = Update.update("bid", blog.getBid())
                     .set(COLUMN_ORDER, index.intValue());
+            mongoTemplate.updateFirst(query4, update, BlogInfo.class);
+            blog.setOrder(index.intValue());
             index.getAndIncrement();
-            mongoTemplate.updateFirst(query2, update, BlogType.class);
-        });
+            return BlogVo.builder()
+                    .bid(blog.getBid())
+                    .title(blog.getTitle())
+                    .content(new String(blog.getContent().getData(), StandardCharsets.UTF_8))
+                    .btId(blog.getBtId())
+                    .order(blog.getOrder())
+                    .build();
+        }).collect(Collectors.toList());
+
+        return BlogBoxVo.builder().blogVoList(blogVos).build();
     }
+
 
     /**
      * sort process
@@ -182,7 +182,7 @@ public class BlogEditService {
      * @return content ドキュメントのコンテント
      */
     @Transactional
-    public BlogBoxVo insertBlogType(BlogTypeIn input, String tenantId) {
+    public BlogBoxVo insertBlogType(BlogTypeIn input, Tenant tenant) {
         BlogType model = new BlogType();
         String btId = LocalDateTime.now().format(FORMATTER_DATETIME) + numberService.getNumberId(NumberEnum.T_BLOG_TYPE);
         model.setBtName(WORD_1);
@@ -191,7 +191,7 @@ public class BlogEditService {
         }
         model.setBtId(btId);
         model.setOrder(input.getOrder());
-        model.setOwner(tenantId);
+        model.setOwner(tenant.getTenantId());
         model.setUpdateTime(LocalDateTime.now().format(UPDATE_DATETIME));
         BlogType blogType = mongoTemplate.save(model);
 
@@ -200,15 +200,14 @@ public class BlogEditService {
                         .btId(btId)
                         .title(LocalDate.now().format(Constant.FORMATTER_DATE))
                         .order(0)
-                        .build()
+                        .build(), tenant
         );
         List<BlogVo> vos = new ArrayList<>(1);
         vos.add(vo);
-        BlogBoxVo box = BlogBoxVo.builder().btId(blogType.getBtId())
+        return BlogBoxVo.builder().btId(blogType.getBtId())
                 .btName(blogType.getBtName())
                 .order(blogType.getOrder())
                 .blogVoList(vos).build();
-        return box;
     }
 
     /**
@@ -245,23 +244,38 @@ public class BlogEditService {
 
     /**
      * 該当btIdに所属するBlogs及びBlogTypeを削除する
+     * after delete process, to query and return it.
+     * 1 件の場合は、削除できない。
      *
      * @param btId BlogTypeId
      */
     @Transactional()
-    public void deleteBlogType(String btId) throws Exception {
-        Criteria criteria1 = Criteria.where("owner").is("xiaoguan");
-        Query query1 = Query.query(criteria1);
-        long count = mongoTemplate.count(query1, "t_blog_type");
-        if (count > 1) {
-            Criteria criteria = Criteria.where("btId").is(btId);
-            Query query = Query.query(criteria);
+    public List<BlogBoxVo> deleteBlogType(String btId, Tenant tenant) throws Exception {
 
-            mongoTemplate.remove(query, "t_blog");
-            mongoTemplate.remove(query, "t_blog_type");
+        Query query = Query.query(Criteria.where("owner").is(tenant.getTenantId()));
+        List<BlogType> blogTypes = mongoTemplate.find(query, BlogType.class);
+        if (blogTypes.size() > 1) {
+
+            // delete
+            Query query1 = Query.query(Criteria.where("btId").is(btId));
+            mongoTemplate.remove(query1, "t_blog");
+            mongoTemplate.remove(query1, "t_blog_type");
+
+            // sort
+            AtomicInteger index = new AtomicInteger(0);
+            blogTypes.stream().sorted(Comparator.comparing(BlogType::getOrder)).forEach((blogType) -> {
+                Query query2 = Query.query(Criteria.where("btId").is(blogType.getBtId()));
+                Update update = Update.update(COLUMN_ORDER, index.intValue());
+                mongoTemplate.updateFirst(query2, update, BlogType.class);
+                blogType.setOrder(index.intValue());
+                index.getAndIncrement();
+            });
+
         } else {
             throw new Exception("削除でき来ない");
         }
+
+        return this.listAll(tenant);
     }
 
     /**
@@ -270,20 +284,18 @@ public class BlogEditService {
      * @return List<BlogBoxVo>
      */
     @Transactional
-    public List<BlogBoxVo> listAll(String id) {
+    public List<BlogBoxVo> listAll(Tenant tenant) {
 
         // query blog_types
         Query blogTypeQuery = new Query();
-        blogTypeQuery.addCriteria(Criteria.where("owner").is(id)).with(Sort.by("order").ascending());
+        blogTypeQuery.addCriteria(Criteria.where("owner").is(tenant.getTenantId())).with(Sort.by("order").ascending());
         List<BlogType> docs = mongoTemplate.find(blogTypeQuery, BlogType.class);
 
         // when the tenant login for the first time，no the blog_types exists，so to create a default blog_type。
         if (docs.isEmpty()) {
             BlogTypeIn in = new BlogTypeIn();
             in.setBtName(WORD_1);
-            BlogBoxVo box = this.insertBlogType(in, id);
-            List<BlogVo> blogVos = new ArrayList<>(1);
-            box.setBlogVoList(blogVos);
+            BlogBoxVo box = this.insertBlogType(in, tenant);
             List<BlogBoxVo> result = new ArrayList<>(1);
             result.add(box);
             return result;

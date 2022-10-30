@@ -1,5 +1,6 @@
 package cn.violin.home.book.service;
 
+import cn.violin.home.book.entity.Tenant;
 import cn.violin.home.book.task.FileExportTask;
 import cn.violin.home.book.config.Constant;
 import cn.violin.home.book.entity.BlogInfo;
@@ -39,9 +40,8 @@ public class BlogViewService {
     @Autowired
     private Constant CONSTANT;
 
-    public List<BlogVo> selectBlogs(String btId, String keyWord, LocalDate startDay, LocalDate endDay) {
-        String owner = "xiaoguan";
-        Criteria criteria = Criteria.where("owner").is(owner);
+    public List<BlogVo> selectBlogs(String btId, String keyWord, LocalDate startDay, LocalDate endDay, Tenant tenant) {
+        Criteria criteria = Criteria.where("owner").is(tenant.getTenantId());
         if (StringUtils.hasLength(btId)) {
             criteria.and("btId").is(btId);
         }
@@ -55,6 +55,17 @@ public class BlogViewService {
 //
 //        }
         Query query = Query.query(criteria);
+
+        // select count
+//        long total = mongoTemplate.count(query, BlogType.class);
+
+        // page
+//        Integer skip = tenant.getPageNo() * tenant.getPageSize();
+//        query.skip(skip).limit(tenant.getPageSize());
+
+        // sort
+//        query.with(Sort.by(Sort.Order.desc("updateDateTime")));
+
         List<BlogType> bts = mongoTemplate.find(query, BlogType.class);
         List<String> btIds = bts.stream().map(BlogType::getBtId).collect(Collectors.toList());
 
@@ -84,9 +95,8 @@ public class BlogViewService {
      *
      * @return btNameリスト
      */
-    public List<BlogBoxVo> selectBtName() {
-        String owner = "xiaoguan";
-        Criteria criteria = Criteria.where("owner").is(owner);
+    public List<BlogBoxVo> selectBtName(Tenant tenant) {
+        Criteria criteria = Criteria.where("owner").is(tenant.getTenantId());
         Query query = Query.query(criteria);
 
         List<BlogType> bts = mongoTemplate.find(query, BlogType.class);
@@ -100,22 +110,9 @@ public class BlogViewService {
     /**
      * publish
      */
-    public void publishAll() {
+    public void publishAll(Tenant tenant) {
 
-        String owner = "xiaoguan";
-        Criteria criteria = Criteria.where("owner").is(owner);
-//        if (StringUtils.hasLength(btId)) {
-//            criteria.and("btId").is(btId);
-//        }
-//        if (StringUtils.hasLength(keyWord)) {
-//
-//        }
-//        if (startDay != null) {
-//
-//        }
-//        if (endDay != null) {
-//
-//        }
+        Criteria criteria = Criteria.where("owner").is(tenant.getTenantId());
         Query query = Query.query(criteria);
 
         List<BlogType> bts = mongoTemplate.find(query, BlogType.class);
@@ -177,9 +174,9 @@ public class BlogViewService {
      * publish
      * @param bid bid
      */
-    public void publish(String bid) {
+    public void publish(String bid, Tenant tenant) {
 
-        Criteria criteria = Criteria.where("bid").is(bid);
+        Criteria criteria = Criteria.where("bid").is(bid).andOperator(Criteria.where("owner").is(tenant.getTenantId()));
         Query query = Query.query(criteria);
         BlogInfo doc = mongoTemplate.findOne(query, BlogInfo.class);
 

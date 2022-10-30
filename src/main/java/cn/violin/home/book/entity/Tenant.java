@@ -26,4 +26,8 @@ public class Tenant {
     private String avatarUrl;
 
     private String storageAccount;
+
+    private int pageNo;
+
+    private int pageSize;
 }

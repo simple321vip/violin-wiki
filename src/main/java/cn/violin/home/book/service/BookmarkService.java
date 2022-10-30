@@ -41,10 +41,11 @@ public class BookmarkService {
      * @param deleteFlg　削除フラグ
      * @return List<Bookmark>
      */
-    public List<BookmarkVo> getBookmarks(String[] typeIds, String comment, String deleteFlg) {
+    public List<BookmarkVo> getBookmarks(String[] typeIds, String comment, String deleteFlg, Tenant tenant) {
 
         // 1. select bookmark_type
         Criteria criteria1 = new Criteria();
+        criteria1.and("owner").is(tenant.getTenantId());
         if (typeIds != null && typeIds.length != 0) {
             criteria1.and("typeId").in(typeIds);
         }
@@ -60,6 +61,7 @@ public class BookmarkService {
 
         // 2. select bookmark
         Criteria criteria2 = Criteria.where("deleteFlg").is(deleteFlg);
+        criteria2.and("owner").is(tenant.getTenantId());
         if (StringUtils.hasLength(comment)) {
             criteria2.and("comment").is(comment);
         }
@@ -85,14 +87,15 @@ public class BookmarkService {
      * @param bookmarkIn 11
      */
     @Transactional
-    public void insertBookmark(BookmarkIn bookmarkIn) {
+    public void insertBookmark(BookmarkIn bookmarkIn, Tenant tenant) {
         String id = LocalDateTime.now().format(FORMATTER_DATETIME) + numberService.getNumberId(NumberEnum.T_BOOKMARK);
-        Bookmark bookmark = new Bookmark();
-        bookmark.setId(id);
-        bookmark.setTypeId(bookmarkIn.getTypeId());
-        bookmark.setComment(bookmarkIn.getComment());
-        bookmark.setUrl(bookmarkIn.getUrl());
-        bookmark.setDeleteFlg(FALSE_FLAG);
+        Bookmark bookmark = Bookmark.builder()
+                .id(id)
+                .typeId(bookmarkIn.getTypeId())
+                .comment(bookmarkIn.getComment())
+                .url(bookmarkIn.getUrl())
+                .deleteFlg(FALSE_FLAG)
+                .owner(tenant.getTenantId()).build();
         mongoTemplate.save(bookmark);
     }
 
@@ -102,8 +105,9 @@ public class BookmarkService {
      * @param bookmarkIn 11
      */
     @Transactional()
-    public void updateBookmark(BookmarkIn bookmarkIn) {
-        Criteria criteria = Criteria.where("id").is(bookmarkIn.getId());
+    public void updateBookmark(BookmarkIn bookmarkIn, Tenant tenant) {
+        Criteria criteria = Criteria.where("id").is(bookmarkIn.getId())
+                .and("owner").is(tenant.getTenantId());
         Query query = Query.query(criteria);
         Update update = Update.update("comment", bookmarkIn.getComment());
         update = update.set("url", bookmarkIn.getUrl());
@@ -118,9 +122,10 @@ public class BookmarkService {
      * @param id bookmark id
      */
     @Transactional()
-    public void delete(String id) {
+    public void delete(String id, Tenant tenant) {
 
-        Criteria criteria = Criteria.where("id").is(id);
+        Criteria criteria = Criteria.where("id").is(id)
+                .and("owner").is(tenant.getTenantId());
         Query query = Query.query(criteria);
         Update update = Update.update("deleteFlg", TRUE_FLAG);
         mongoTemplate.updateFirst(query, update, Bookmark.class);
@@ -131,8 +136,10 @@ public class BookmarkService {
      *
      * @return List<BookmarkType> 11
      */
-    public List<BookmarkType> getBookmarkTypes() {
-        return mongoTemplate.findAll(BookmarkType.class);
+    public List<BookmarkType> getBookmarkTypes(Tenant tenant) {
+        Criteria criteria = Criteria.where("owner").is(tenant.getTenantId());
+        Query query = Query.query(criteria);
+        return mongoTemplate.find(query, BookmarkType.class);
     }
 
     /**
@@ -141,11 +148,12 @@ public class BookmarkService {
      * @param input 11
      */
     @Transactional
-    public void insertBookmarkType(BookmarkIn input) {
+    public void insertBookmarkType(BookmarkIn input, Tenant tenant) {
         String id = LocalDateTime.now().format(FORMATTER_DATETIME);
         BookmarkType bookmarkType = new BookmarkType();
         bookmarkType.setTypeId(id);
         bookmarkType.setTypeName(input.getTypeName());
+        bookmarkType.setOwner(tenant.getTenantId());
         mongoTemplate.save(bookmarkType);
     }
 
