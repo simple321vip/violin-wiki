@@ -84,7 +84,7 @@ public class OauthController {
 
             if (optional.isPresent()) {
                 redis.set(optional.get().getTenantId(), accessToken, 1, TimeUnit.DAYS);
-                return "redirect:" + REDIRECT_IP + "home";
+                return "redirect:" + REDIRECT_IP + "home/";
             } else {
                 return "redirect:" + REDIRECT_IP + "register";
             }
