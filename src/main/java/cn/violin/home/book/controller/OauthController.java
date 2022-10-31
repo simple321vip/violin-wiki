@@ -96,7 +96,8 @@ public class OauthController {
     @PassToken
     public ResponseEntity<Void> authorize(@Valid @RequestBody() RegisterIn input) {
 
-        if (redis.get(input.getTenantId()).equals(input.getToken())) {
+        Optional<String> savedToken = redis.get(input.getTenantId());
+        if (savedToken.isPresent() && savedToken.get().equals(input.getToken())) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
