@@ -195,13 +195,11 @@ public class BlogEditService {
         model.setUpdateTime(LocalDateTime.now().format(UPDATE_DATETIME));
         BlogType blogType = mongoTemplate.save(model);
 
-        BlogVo vo = this.insertContent(
-                BlogIn.builder()
-                        .btId(btId)
-                        .title(LocalDate.now().format(Constant.FORMATTER_DATE))
-                        .order(0)
-                        .build(), tenant
-        );
+        BlogIn blogIn = new BlogIn();
+        blogIn.setBtId(btId);
+        blogIn.setTitle(LocalDate.now().format(Constant.FORMATTER_DATE));
+        blogIn.setOrder(0);
+        BlogVo vo = this.insertContent(blogIn, tenant);
         List<BlogVo> vos = new ArrayList<>(1);
         vos.add(vo);
         return BlogBoxVo.builder().btId(blogType.getBtId())
