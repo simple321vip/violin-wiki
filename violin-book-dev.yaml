@@ -15,6 +15,7 @@ spec:
       labels:
         app: violin-book
     spec:
+      nodeName: node1
       containers:
         - name: violin-book
           image: ccr.ccs.tencentyun.com/violin/violin-book:v1.00
