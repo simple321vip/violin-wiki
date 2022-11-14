@@ -1,7 +1,6 @@
 package cn.violin.home.book.service;
 
 import cn.violin.home.book.entity.*;
-import cn.violin.home.book.dao.BookmarkTypeRepo;
 import cn.violin.home.book.io.BookmarkIn;
 import cn.violin.home.book.utils.NumberEnum;
 import cn.violin.home.book.vo.BookmarkVo;
@@ -17,7 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static cn.violin.home.book.utils.Constant.*;
@@ -30,9 +31,6 @@ public class BookmarkService {
     private NumberService numberService;
 
     @Autowired
-    private BookmarkTypeRepo bookmarkTypeRepo;
-
-    @Autowired
     private MongoTemplate mongoTemplate;
 
     /**
@@ -40,27 +38,45 @@ public class BookmarkService {
      *
      * @param comment コメント
      * @param typeIds　bookmark type id リスト
-     * @param isDelete　削除フラグ
+     * @param deleteFlg　削除フラグ
      * @return List<Bookmark>
      */
-    public List<BookmarkVo> getBookmarks(Long[] typeIds, String comment, String isDelete) {
+    public List<BookmarkVo> getBookmarks(String[] typeIds, String comment, String deleteFlg, Tenant tenant) {
 
-        String owner = "xiaoguan";
-        Criteria criteria = Criteria.where("owner").is(owner);
+        // 1. select bookmark_type
+        Criteria criteria1 = new Criteria();
+        criteria1.and("owner").is(tenant.getTenantId());
+        if (typeIds != null && typeIds.length != 0) {
+            criteria1.and("typeId").in(typeIds);
+        }
+        Query query1 = Query.query(criteria1);
+        List<BookmarkType> bookmarkTypes= mongoTemplate.find(query1, BookmarkType.class);
+        Map<String, String> types = bookmarkTypes
+                .stream()
+                .collect(
+                        HashMap::new,
+                        (map, item)->map.put(item.getTypeId(), item.getTypeName()),
+                        HashMap::putAll
+                );
+
+        // 2. select bookmark
+        Criteria criteria2 = Criteria.where("deleteFlg").is(deleteFlg);
+        criteria2.and("owner").is(tenant.getTenantId());
         if (StringUtils.hasLength(comment)) {
-            criteria.and("comment").is(comment);
+            criteria2.and("comment").is(comment);
         }
         if (typeIds != null && typeIds.length != 0) {
-            criteria.and("typeId").in(typeIds);
+            criteria2.and("typeId").in(typeIds);
         }
-        criteria.and("isDelete").is(isDelete);
-        Query query = Query.query(criteria);
-        List<Bookmark> bookmarks = mongoTemplate.find(query, Bookmark.class);
+        Query query2 = Query.query(criteria2);
+        List<Bookmark> bookmarks = mongoTemplate.find(query2, Bookmark.class);
 
+        // 3. matching process
         return bookmarks.stream().map(bm -> BookmarkVo.builder()
                 .id(bm.getId())
                 .comment(bm.getComment())
                 .typeId(bm.getTypeId())
+                .typeName(types.get(bm.getTypeId()))
                 .url(bm.getUrl())
                 .build()).collect(Collectors.toList());
     }
@@ -71,14 +87,15 @@ public class BookmarkService {
      * @param bookmarkIn 11
      */
     @Transactional
-    public void insertBookmark(BookmarkIn bookmarkIn) {
+    public void insertBookmark(BookmarkIn bookmarkIn, Tenant tenant) {
         String id = LocalDateTime.now().format(FORMATTER_DATETIME) + numberService.getNumberId(NumberEnum.T_BOOKMARK);
-        Bookmark bookmark = new Bookmark();
-        bookmark.setId(id);
-        bookmark.setTypeId(bookmarkIn.getTypeId());
-        bookmark.setComment(bookmarkIn.getComment());
-        bookmark.setUrl(bookmarkIn.getUrl());
-        bookmark.setDeleteFlg(FALSE_FLAG);
+        Bookmark bookmark = Bookmark.builder()
+                .id(id)
+                .typeId(bookmarkIn.getTypeId())
+                .comment(bookmarkIn.getComment())
+                .url(bookmarkIn.getUrl())
+                .deleteFlg(FALSE_FLAG)
+                .owner(tenant.getTenantId()).build();
         mongoTemplate.save(bookmark);
     }
 
@@ -88,8 +105,9 @@ public class BookmarkService {
      * @param bookmarkIn 11
      */
     @Transactional()
-    public void updateBookmark(BookmarkIn bookmarkIn) {
-        Criteria criteria = Criteria.where("id").is(bookmarkIn.getId());
+    public void updateBookmark(BookmarkIn bookmarkIn, Tenant tenant) {
+        Criteria criteria = Criteria.where("id").is(bookmarkIn.getId())
+                .and("owner").is(tenant.getTenantId());
         Query query = Query.query(criteria);
         Update update = Update.update("comment", bookmarkIn.getComment());
         update = update.set("url", bookmarkIn.getUrl());
@@ -104,11 +122,12 @@ public class BookmarkService {
      * @param id bookmark id
      */
     @Transactional()
-    public void delete(String id) {
+    public void delete(String id, Tenant tenant) {
 
-        Criteria criteria = Criteria.where("id").is(id);
+        Criteria criteria = Criteria.where("id").is(id)
+                .and("owner").is(tenant.getTenantId());
         Query query = Query.query(criteria);
-        Update update = Update.update("isDelete", TRUE_FLAG);
+        Update update = Update.update("deleteFlg", TRUE_FLAG);
         mongoTemplate.updateFirst(query, update, Bookmark.class);
     }
 
@@ -117,7 +136,53 @@ public class BookmarkService {
      *
      * @return List<BookmarkType> 11
      */
-    public List<BookmarkType> getBookmarkTypes() {
-        return bookmarkTypeRepo.findAll();
+    public List<BookmarkType> getBookmarkTypes(Tenant tenant) {
+        Criteria criteria = Criteria.where("owner").is(tenant.getTenantId());
+        Query query = Query.query(criteria);
+        return mongoTemplate.find(query, BookmarkType.class);
     }
+
+    /**
+     * bookmarkTypeを登録する
+     *
+     * @param input 11
+     */
+    @Transactional
+    public void insertBookmarkType(BookmarkIn input, Tenant tenant) {
+        String id = LocalDateTime.now().format(FORMATTER_DATETIME);
+        BookmarkType bookmarkType = new BookmarkType();
+        bookmarkType.setTypeId(id);
+        bookmarkType.setTypeName(input.getTypeName());
+        bookmarkType.setOwner(tenant.getTenantId());
+        mongoTemplate.save(bookmarkType);
+    }
+
+    /**
+     * delete bookmarkType by type_id
+     *
+     * @param typeId bookmark_type_id
+     */
+    @Transactional
+    public void deleteBookmarkType(String typeId) {
+//        String id = LocalDateTime.now().format(FORMATTER_DATETIME);
+//        BookmarkType bookmarkType = new BookmarkType();
+//        bookmarkType.setTypeId(id);
+//        bookmarkType.setTypeName(input.getTypeName());
+//        mongoTemplate.save(bookmarkType);
+    }
+
+    /**
+     * delete bookmarkType by type_id
+     *
+     * @param input bookmark_type_id
+     */
+    @Transactional
+    public void editBookmarkType(BookmarkIn input) {
+//        String id = LocalDateTime.now().format(FORMATTER_DATETIME);
+//        BookmarkType bookmarkType = new BookmarkType();
+//        bookmarkType.setTypeId(id);
+//        bookmarkType.setTypeName(input.getTypeName());
+//        mongoTemplate.save(bookmarkType);
+    }
+
 }

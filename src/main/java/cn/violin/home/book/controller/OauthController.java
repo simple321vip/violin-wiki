@@ -1,9 +1,15 @@
 package cn.violin.home.book.controller;
 
-
+import cn.violin.home.book.annotation.PassToken;
+import cn.violin.home.book.entity.Tenant;
+import cn.violin.home.book.io.BlogIn;
+import cn.violin.home.book.io.RegisterIn;
+import cn.violin.home.book.service.TenantService;
+import cn.violin.home.book.utils.JedisUtils;
 import com.alibaba.fastjson.JSONObject;
 import cn.violin.home.book.config.BaiduConf;
 import cn.violin.home.book.vo.UserInfoVo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -15,17 +21,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 @CrossOrigin
 @RequestMapping("/api/v1")
+@Slf4j
 public class OauthController {
 
     @Value("${server.auth.redirect-ip}")
@@ -34,6 +41,12 @@ public class OauthController {
     @Autowired
     private BaiduConf BaiduConf;
 
+    @Autowired
+    private TenantService tenantService;
+
+    @Autowired
+    private JedisUtils redis;
+
     @GetMapping("/getBaiDuCode")
     public ResponseEntity<String> getBaiDuCode() {
 
@@ -41,7 +54,8 @@ public class OauthController {
     }
 
     @GetMapping("/authorize/baidu")
-    public void qrAuthorize(@RequestParam(value = "code") String code, HttpServletResponse resp) throws IOException {
+    @PassToken
+    public String qrAuthorize(@RequestParam(value = "code") String code, RedirectAttributes attributes) throws IOException {
         StringBuilder authorizeUrl = new StringBuilder();
         authorizeUrl.append(BaiduConf.getAccessToken())
                 .append("?").append("grant_type=authorization_code")
@@ -54,35 +68,76 @@ public class OauthController {
         CloseableHttpResponse response = httpClient.execute(httpGetToken);
         if (response.getStatusLine().getStatusCode() == 200) {
 
-            StringBuilder redirect = new StringBuilder();
-            redirect.append(REDIRECT_IP + "/?token=");
             HttpEntity entity = response.getEntity();
             JSONObject object = JSONObject.parseObject(EntityUtils.toString(entity));
             String accessToken = object.getString("access_token");
-            redirect.append(accessToken);
-            System.out.println(accessToken);
-            resp.sendRedirect(redirect.toString());
+
+            log.info(accessToken);
+            Tenant tenant = tenantService.getTenant(accessToken);
+            log.info(tenant.toString());
+
+            Optional<Tenant> optional = tenantService.check(tenant);
+
+            attributes.addAttribute("tenantId", tenant.getTenantId());
+            attributes.addAttribute("account", tenant.getAccount());
+            attributes.addAttribute("token", accessToken);
+
+            if (optional.isPresent()) {
+                redis.set(optional.get().getTenantId(), accessToken, 1, TimeUnit.DAYS);
+                return "redirect:" + REDIRECT_IP + "home/";
+            } else {
+                return "redirect:" + REDIRECT_IP + "register";
+            }
+        }
+        return "redirect:" + REDIRECT_IP + "sorryPage";
+    }
+
+    @PostMapping("/authorize")
+    @PassToken
+    public ResponseEntity<Void> authorize(@Valid @RequestBody() RegisterIn input) {
+
+        Optional<String> savedToken = redis.get(input.getTenantId());
+        if (savedToken.isPresent() && savedToken.get().equals(input.getToken())) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
     @GetMapping("/user_info")
-    public ResponseEntity<UserInfoVo> getUInfo(@RequestParam(value = "token") String token) throws IOException {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        String uInfoUrl = "https://pan.baidu.com/rest/2.0/xpan/nas?method=uinfo&access_token=" +
-                token;
-        HttpGet httpGetUInfo = new HttpGet(uInfoUrl);
-        CloseableHttpResponse response = httpClient.execute(httpGetUInfo);
-        if (response.getStatusLine().getStatusCode() == 200) {
-            HttpEntity uInfoEntity = response.getEntity();
-            JSONObject uInfoObject = JSONObject.parseObject(EntityUtils.toString(uInfoEntity));
-            UserInfoVo build = UserInfoVo.builder()
-                    .uk(uInfoObject.getString("uk"))
-                    .baiduName(uInfoObject.getString("baidu_name"))
-                    .netdiskName(uInfoObject.getString("netdisk_name"))
-                    .avatarUrl(uInfoObject.getString("avatar_url"))
-                    .build();
-            return new ResponseEntity<>(build, HttpStatus.OK);
+    @PassToken
+    public ResponseEntity<UserInfoVo> getUInfo(@RequestParam(value = "token") String token) {
+
+        Tenant tenant = tenantService.getTenantFromTTenant(token);
+
+        UserInfoVo build = UserInfoVo.builder()
+                .id(tenant.getTenantId())
+                .account(tenant.getAccount())
+                .baiduName(tenant.getAccount())
+                .netdiskName(tenant.getStorageAccount())
+                .avatarUrl(tenant.getAvatarUrl())
+                .build();
+        return new ResponseEntity<>(build, HttpStatus.OK);
+    }
+
+    @PostMapping("/register")
+    @PassToken
+    public ResponseEntity<Void> register(@Valid @RequestBody RegisterIn input, RedirectAttributes attributes) {
+        boolean result = tenantService.register(input);
+        if (result) {
+            redis.set(input.getTenantId(), input.getToken(), 1, TimeUnit.DAYS);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+
+    @GetMapping("/logout/{id}")
+    public ResponseEntity<Void> logout(@PathVariable(value = "id") String id) {
+
+        tenantService.reToken(id);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
     }
 }

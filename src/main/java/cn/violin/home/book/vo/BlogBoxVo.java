@@ -21,4 +21,7 @@ public class BlogBoxVo {
     @JsonProperty("blog_list")
     private List<BlogVo> blogVoList;
 
+    @JsonProperty("order")
+    private int order;
+
 }

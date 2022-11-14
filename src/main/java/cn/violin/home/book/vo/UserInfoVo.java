@@ -10,8 +10,11 @@ import lombok.*;
 @NoArgsConstructor
 public class UserInfoVo {
 
-    @JsonProperty("uk")
-    private String uk;
+    @JsonProperty("id")
+    private String id;
+
+    @JsonProperty("account")
+    private String account;
 
     @JsonProperty("avatar_url")
     private String avatarUrl;

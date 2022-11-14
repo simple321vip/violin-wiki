@@ -1,11 +1,14 @@
 package cn.violin.home.book.controller;
 
+import cn.violin.home.book.annotation.CurrentUser;
+import cn.violin.home.book.entity.Tenant;
 import cn.violin.home.book.service.BlogEditService;
 import cn.violin.home.book.io.BlogIn;
 import cn.violin.home.book.io.BlogTypeIn;
 import cn.violin.home.book.vo.BlogBoxVo;
 import cn.violin.home.book.vo.BlogContent;
 import cn.violin.home.book.vo.BlogVo;
+import cn.violin.home.book.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,8 +39,8 @@ public class BlogEditCtl {
 
     @PutMapping("/blog/content")
     @ResponseBody
-    public ResponseEntity<BlogVo> newBlog(@Valid @RequestBody BlogIn input) {
-        return new ResponseEntity<>(blogEditService.insertContent(input), HttpStatus.OK);
+    public ResponseEntity<BlogVo> newBlog(@Valid @RequestBody BlogIn input, @CurrentUser Tenant tenant) {
+        return new ResponseEntity<>(blogEditService.insertContent(input, tenant), HttpStatus.OK);
     }
 
     @PostMapping("/blog/content")
@@ -49,35 +52,43 @@ public class BlogEditCtl {
 
     @DeleteMapping("/blog/{bid}")
     @ResponseBody
-    public ResponseEntity<Void> deleteBlog(@PathVariable(value = "bid") String bid) {
-        blogEditService.deleteContent(bid);
+    public ResponseEntity<BlogBoxVo> deleteBlog(@PathVariable(value = "bid") String bid, @Valid @RequestBody BlogIn input, @CurrentUser Tenant user) throws Exception {
+        input.setBid(bid);
+        BlogBoxVo result = blogEditService.deleteContent(input, user);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/blogs/{btId}", produces = {"application/json"})
+    @ResponseBody
+    public ResponseEntity<Void> sortBlog(@PathVariable(value = "btId") String btId, @Valid @RequestBody() BlogIn[] input) {
+
+        blogEditService.sortBlogFromFront(input);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/blog/list")
     @ResponseBody
-    public ResponseEntity<List<BlogBoxVo>> blogView() {
+    public ResponseEntity<List<BlogBoxVo>> blogView(@CurrentUser Tenant tenant) {
 
-        return new ResponseEntity<>(blogEditService.listAll(), HttpStatus.OK);
+        return new ResponseEntity<>(blogEditService.listAll(tenant), HttpStatus.OK);
     }
 
     @PutMapping(value = "/blog_type", produces = {"application/json"})
     @ResponseBody
-    public ResponseEntity<BlogBoxVo> createBlogType(@Valid @RequestBody() BlogTypeIn input) {
-        BlogBoxVo vo = blogEditService.insertBlogType(input);
+    public ResponseEntity<BlogBoxVo> createBlogType(@Valid @RequestBody() BlogTypeIn input, @CurrentUser Tenant tenant) {
+        BlogBoxVo vo = blogEditService.insertBlogType(input, tenant);
         return new ResponseEntity<>(vo, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/blog_type", produces = {"application/json"})
     @ResponseBody
-    public ResponseEntity<Void> deleteBlogType(@Valid @RequestBody() BlogTypeIn input) {
+    public ResponseEntity<List<BlogBoxVo>> deleteBlogType(@Valid @RequestBody() BlogTypeIn input, @CurrentUser Tenant tenant) {
         try {
-            blogEditService.deleteBlogType(input.getBtId());
+            List<BlogBoxVo> result = blogEditService.deleteBlogType(input.getBtId(), tenant);
+            return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(value = "/blog_type", produces = {"application/json"})
@@ -87,4 +98,12 @@ public class BlogEditCtl {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PostMapping(value = "/blog_types", produces = {"application/json"})
+    @ResponseBody
+    public ResponseEntity<Void> sortBlogType(@Valid @RequestBody() BlogTypeIn[] input) {
+
+        blogEditService.sortBlogType(input);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
 }

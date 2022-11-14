@@ -16,3 +16,34 @@ spring:
     mongodb:
       uri: mongodb://mongo:27017/violin
       transactionEnabled: true
+
+constant:
+  docsify-workspace: /home/docsify/docs/docs/
+
+BaiDu:
+  AppID: 26202308
+  AppKey: WksD0FOVAp8zSRV62qNKxtnCexArVPOf
+  SecretKey: NWNjqHPRzzZeBcYXh2dNNkMqjZgdEcZY
+  RedirectUri: https://www.violin-home.cn/auth/api/v1/authorize/baidu
+  Scope: basic
+  AuthorizeUri: http://openapi.baidu.com/oauth/2.0/authorize
+  QrCode: 1
+  AccessToken: https://openapi.baidu.com/oauth/2.0/token
+
+violin:
+  redis:
+    # we use database 3
+    database: 3
+    host: redis
+    port: 6379
+    password: 123456
+    timeout: 0
+    pool:
+      max-active: 8
+      max-idle: 8
+      min-idle: 0
+      max-wait: -1
+
+logging:
+  config: classpath:logback-spring.xml
+  path: /log

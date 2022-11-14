@@ -1,4 +1,14 @@
-FROM bitnami/tomcat:9.0.64-debian-11-r10
-COPY auth.war /opt/bitnami/tomcat/webapps
-ENV ALLOW_EMPTY_PASSWORD=yes
+FROM openjdk:11-jre-slim
 
+MAINTAINER XiangWeiGuan
+
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
+RUN echo 'Asia/Shanghai' >/etc/timezone
+
+ADD target/violin-book.jar /violin-book.jar
+
+# 设置暴露的端口号
+EXPOSE 8080
+
+ENTRYPOINT ["java","-jar","violin-book.jar"]

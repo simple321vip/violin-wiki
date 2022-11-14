@@ -20,10 +20,12 @@ import java.time.LocalDateTime;
 public class BlogInfo implements Serializable {
     @Id
     private String bid;
+    private String owner;
     private String title;
     private String btId;
     private String contentType;
     private Binary content;
     private long size;
-    private LocalDateTime updateDateTime;
+    private String updateDateTime;
+    private int order;
 }
