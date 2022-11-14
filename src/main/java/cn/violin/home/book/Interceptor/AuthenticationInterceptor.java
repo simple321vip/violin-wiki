@@ -14,8 +14,11 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Optional;
+
+import static cn.violin.home.book.utils.Constant.*;
 
 /**
  * Interceptor トーケンの検証
@@ -37,7 +40,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     private JedisUtils redis;
 
     @Override
-    public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) {
+    public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws IOException {
 
         // メソッド以外は通る
         if(!(handler instanceof HandlerMethod)){
@@ -63,13 +66,18 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             if (tokenNullable.isPresent() && tokenNullable.get().equals(token)) {
                 return true;
             }
-            log.info("token is wrong");
+            resp.setStatus(HttpStatus.UNAUTHORIZED.value());
+            resp.getWriter().write(ERROR_INFO_1);
+            log.info(ERROR_INFO_1);
             return false;
         }
+        resp.setStatus(HttpStatus.UNAUTHORIZED.value());
         if (!StringUtils.hasLength(authorization)) {
-            log.info("authorization info is null or empty");
+            resp.getWriter().write(ERROR_INFO_2);
+            log.info(ERROR_INFO_2);
         } else if (!StringUtils.hasLength(tenantId)) {
-            log.info("tenantId info is null or empty");
+            log.info(ERROR_INFO_3);
+            resp.getWriter().write(ERROR_INFO_3);
         }
         return false;
     }

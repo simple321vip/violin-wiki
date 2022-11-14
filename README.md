@@ -39,11 +39,20 @@ we use kubernetes to deployment
 - redis
   as a cache database, we use it to save token.
   
-  docker exec -it containerId /bin/sh
-  cd /usr/local/bin/
+        // use redis-cli
+        docker exec -it containerId /bin/sh
+        cd /usr/local/bin/
+        redis-cli
   
-  config get requirepass
-  config set requirepass 123456
+        // set auth password
+        config get requirepass
+        config set requirepass 123456
+        
+        // 验证密码是否正确
+        auth 123456
+  
+        // 切换到指定的数据库
+        select 3 
   
 ### 功能介绍
 

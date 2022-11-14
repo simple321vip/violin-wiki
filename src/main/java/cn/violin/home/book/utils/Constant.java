@@ -19,11 +19,16 @@ public class Constant {
     public final static DateTimeFormatter FORMATTER_DATETIME = DateTimeFormatter.ofPattern("yyyyMMddHHmmSS");
     public final static DateTimeFormatter UPDATE_DATETIME = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:SS");
 
-    public final static String WORD_1= "你的世界";
-    public final static String WORD_2= "从这里开始";
+    public final static String WORD_1 = "你的世界";
+    public final static String WORD_2 = "从这里开始";
 
     // common column views
-    public final static String COLUMN_ORDER= "order";
+    public final static String COLUMN_ORDER = "order";
+
+    // error message
+    public final static String ERROR_INFO_1 = "token is wrong";
+    public final static String ERROR_INFO_2 = "authorization info is null or empty";
+    public final static String ERROR_INFO_3 = "tenantId info is null or empty";
 
 
 }
