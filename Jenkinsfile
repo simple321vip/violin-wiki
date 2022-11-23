@@ -79,7 +79,7 @@ spec:
   node(label) {
     def violin_book_repo = checkout([
       $class: 'GitSCM',
-      branches: [[name: "*/master"]],
+      branches: [[name: "*/dev"]],
       doGenerateSubmoduleConfigurations: false,
       extensions:  [[$class: 'CloneOption', noTags: false, reference: '', shallow: true, timeout: 1000]]+[[$class: 'CheckoutOption', timeout: 1000]],
       submoduleCfg: [],
