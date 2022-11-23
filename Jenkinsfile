@@ -89,7 +89,7 @@ spec:
         ]]
       ])
 
-    def imageTag = "v1.01"
+    def imageTag = "v1.02"
     def registryUrl = "ccr.ccs.tencentyun.com"
     def imageEndpoint = "violin/violin-book"
     def image = "${registryUrl}/${imageEndpoint}:${imageTag}"
