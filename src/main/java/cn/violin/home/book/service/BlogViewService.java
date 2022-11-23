@@ -144,7 +144,7 @@ public class BlogViewService {
 
         // update _sidebar.md
         try {
-            String filePath = CONSTANT.getDOCSIFY_WORKSPACE() + SIDEBAR_FILENAME;
+            String filePath = wikiWorkSpace + SIDEBAR_FILENAME;
             File file = new File(filePath);
 
             BufferedWriter finalWriter = new BufferedWriter(new FileWriter(filePath + "_bk"));

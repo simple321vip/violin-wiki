@@ -34,6 +34,7 @@ we use kubernetes to deployment
     mongo
     db.collection.find().pretty()
     db.collection.find({key1:value1})
+    db.collection.update( { "account" : "simple321vip" } , { $set : { "wikiName" : "guan"} } );
     
     
 - redis
