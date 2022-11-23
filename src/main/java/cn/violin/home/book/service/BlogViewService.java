@@ -13,12 +13,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
@@ -123,14 +125,22 @@ public class BlogViewService {
         query2.with(Sort.by(Sort.Order.asc("order")));
         List<BlogInfo> docs = mongoTemplate.find(query2, BlogInfo.class);
 
+        Criteria criteria3 = Criteria.where("tenantId").is(tenant.getTenantId());
+        Query query3 = Query.query(criteria3);
+        Tenant tenant1 = mongoTemplate.findOne(query3, Tenant.class);
+
+        if (tenant1 == null){
+            System.out.println("500 inner error");
+        }
+
         LinkedHashMap<String, List<BlogInfo>> collect
                 = docs.stream().collect(Collectors.groupingBy(BlogInfo::getBtId, LinkedHashMap::new, Collectors.toList()));
 
         ExecutorService es = Executors.newFixedThreadPool(4);
 
         Object lock = new Object();
-
-        docs.forEach(vo -> es.submit(new FileExportTask(vo, lock, CONSTANT.getDOCSIFY_WORKSPACE())));
+        String wikiWorkSpace = CONSTANT.getDOCSIFY_WORKSPACE() + tenant1.getWikiName() + File.separator;
+        docs.forEach(vo -> es.submit(new FileExportTask(vo, lock, wikiWorkSpace)));
 
         // update _sidebar.md
         try {
@@ -150,7 +160,7 @@ public class BlogViewService {
                 values.forEach(value -> {
                     try {
                         finalWriter.newLine();
-                        finalWriter.write("  * [" + value.getTitle() + "](" + btId + "/" + value.getBid() + ".md" + ")");
+                        finalWriter.write("  * [" + value.getTitle() + "](" + tenant1.getWikiName() + "/" + btId + "/" + value.getBid() + ".md" + ")");
                         finalWriter.newLine();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -167,7 +177,6 @@ public class BlogViewService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -224,5 +233,13 @@ public class BlogViewService {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void putWiki(String name, Tenant tenant) {
+        Criteria criteria = Criteria.where("owner").is(tenant.getTenantId());
+        Query query = Query.query(criteria);
+//        Update update = Update.update("btId", input.getBtId())
+//                .set("btName", input.getBtName());
+//        mongoTemplate.updateFirst(query)
     }
 }

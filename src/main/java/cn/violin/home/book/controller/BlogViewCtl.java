@@ -86,4 +86,16 @@ public class BlogViewCtl {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * @param
+     * @param tenant tenant
+     *
+     * @return Void
+     */
+    @PutMapping("/docs/{wiki_name}")
+    public ResponseEntity<Void> putWikiName(@PathVariable(value = "wiki_name") String name, @CurrentUser Tenant tenant) {
+        blogViewService.putWiki(name, tenant);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

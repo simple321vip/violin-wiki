@@ -6,10 +6,10 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class GEstateApplication extends SpringBootServletInitializer {
+public class ViolinBookApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GEstateApplication.class, args);
+		SpringApplication.run(ViolinBookApplication.class, args);
 	}
 
 	@Override
