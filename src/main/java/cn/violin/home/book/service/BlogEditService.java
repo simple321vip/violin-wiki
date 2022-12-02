@@ -2,13 +2,12 @@ package cn.violin.home.book.service;
 
 import cn.violin.home.book.entity.BlogInfo;
 import cn.violin.home.book.entity.BlogType;
-import cn.violin.home.book.entity.Tenant;
 import cn.violin.home.book.io.BlogIn;
 import cn.violin.home.book.io.BlogTypeIn;
-import cn.violin.home.book.utils.Constant;
 import cn.violin.home.book.utils.NumberEnum;
 import cn.violin.home.book.vo.BlogBoxVo;
 import cn.violin.home.book.vo.BlogVo;
+import cn.violin.home.common.entity.Tenant;
 import com.mongodb.client.result.UpdateResult;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,7 +31,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static cn.violin.home.book.utils.Constant.*;
+import static cn.violin.home.common.utils.CommonConstant.*;
 
 @Service
 @RequiredArgsConstructor
@@ -197,7 +195,7 @@ public class BlogEditService {
 
         BlogIn blogIn = new BlogIn();
         blogIn.setBtId(btId);
-        blogIn.setTitle(LocalDate.now().format(Constant.FORMATTER_DATE));
+        blogIn.setTitle(LocalDate.now().format(FORMATTER_DATE));
         blogIn.setOrder(0);
         BlogVo vo = this.insertContent(blogIn, tenant);
         List<BlogVo> vos = new ArrayList<>(1);

@@ -1,26 +1,24 @@
 package cn.violin.home.book.service;
 
-import cn.violin.home.book.entity.Tenant;
 import cn.violin.home.book.task.FileExportTask;
-import cn.violin.home.book.config.Constant;
 import cn.violin.home.book.entity.BlogInfo;
 import cn.violin.home.book.entity.BlogType;
 import cn.violin.home.book.vo.BlogBoxVo;
 import cn.violin.home.book.vo.BlogVo;
+import cn.violin.home.common.config.DocsifyConf;
+import cn.violin.home.common.entity.Tenant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +38,7 @@ public class BlogViewService {
     private MongoTemplate mongoTemplate;
 
     @Autowired
-    private Constant CONSTANT;
+    private DocsifyConf ocsifyConf;
 
     public List<BlogVo> selectBlogs(String btId, String keyWord, LocalDate startDay, LocalDate endDay, Tenant tenant) {
         Criteria criteria = Criteria.where("owner").is(tenant.getTenantId());
@@ -139,7 +137,7 @@ public class BlogViewService {
         ExecutorService es = Executors.newFixedThreadPool(4);
 
         Object lock = new Object();
-        String wikiWorkSpace = CONSTANT.getDOCSIFY_WORKSPACE() + tenant1.getWikiName() + File.separator;
+        String wikiWorkSpace = ocsifyConf.getDOCSIFY_WORKSPACE() + tenant1.getWikiName() + File.separator;
         docs.forEach(vo -> es.submit(new FileExportTask(vo, lock, wikiWorkSpace)));
 
         // update _sidebar.md
@@ -191,7 +189,7 @@ public class BlogViewService {
 
         BufferedWriter writer;
         try {
-            String filePath = CONSTANT.getDOCSIFY_WORKSPACE() + doc.getBtId() + File.separator + doc.getBid() + ".md";
+            String filePath = ocsifyConf.getDOCSIFY_WORKSPACE() + doc.getBtId() + File.separator + doc.getBid() + ".md";
             File file = new File(filePath);
             writer = new BufferedWriter(new FileWriter(filePath + "_bk"));
 
@@ -213,7 +211,7 @@ public class BlogViewService {
         BufferedWriter writer2;
         synchronized (lock) {
             try {
-                File sidebar = new File(CONSTANT.getDOCSIFY_WORKSPACE() + SIDEBAR_FILENAME);
+                File sidebar = new File(ocsifyConf.getDOCSIFY_WORKSPACE() + SIDEBAR_FILENAME);
                 reader = new BufferedReader(new FileReader(sidebar));
                 String record;
                 StringBuilder builder = new StringBuilder();

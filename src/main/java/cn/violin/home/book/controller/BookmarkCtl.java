@@ -1,10 +1,10 @@
 package cn.violin.home.book.controller;
 
-import cn.violin.home.book.annotation.CurrentUser;
-import cn.violin.home.book.entity.Tenant;
 import cn.violin.home.book.io.BookmarkIn;
 import cn.violin.home.book.service.BookmarkService;
 import cn.violin.home.book.vo.BookmarkVo;
+import cn.violin.home.common.annotation.CurrentUser;
+import cn.violin.home.common.entity.Tenant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

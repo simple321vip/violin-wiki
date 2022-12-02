@@ -4,6 +4,7 @@ import cn.violin.home.book.entity.*;
 import cn.violin.home.book.io.BookmarkIn;
 import cn.violin.home.book.utils.NumberEnum;
 import cn.violin.home.book.vo.BookmarkVo;
+import cn.violin.home.common.entity.Tenant;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static cn.violin.home.book.utils.Constant.*;
+import static cn.violin.home.common.utils.CommonConstant.*;
 
 @Service
 @RequiredArgsConstructor

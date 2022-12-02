@@ -1,7 +1,7 @@
 package cn.violin.home.book.service;
 
 import cn.violin.home.book.ViolinBookApplication;
-import cn.violin.home.book.entity.Tenant;
+import cn.violin.home.common.entity.Tenant;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
