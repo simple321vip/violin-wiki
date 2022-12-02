@@ -5,6 +5,3 @@ INSERT INTO page(section_id, page_name, page_path) VALUES(1, 'セキュリティ
 INSERT INTO page(section_id, page_name, page_path) VALUES(2, 'java', '/ddd/');
 INSERT INTO page(section_id, page_name, page_path) VALUES(2, 'Xml', '/xxxx/');
 INSERT INTO page(section_id, page_name, page_path) VALUES(2, 'Xml', '111');
-
-delete from auth_master;
-INSERT INTO auth_master (phone_number) VALUES('13332247026');
