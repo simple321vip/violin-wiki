@@ -77,7 +77,8 @@ spec:
     serviceAccount: 'jenkins-admin'
 ) {
   node(label) {
-    def violin_book_repo = checkout([
+
+    def violin_common_repo = checkout([
       $class: 'GitSCM',
       branches: [[name: "*/master"]],
       doGenerateSubmoduleConfigurations: false,
@@ -85,13 +86,31 @@ spec:
       submoduleCfg: [],
       userRemoteConfigs: [[
         credentialsId: '2448e943-479f-4796-b5a0-fd3bf22a5d30',
-        url: 'https://gitee.com/guan-xiangwei/violin-book.git'
+        url: 'https://gitee.com/guan-xiangwei/violin-common.git'
+      ]]
+    ])
+
+    stage('violin-common install') {
+      container('maven') {
+        sh 'mvn clean install'
+      }
+    }
+
+    def violin_book_repo = checkout([
+      $class: 'GitSCM',
+      branches: [[name: "*/dev"]],
+      doGenerateSubmoduleConfigurations: false,
+      extensions:  [[$class: 'CloneOption', noTags: false, reference: '', shallow: true, timeout: 1000]]+[[$class: 'CheckoutOption', timeout: 1000]],
+      submoduleCfg: [],
+      userRemoteConfigs: [[
+        credentialsId: '2448e943-479f-4796-b5a0-fd3bf22a5d30',
+        url: 'https://gitee.com/guan-xiangwei/violin-wiki.git'
         ]]
       ])
 
-    def imageTag = "v1.00"
+    def imageTag = "v1.02"
     def registryUrl = "ccr.ccs.tencentyun.com"
-    def imageEndpoint = "violin/violin-book"
+    def imageEndpoint = "violin/violin-wiki"
     def image = "${registryUrl}/${imageEndpoint}:${imageTag}"
 
     stage('单元测试') {

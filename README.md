@@ -1,9 +1,9 @@
 ## プログラム紹介
-violin-book, a backend program to support for violin online edit function.
+violin-wiki, a backend program to support for violin online edit function.
 
 ### kubernetes
 we use kubernetes to deployment 
-> the violin-book is built on kubernetes.
+> the violin-wiki is built on kubernetes.
 > service, storageclass, pvc, deployment
 
 ### framework
@@ -34,6 +34,7 @@ we use kubernetes to deployment
     mongo
     db.collection.find().pretty()
     db.collection.find({key1:value1})
+    db.collection.update( { "account" : "simple321vip" } , { $set : { "wikiName" : "guan"} } );
     
     
 - redis

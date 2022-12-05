@@ -9,8 +9,8 @@
 		<version>2.5.2</version>
 	</parent>
 
-	<groupId>cn.violin.home</groupId>
-	<artifactId>violin-book</artifactId>
+	<groupId>cn.violin</groupId>
+	<artifactId>violin-wiki</artifactId>
 	<packaging>jar</packaging>
 	<version>1.00</version>
 
@@ -24,6 +24,11 @@
 		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>cn.violin</groupId>
+			<artifactId>violin-common</artifactId>
+			<version>1.00</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -40,17 +45,9 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-logging</artifactId>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter-data-redis</artifactId>-->
-<!--		</dependency>-->
 		<dependency>
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-logging</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -90,11 +87,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.auth0</groupId>
-			<artifactId>java-jwt</artifactId>
-			<version>3.10.0</version>
-		</dependency>
-		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
 			<version>1.2.80</version>
@@ -111,12 +103,6 @@
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
 			<version>4.4.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.openjdk.jol</groupId>
-			<artifactId>jol-core</artifactId>
-			<version>0.9</version>
 		</dependency>
 
 		<dependency>
@@ -137,16 +123,10 @@
             <version>2.0.2</version>
             <scope>compile</scope>
         </dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.5.13</version>
-		</dependency>
 
     </dependencies>
 
 	<build>
-		<finalName>violin-book</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
