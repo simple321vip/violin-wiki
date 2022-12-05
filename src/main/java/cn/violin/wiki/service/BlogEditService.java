@@ -31,6 +31,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static cn.violin.common.utils.CommonConstant.*;
+
 @Service
 @RequiredArgsConstructor
 public class BlogEditService {
