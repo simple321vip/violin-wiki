@@ -1,1 +1,1 @@
-select * from auth_master
+select * from t_blog_seq
