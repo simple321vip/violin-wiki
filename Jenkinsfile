@@ -104,13 +104,13 @@ spec:
       submoduleCfg: [],
       userRemoteConfigs: [[
         credentialsId: '2448e943-479f-4796-b5a0-fd3bf22a5d30',
-        url: 'https://gitee.com/guan-xiangwei/violin-book.git'
+        url: 'https://gitee.com/guan-xiangwei/violin-wiki.git'
         ]]
       ])
 
     def imageTag = "v1.02"
     def registryUrl = "ccr.ccs.tencentyun.com"
-    def imageEndpoint = "violin/violin-book"
+    def imageEndpoint = "violin/violin-wiki"
     def image = "${registryUrl}/${imageEndpoint}:${imageTag}"
 
     stage('单元测试') {

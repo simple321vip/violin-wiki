@@ -9,8 +9,8 @@
 		<version>2.5.2</version>
 	</parent>
 
-	<groupId>cn.violin.home</groupId>
-	<artifactId>violin-book</artifactId>
+	<groupId>cn.violin</groupId>
+	<artifactId>violin-wiki</artifactId>
 	<packaging>jar</packaging>
 	<version>1.00</version>
 
