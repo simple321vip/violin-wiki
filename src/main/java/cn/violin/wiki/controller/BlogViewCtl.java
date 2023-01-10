@@ -15,7 +15,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Controller
-@CrossOrigin
 @RequestMapping("/api/v1/reader")
 public class BlogViewCtl {
 

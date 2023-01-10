@@ -38,7 +38,7 @@ public class BlogViewService {
     private MongoTemplate mongoTemplate;
 
     @Autowired
-    private DocsifyConf ocsifyConf;
+    private DocsifyConf docsifyConf;
 
     public List<BlogVo> selectBlogs(String btId, String keyWord, LocalDate startDay, LocalDate endDay, Tenant tenant) {
         Criteria criteria = Criteria.where("owner").is(tenant.getTenantId());
@@ -137,7 +137,7 @@ public class BlogViewService {
         ExecutorService es = Executors.newFixedThreadPool(4);
 
         Object lock = new Object();
-        String wikiWorkSpace = ocsifyConf.getDOCSIFY_WORKSPACE() + tenant1.getWikiName() + File.separator;
+        String wikiWorkSpace = docsifyConf.getDOCSIFY_WORKSPACE() + tenant1.getWikiName() + File.separator;
         docs.forEach(vo -> es.submit(new FileExportTask(vo, lock, wikiWorkSpace)));
 
         // update _sidebar.md
@@ -189,7 +189,7 @@ public class BlogViewService {
 
         BufferedWriter writer;
         try {
-            String filePath = ocsifyConf.getDOCSIFY_WORKSPACE() + doc.getBtId() + File.separator + doc.getBid() + ".md";
+            String filePath = docsifyConf.getDOCSIFY_WORKSPACE() + doc.getBtId() + File.separator + doc.getBid() + ".md";
             File file = new File(filePath);
             writer = new BufferedWriter(new FileWriter(filePath + "_bk"));
 
@@ -211,7 +211,7 @@ public class BlogViewService {
         BufferedWriter writer2;
         synchronized (lock) {
             try {
-                File sidebar = new File(ocsifyConf.getDOCSIFY_WORKSPACE() + SIDEBAR_FILENAME);
+                File sidebar = new File(docsifyConf.getDOCSIFY_WORKSPACE() + SIDEBAR_FILENAME);
                 reader = new BufferedReader(new FileReader(sidebar));
                 String record;
                 StringBuilder builder = new StringBuilder();

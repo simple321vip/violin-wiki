@@ -1,8 +1,9 @@
-drop table IF EXISTS t_blog_seq;
-create table t_blog_seq (
-    blog_seq_id INT primary key AUTO_INCREMENT NOT NULL
-  );
-drop table IF EXISTS t_blog_type_seq;
-create table t_blog_type_seq (
-    blog_type_seq_id INT primary key AUTO_INCREMENT NOT NULL
-  );
+CREATE TABLE IF NOT EXISTS t_blog_type_seq(
+     blog_type_seq_id INT NOT NULL AUTO_INCREMENT,
+     PRIMARY KEY (blog_type_seq_id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS t_blog_seq(
+     blog_seq_id INT NOT NULL AUTO_INCREMENT,
+     PRIMARY KEY (blog_seq_id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
