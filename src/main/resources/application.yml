@@ -4,7 +4,7 @@ server:
     context-path: /wiki
 spring:
   profiles:
-    active: prod
+    default: dev
   jpa:
     defer-datasource-initialization: true
     hibernate:

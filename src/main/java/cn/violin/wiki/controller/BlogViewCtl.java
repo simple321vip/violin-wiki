@@ -16,6 +16,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/api/v1/reader")
+// @CrossOrigin
 public class BlogViewCtl {
 
     @Autowired
@@ -95,6 +96,20 @@ public class BlogViewCtl {
     public ResponseEntity<Void> putWikiName(@PathVariable(value = "wiki_name") String name, @CurrentUser Tenant tenant) {
         blogViewService.putWiki(name, tenant);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * @param tenant tenant
+     *
+     * @return BlogVo
+     */
+    @GetMapping("/blogs/count")
+    public ResponseEntity<BlogVo> getWikiCount(@CurrentUser Tenant tenant) {
+
+        long count = blogViewService.getWikiCount(tenant);
+        BlogVo vo = BlogVo.builder().count(count).build();
+
+        return new ResponseEntity<>(vo, HttpStatus.OK);
     }
 
 }
