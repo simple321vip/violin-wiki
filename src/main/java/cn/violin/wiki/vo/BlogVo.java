@@ -34,4 +34,7 @@ public class BlogVo {
     @JsonProperty("order")
     private int order;
 
+    @JsonProperty("count")
+    private long count;
+
 }

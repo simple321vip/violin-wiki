@@ -4,6 +4,6 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 RUN echo 'Asia/Shanghai' >/etc/timezone
 
-ADD target/violin-wiki-*.jar /violin-wiki.jar
+ADD target/violin-wiki-1.0.0.jar /
 
-ENTRYPOINT ["java","-jar","violin-wiki.jar"]
+ENTRYPOINT ["java", "-jar", "/violin-wiki-1.0.0.jar"]

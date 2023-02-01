@@ -240,4 +240,14 @@ public class BlogViewService {
 //                .set("btName", input.getBtName());
 //        mongoTemplate.updateFirst(query)
     }
+
+    public long getWikiCount(Tenant tenant) {
+        Criteria criteria = Criteria.where("owner").is(tenant.getTenantId());
+        Query query = Query.query(criteria);
+
+        long count = mongoTemplate.count(query, BlogInfo.class);
+
+        return count;
+    }
+
 }

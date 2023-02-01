@@ -1,22 +1,5 @@
-## プログラム紹介
+## About
 violin-wiki, a backend program to support for violin online edit function.
-
-### kubernetes
-we use kubernetes to deployment 
-> the violin-wiki is built on kubernetes.
-> service, storageclass, pvc, deployment
-
-### framework
-> springboot, jedis and so on. for more, we can see pom.xml
- 
-### about security
-
-> baidu cloud oauth -> token -> redis + token
-> redis as a kubernetes service opened only for violin-book application that to save token as a cache one day. 
-
-### server
-
-> the backend server tomcat embedded in the springboot used.
 
 ### database
 - mysql
@@ -33,7 +16,6 @@ we use kubernetes to deployment
     db.collection.find().pretty()
     db.collection.find({key1:value1})
     db.collection.update( { "account" : "simple321vip" } , { $set : { "wikiName" : "guan"} } );
-    
     
 - redis
   as a cache database, we use it to save token.
