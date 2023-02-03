@@ -189,7 +189,7 @@ spec:
             """
             sh "sed -i -e s/tagUpdateTime:.*/tagUpdateTime:' 'T${localDateTime}/g ./prod/violin-wiki-deployment-prod.yaml"
             sh "sed -i -e s/violin-wiki:.*/violin-wiki:${imageTag}/g ./prod/violin-wiki-deployment-prod.yaml"
-            sh "git add ./prod/violin-auth-deployment-prod.yaml"
+            sh "git add ./prod/violin-wiki-deployment-prod.yaml"
             sh "git commit -m 'update tag ${imageTag}'"
             sh "git push -u origin HEAD:master"
           }
