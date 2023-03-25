@@ -1,10 +1,10 @@
 package cn.violin.wiki.controller;
 
+import cn.violin.wiki.io.SortData;
 import cn.violin.wiki.service.BlogEditService;
 import cn.violin.wiki.io.BlogIn;
 import cn.violin.wiki.io.BlogTypeIn;
 import cn.violin.wiki.vo.BlogBoxVo;
-import cn.violin.wiki.vo.BlogContent;
 import cn.violin.wiki.vo.BlogVo;
 import cn.violin.common.annotation.CurrentUser;
 import cn.violin.common.entity.Tenant;
@@ -13,9 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Controller
@@ -25,15 +25,68 @@ public class BlogEditCtl {
     @Autowired
     private BlogEditService blogEditService;
 
+    @PostMapping(value = "/wiki/type", produces = {"application/json"})
+    @ResponseBody
+    public ResponseEntity<BlogBoxVo> createBlogType(@Valid @RequestBody() BlogTypeIn input,
+        @CurrentUser Tenant tenant) {
+        BlogBoxVo vo = blogEditService.insertBlogType(input, tenant);
+        return new ResponseEntity<>(vo, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/wiki/type", produces = {"application/json"})
+    @ResponseBody
+    public ResponseEntity<List<BlogBoxVo>> deleteBlogType(@Valid @RequestBody() BlogTypeIn input,
+        @CurrentUser Tenant tenant) {
+        try {
+            List<BlogBoxVo> result = blogEditService.deleteBlogType(input.getBtId(), tenant);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping(value = "/wiki/type", produces = {"application/json"})
+    @ResponseBody
+    public ResponseEntity<Void> updateWikiType(@Valid @RequestBody() BlogTypeIn input, @CurrentUser Tenant tenant) {
+        blogEditService.updateWikiType(input, tenant);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/wiki/type/{btId}", produces = {"application/json"})
+    @ResponseBody
+    public ResponseEntity<BlogBoxVo> getWikiList(@NotNull @PathVariable(value = "btId") String btId,
+        @CurrentUser Tenant tenant) {
+
+        BlogBoxVo vo = blogEditService.getWikiList(btId, tenant);
+        return new ResponseEntity<>(vo, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/wiki/type", produces = {"application/json"})
+    @ResponseBody
+    public ResponseEntity<List<BlogBoxVo>> getWikiTypeList(@CurrentUser Tenant tenant) {
+
+        List<BlogBoxVo> vo = blogEditService.getWikiTypeList(tenant);
+        return new ResponseEntity<>(vo, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/wiki/type/sort", produces = {"application/json"})
+    @ResponseBody
+    public ResponseEntity<List<BlogBoxVo>> sortBlogType(@Valid @RequestBody() SortData input,
+        @CurrentUser Tenant tenant) {
+
+        List<BlogBoxVo> vo = blogEditService.sortBlogType(input, tenant);
+        return new ResponseEntity<>(vo, HttpStatus.OK);
+    }
+
     /**
      * bidで該当blogの内容を取得する
      */
-    @GetMapping("/blog/content/{id}")
+    @GetMapping("/wiki/{id}")
     @ResponseBody
-    public ResponseEntity<BlogContent> getBlogContent(@PathVariable(value = "id") String id) {
-        BlogContent content = new BlogContent();
-        content.setContent(blogEditService.getContent(id));
-        return new ResponseEntity<>(content, HttpStatus.OK);
+    public ResponseEntity<BlogVo> getBlogContent(@PathVariable(value = "id") String id, @CurrentUser Tenant tenant)
+        throws Exception {
+        BlogVo result = blogEditService.getWiki(id, tenant);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PutMapping("/blog/content")
@@ -49,19 +102,20 @@ public class BlogEditCtl {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/blog/{bid}")
+    @DeleteMapping("/wiki")
     @ResponseBody
-    public ResponseEntity<BlogBoxVo> deleteBlog(@PathVariable(value = "bid") String bid, @Valid @RequestBody BlogIn input, @CurrentUser Tenant user) throws Exception {
-        input.setBid(bid);
-        BlogBoxVo result = blogEditService.deleteContent(input, user);
+    public ResponseEntity<BlogBoxVo> deleteBlog(@Valid @RequestBody BlogIn input, @CurrentUser Tenant user)
+        throws Exception {
+        BlogBoxVo result = blogEditService.deleteWiki(input, user);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping(value = "/blogs/{btId}", produces = {"application/json"})
     @ResponseBody
-    public ResponseEntity<Void> sortBlog(@PathVariable(value = "btId") String btId, @Valid @RequestBody() BlogIn[] input) {
+    public ResponseEntity<Void> sortBlog(@PathVariable(value = "btId") String btId,
+        @Valid @RequestBody SortData sortData, @CurrentUser Tenant tenant) {
 
-        blogEditService.sortBlogFromFront(input);
+        blogEditService.sortWiki(sortData, tenant);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -71,38 +125,4 @@ public class BlogEditCtl {
 
         return new ResponseEntity<>(blogEditService.listAll(tenant), HttpStatus.OK);
     }
-
-    @PutMapping(value = "/blog_type", produces = {"application/json"})
-    @ResponseBody
-    public ResponseEntity<BlogBoxVo> createBlogType(@Valid @RequestBody() BlogTypeIn input, @CurrentUser Tenant tenant) {
-        BlogBoxVo vo = blogEditService.insertBlogType(input, tenant);
-        return new ResponseEntity<>(vo, HttpStatus.OK);
-    }
-
-    @DeleteMapping(value = "/blog_type", produces = {"application/json"})
-    @ResponseBody
-    public ResponseEntity<List<BlogBoxVo>> deleteBlogType(@Valid @RequestBody() BlogTypeIn input, @CurrentUser Tenant tenant) {
-        try {
-            List<BlogBoxVo> result = blogEditService.deleteBlogType(input.getBtId(), tenant);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PostMapping(value = "/blog_type", produces = {"application/json"})
-    @ResponseBody
-    public ResponseEntity<Void> updateBlogType(@Valid @RequestBody() BlogTypeIn input) {
-        blogEditService.updateBlogTypeName(input);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/blog_types", produces = {"application/json"})
-    @ResponseBody
-    public ResponseEntity<Void> sortBlogType(@Valid @RequestBody() BlogTypeIn[] input) {
-
-        blogEditService.sortBlogType(input);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
 }

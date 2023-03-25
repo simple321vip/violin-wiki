@@ -4,6 +4,7 @@ import cn.violin.wiki.entity.BlogInfo;
 import cn.violin.wiki.entity.BlogType;
 import cn.violin.wiki.io.BlogIn;
 import cn.violin.wiki.io.BlogTypeIn;
+import cn.violin.wiki.io.SortData;
 import cn.violin.wiki.utils.NumberEnum;
 import cn.violin.wiki.vo.BlogBoxVo;
 import cn.violin.wiki.vo.BlogVo;
@@ -29,7 +30,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static cn.violin.common.utils.CommonConstant.*;
 
@@ -38,34 +38,190 @@ import static cn.violin.common.utils.CommonConstant.*;
 public class BlogEditService {
 
     private final JPAQueryFactory jpaQueryFactory;
+
     @Autowired
     private MongoTemplate mongoTemplate;
+
     @Autowired
     private NumberService numberService;
 
     /**
-     * bidに指向するドキュメントを取得する
+     * ブログ新規作成処理
      *
-     * @param bid blogユニクロID
+     * @param input 新規作成に必要情報
      * @return content ドキュメントのコンテント
      */
-    public String getContent(String bid) {
-        Criteria criteria = Criteria.where("bid").is(bid);
-        Query query = Query.query(criteria);
-        query.fields().include("content");
-        BlogInfo document = mongoTemplate.findOne(query, BlogInfo.class);
-        if (document == null) {
-            return "";
+    @Transactional
+    public BlogBoxVo insertBlogType(BlogTypeIn input, Tenant tenant) {
+        BlogType model = new BlogType();
+        String btId = numberService.getNumberId(NumberEnum.T_BLOG_TYPE);
+        model.setBtName(WORD_1);
+        if (StringUtils.hasLength(input.getBtName())) {
+            model.setBtName(input.getBtName());
         }
-        return new String(document.getContent().getData(), StandardCharsets.UTF_8);
+        model.setBtId(btId);
+        model.setOrder(input.getOrder());
+        model.setOwner(tenant.getTenantId());
+        model.setUpdateTime(LocalDateTime.now().format(UPDATE_DATETIME));
+        BlogType blogType = mongoTemplate.save(model);
+
+        BlogIn blogIn = new BlogIn();
+        blogIn.setContent(WORD_2);
+        blogIn.setBtId(btId);
+        blogIn.setTitle(LocalDate.now().format(FORMATTER_DATE));
+        blogIn.setOrder(0);
+        BlogVo vo = this.insertContent(blogIn, tenant);
+        List<BlogVo> vos = new ArrayList<>(1);
+        vos.add(vo);
+        return BlogBoxVo.builder().btId(blogType.getBtId()).btName(blogType.getBtName()).order(blogType.getOrder())
+            .blogVoList(vos).build();
+    }
+
+    /**
+     * 該当btIdに所属するBlogs及びBlogTypeを削除する after delete process, to query and return it. 1 件の場合は、削除できない。
+     *
+     * @param btId BlogTypeId
+     */
+    @Transactional()
+    public List<BlogBoxVo> deleteBlogType(String btId, Tenant tenant) throws Exception {
+
+        Query query = Query.query(Criteria.where(COLUMN_TENANT_ID).is(tenant.getTenantId()));
+        List<BlogType> blogTypes = mongoTemplate.find(query, BlogType.class);
+        if (blogTypes.size() > 1) {
+
+            // delete
+            Query query1 = Query.query(Criteria.where(COLUMN_WIKI_TYPE_ID).is(btId));
+            mongoTemplate.remove(query1, "t_blog");
+            mongoTemplate.remove(query1, "t_blog_type");
+
+            // sort
+            AtomicInteger index = new AtomicInteger(0);
+            blogTypes.stream().sorted(Comparator.comparing(BlogType::getOrder)).forEach((blogType) -> {
+                Query query2 = Query.query(Criteria.where(COLUMN_WIKI_TYPE_ID).is(blogType.getBtId()));
+                Update update = Update.update(COLUMN_ORDER, index.intValue());
+                mongoTemplate.updateFirst(query2, update, BlogType.class);
+                blogType.setOrder(index.intValue());
+                index.getAndIncrement();
+            });
+
+        } else {
+            throw new Exception("削除でき来ない");
+        }
+
+        return this.listAll(tenant);
+    }
+
+    /**
+     * 更新 wiki type
+     *
+     * @param input wiki type
+     * @param tenant 租户
+     */
+    @Transactional()
+    public void updateWikiType(BlogTypeIn input, Tenant tenant) {
+        Criteria criteria = Criteria.where(COLUMN_WIKI_TYPE_ID).is(input.getBtId());
+        criteria.andOperator(Criteria.where(COLUMN_TENANT_ID).is(tenant.getTenantId()));
+        Query query = Query.query(criteria);
+        Update update = Update.update(COLUMN_WIKI_TYPE_ID, input.getBtId()).set("btName", input.getBtName());
+
+        mongoTemplate.updateFirst(query, update, BlogType.class);
+    }
+
+    /**
+     * 查询 wiki 一览，并且第一个wiki包含content
+     *
+     * @param tenant 租户
+     * @param btId wiki 分类Id
+     * @return BlogBoxVo
+     */
+    public BlogBoxVo getWikiList(String btId, Tenant tenant) {
+
+        Query query = new Query();
+        query
+            .addCriteria(Criteria.where(COLUMN_WIKI_TYPE_ID).is(btId)
+                .andOperator(Criteria.where(COLUMN_TENANT_ID).is(tenant.getTenantId())))
+            .with(Sort.by(COLUMN_ORDER).ascending());
+        List<BlogInfo> wikiList = mongoTemplate.find(query, BlogInfo.class);
+
+        // 保留序列最小的wiki内容
+        String content = new String(wikiList.get(0).getContent().getData(), StandardCharsets.UTF_8);
+        List<BlogVo> wikiVoList = wikiList.stream().map(wiki -> BlogVo.builder().bid(wiki.getBid()).btId(wiki.getBtId())
+            .order(wiki.getOrder()).title(wiki.getTitle()).build()).collect(Collectors.toList());
+        wikiVoList.get(0).setContent(content);
+
+        return BlogBoxVo.builder().btId(btId).blogVoList(wikiVoList).build();
+    }
+
+    /**
+     * 查询 wiki type 一览
+     *
+     * @param tenant 用户
+     * @return BlogBoxVo
+     */
+    public List<BlogBoxVo> getWikiTypeList(Tenant tenant) {
+
+        Query query = new Query();
+        query.addCriteria(Criteria.where(COLUMN_TENANT_ID).is(tenant.getTenantId()))
+            .with(Sort.by(COLUMN_ORDER).ascending());
+        List<BlogType> wikiTypeList = mongoTemplate.find(query, BlogType.class);
+
+        return wikiTypeList.stream().map(wikiType -> BlogBoxVo.builder().btId(wikiType.getBtId())
+            .order(wikiType.getOrder()).btName(wikiType.getBtName()).build()).collect(Collectors.toList());
+    }
+
+    /**
+     * blog type sort
+     *
+     * @param input to sort blog type
+     * @param tenant 用户情报
+     *
+     * @return List<BlogBoxVo> wiki 种类一览
+     */
+    @Transactional()
+    public List<BlogBoxVo> sortBlogType(SortData input, Tenant tenant) {
+
+        for (int order = 0; order < input.getBtIds().length; order++) {
+            Criteria criteria = Criteria.where(COLUMN_WIKI_TYPE_ID).is(input.getBtIds()[order]);
+            criteria.andOperator(Criteria.where(COLUMN_TENANT_ID).is(tenant.getTenantId()));
+            Query query = Query.query(criteria);
+            Update update = Update.update(COLUMN_WIKI_TYPE_ID, input.getBtIds()[order]).set(COLUMN_ORDER, order);
+            mongoTemplate.updateFirst(query, update, BlogType.class);
+        }
+
+        return this.getWikiTypeList(tenant);
+    }
+
+    /**
+     * bidに指向するドキュメントを取得する
+     *
+     * @param bid wiki_id
+     * @param tenant 租户
+     * @return wikiVo 维基
+     */
+    public BlogVo getWiki(String bid, Tenant tenant) throws Exception {
+        Criteria criteria = Criteria.where(COLUMN_WIKI_ID).is(bid);
+        criteria.andOperator(Criteria.where(COLUMN_TENANT_ID).is(tenant.getTenantId()));
+        Query query = Query.query(criteria);
+        BlogInfo wiki = mongoTemplate.findOne(query, BlogInfo.class);
+        if (wiki == null) {
+            throw new Exception("不存在 该wiki");
+        }
+
+        String content = "";
+        if (wiki.getContent() != null) {
+            content = new String(wiki.getContent().getData(), StandardCharsets.UTF_8);
+        }
+        return BlogVo.builder().bid(wiki.getBid()).btId(wiki.getBtId()).title(wiki.getTitle()).content(content)
+            .order(wiki.getOrder()).build();
     }
 
     /**
      * ブログ新規作成処理
      *
      * @param input 新規作成に必要情報
-     * @param tenant
-     * @return content ドキュメントのコンテント
+     * @param tenant 租户
+     *
+     * @return wiki wiki
      */
     @Transactional
     public BlogVo insertContent(BlogIn input, Tenant tenant) {
@@ -96,9 +252,9 @@ public class BlogEditService {
      */
     @Transactional
     public long updateContent(BlogIn input) {
-        Criteria criteria = Criteria.where("bid").is(input.getBid());
+        Criteria criteria = Criteria.where(COLUMN_WIKI_ID).is(input.getBid());
         Query query = Query.query(criteria);
-        Update update = Update.update("bid", input.getBid());
+        Update update = Update.update(COLUMN_WIKI_ID, input.getBid());
         if (input.getTitle() != null) {
             update = update.set("title", input.getTitle());
         }
@@ -112,15 +268,15 @@ public class BlogEditService {
     /**
      * delete process and sort process
      *
-     * @param input
-     * @param user
+     * @param wiki 删除wiki对象
+     * @param tenant 租户对象
      *
      * @return BlogBoxVo
      */
     @Transactional
-    public BlogBoxVo deleteContent(BlogIn input, Tenant user) throws Exception {
-        Query query = Query.query(Criteria.where("owner").is(user.getTenantId()));
-        query.addCriteria(Criteria.where("btId").is(input.getBtId()));
+    public BlogBoxVo deleteWiki(BlogIn wiki, Tenant tenant) throws Exception {
+        Query query = Query.query(Criteria.where(COLUMN_TENANT_ID).is(tenant.getTenantId()));
+        query.addCriteria(Criteria.where(COLUMN_WIKI_TYPE_ID).is(wiki.getBtId()));
 
         // judge
         long count = mongoTemplate.count(query, BlogInfo.class);
@@ -129,149 +285,43 @@ public class BlogEditService {
         }
 
         // delete
-        Query query2 = Query.query(Criteria.where("bid").is(input.getBid()));
+        Query query2 = Query.query(Criteria.where(COLUMN_WIKI_ID).is(wiki.getBid()));
         mongoTemplate.remove(query2, BlogInfo.class);
 
         // sort
         List<BlogInfo> blogs = mongoTemplate.find(query, BlogInfo.class);
         AtomicInteger index = new AtomicInteger(0);
         List<BlogVo> blogVos = blogs.stream().sorted(Comparator.comparing(BlogInfo::getOrder)).map((blog) -> {
-            Criteria criteria = Criteria.where("bid").is(blog.getBid());
+            Criteria criteria = Criteria.where(COLUMN_WIKI_ID).is(blog.getBid());
             Query query4 = Query.query(criteria);
-            Update update = Update.update("bid", blog.getBid())
-                    .set(COLUMN_ORDER, index.intValue());
+            Update update = Update.update(COLUMN_WIKI_ID, blog.getBid()).set(COLUMN_ORDER, index.intValue());
             mongoTemplate.updateFirst(query4, update, BlogInfo.class);
             blog.setOrder(index.intValue());
             index.getAndIncrement();
-            return BlogVo.builder()
-                    .bid(blog.getBid())
-                    .title(blog.getTitle())
-                    .content(new String(blog.getContent().getData(), StandardCharsets.UTF_8))
-                    .btId(blog.getBtId())
-                    .order(blog.getOrder())
-                    .build();
+            return BlogVo.builder().bid(blog.getBid()).title(blog.getTitle())
+                .content(new String(blog.getContent().getData(), StandardCharsets.UTF_8)).btId(blog.getBtId())
+                .order(blog.getOrder()).build();
         }).collect(Collectors.toList());
 
         return BlogBoxVo.builder().blogVoList(blogVos).build();
     }
 
-
     /**
-     * sort process
+     * 将页面wiki的排序状态保存到数据库
      *
-     * @param input
+     * @param sortData 需要排序wiki
      */
     @Transactional
-    public void sortBlogFromFront(BlogIn[] input) {
-        Stream.of(input).forEach(blog -> {
-            Criteria criteria = Criteria.where("bid").is(blog.getBid());
+    public void sortWiki(SortData sortData, Tenant tenant) {
+
+        for (int order = 0; order < sortData.getBIds().length; order++) {
+            String bid = sortData.getBIds()[order];
+            Criteria criteria = Criteria.where(COLUMN_WIKI_ID).is(bid);
+            criteria.andOperator(Criteria.where(COLUMN_TENANT_ID).is(tenant.getTenantId()));
             Query query = Query.query(criteria);
-            Update update = Update.update("bid", blog.getBid())
-                    .set(COLUMN_ORDER, blog.getOrder());
+            Update update = Update.update(COLUMN_WIKI_ID, bid).set(COLUMN_ORDER, order);
             mongoTemplate.updateFirst(query, update, BlogInfo.class);
-        });
-    }
-
-
-    /**
-     * ブログ新規作成処理
-     *
-     * @param input 新規作成に必要情報
-     * @return content ドキュメントのコンテント
-     */
-    @Transactional
-    public BlogBoxVo insertBlogType(BlogTypeIn input, Tenant tenant) {
-        BlogType model = new BlogType();
-        String btId = LocalDateTime.now().format(FORMATTER_DATETIME) + numberService.getNumberId(NumberEnum.T_BLOG_TYPE);
-        model.setBtName(WORD_1);
-        if (StringUtils.hasLength(input.getBtName())) {
-            model.setBtName(input.getBtName());
         }
-        model.setBtId(btId);
-        model.setOrder(input.getOrder());
-        model.setOwner(tenant.getTenantId());
-        model.setUpdateTime(LocalDateTime.now().format(UPDATE_DATETIME));
-        BlogType blogType = mongoTemplate.save(model);
-
-        BlogIn blogIn = new BlogIn();
-        blogIn.setBtId(btId);
-        blogIn.setTitle(LocalDate.now().format(FORMATTER_DATE));
-        blogIn.setOrder(0);
-        BlogVo vo = this.insertContent(blogIn, tenant);
-        List<BlogVo> vos = new ArrayList<>(1);
-        vos.add(vo);
-        return BlogBoxVo.builder().btId(blogType.getBtId())
-                .btName(blogType.getBtName())
-                .order(blogType.getOrder())
-                .blogVoList(vos).build();
-    }
-
-    /**
-     * ブログタイプ修正
-     *
-     * @param input ブログタイプ更新内容
-     */
-    @Transactional()
-    public void updateBlogTypeName(BlogTypeIn input) {
-        Criteria criteria = Criteria.where("btId").is(input.getBtId());
-        Query query = Query.query(criteria);
-        Update update = Update.update("btId", input.getBtId())
-                .set("btName", input.getBtName());
-
-        mongoTemplate.updateFirst(query, update, BlogType.class);
-    }
-
-    /**
-     * blog type sort
-     *
-     * @param input to sort blog type
-     */
-    @Transactional()
-    public void sortBlogType(BlogTypeIn[] input) {
-        Stream.of(input).forEach(blogType -> {
-            Criteria criteria = Criteria.where("btId").is(blogType.getBtId());
-            Query query = Query.query(criteria);
-            Update update = Update.update("btId", blogType.getBtId())
-                    .set(COLUMN_ORDER, blogType.getOrder());
-            mongoTemplate.updateFirst(query, update, BlogType.class);
-        });
-    }
-
-
-    /**
-     * 該当btIdに所属するBlogs及びBlogTypeを削除する
-     * after delete process, to query and return it.
-     * 1 件の場合は、削除できない。
-     *
-     * @param btId BlogTypeId
-     */
-    @Transactional()
-    public List<BlogBoxVo> deleteBlogType(String btId, Tenant tenant) throws Exception {
-
-        Query query = Query.query(Criteria.where("owner").is(tenant.getTenantId()));
-        List<BlogType> blogTypes = mongoTemplate.find(query, BlogType.class);
-        if (blogTypes.size() > 1) {
-
-            // delete
-            Query query1 = Query.query(Criteria.where("btId").is(btId));
-            mongoTemplate.remove(query1, "t_blog");
-            mongoTemplate.remove(query1, "t_blog_type");
-
-            // sort
-            AtomicInteger index = new AtomicInteger(0);
-            blogTypes.stream().sorted(Comparator.comparing(BlogType::getOrder)).forEach((blogType) -> {
-                Query query2 = Query.query(Criteria.where("btId").is(blogType.getBtId()));
-                Update update = Update.update(COLUMN_ORDER, index.intValue());
-                mongoTemplate.updateFirst(query2, update, BlogType.class);
-                blogType.setOrder(index.intValue());
-                index.getAndIncrement();
-            });
-
-        } else {
-            throw new Exception("削除でき来ない");
-        }
-
-        return this.listAll(tenant);
     }
 
     /**
@@ -283,57 +333,20 @@ public class BlogEditService {
     public List<BlogBoxVo> listAll(Tenant tenant) {
 
         // query blog_types
-        Query blogTypeQuery = new Query();
-        blogTypeQuery.addCriteria(Criteria.where("owner").is(tenant.getTenantId())).with(Sort.by("order").ascending());
-        List<BlogType> docs = mongoTemplate.find(blogTypeQuery, BlogType.class);
+        List<BlogBoxVo> wikiTypeList = this.getWikiTypeList(tenant);
 
         // when the tenant login for the first time，no the blog_types exists，so to create a default blog_type。
-        if (docs.isEmpty()) {
+        if (wikiTypeList.isEmpty()) {
             BlogTypeIn in = new BlogTypeIn();
             in.setBtName(WORD_1);
             BlogBoxVo box = this.insertBlogType(in, tenant);
-            List<BlogBoxVo> result = new ArrayList<>(1);
-            result.add(box);
-            return result;
+            wikiTypeList.add(box);
         } else {
-
-            // to query all the blogs Not include
-            List<String> btIds = docs.stream().map(BlogType::getBtId).collect(Collectors.toList());
-            Query blogQuery = new Query();
-            blogQuery
-                    .addCriteria(Criteria.where("btId").in(btIds))
-                    .with(Sort.by(COLUMN_ORDER).ascending())
-                    .fields().exclude("content");
-            List<BlogInfo> blogs = mongoTemplate.find(blogQuery, BlogInfo.class);
-
-            // to build results
-            List<BlogBoxVo> result = docs.stream().map(type -> {
-                BlogBoxVo box = new BlogBoxVo();
-                box.setBtId(type.getBtId());
-                box.setBtName(type.getBtName());
-                box.setOrder(type.getOrder());
-                List<BlogVo> blogVos = blogs.stream().filter(doc -> doc.getBtId().equals(type.getBtId())).map(doc -> {
-                    BlogVo vo = new BlogVo();
-                    vo.setBid(doc.getBid());
-                    vo.setTitle(doc.getTitle());
-//            vo.setAutoSaveControl();
-                    vo.setBtId(doc.getBtId());
-                    vo.setOrder(doc.getOrder());
-                    return vo;
-                }).collect(Collectors.toList());
-                box.setBlogVoList(blogVos);
-                return box;
-            }).collect(Collectors.toList());
-
-            // to add the content of the first blog of the first blog_type
-
-            if(!result.get(0).getBlogVoList().isEmpty()) {
-                String bid = result.get(0).getBlogVoList().get(0).getBid();
-                String content = this.getContent(bid);
-                result.get(0).getBlogVoList().get(0).setContent(content);
-            }
-
-            return result;
+            String BtId = wikiTypeList.get(0).getBtId();
+            BlogBoxVo vo = this.getWikiList(BtId, tenant);
+            wikiTypeList.set(0, vo);
         }
+        return wikiTypeList;
     }
+
 }
