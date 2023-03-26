@@ -18,6 +18,22 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+/**
+ * =====================================================================================================================
+ * 
+ * {@link #createWikiType W001} 创建wiki分类 <br>
+ * {@link #deleteWikiType W002} 删除wiki分类 <br>
+ * {@link #updateWikiType W003} 更新wiki分类 <br>
+ * {@link #getWikiList W004} 获取该分类下的wiki <br>
+ * {@link #getWikiTypeList W005} 获取wiki分类一览 <br>
+ * {@link #sortWikiType W006} wiki分类重新排序 <br>
+ * {@link #createWiki W007} 创建wiki <br>
+ * {@link #deleteWiki W008} 删除wiki <br>
+ * {@link #updateWiki W009} 修改wiki <br>
+ * {@link #getWiki W010} 获取wiki <br>
+ * {@link #sortWiki W011} 对wiki重新排序 <br>
+ * {@link #wikiList W012} 页面初次加载时，wiki一览 <br>
+ **/
 @Controller
 @RequestMapping("/api/v1/author")
 @CrossOrigin
@@ -28,7 +44,7 @@ public class BlogEditCtl {
 
     @PostMapping(value = "/wiki/type", produces = {"application/json"})
     @ResponseBody
-    public ResponseEntity<BlogBoxVo> createBlogType(@Valid @RequestBody() BlogTypeIn input,
+    public ResponseEntity<BlogBoxVo> createWikiType(@Valid @RequestBody() BlogTypeIn input,
         @CurrentUser Tenant tenant) {
         BlogBoxVo vo = blogEditService.insertBlogType(input, tenant);
         return new ResponseEntity<>(vo, HttpStatus.OK);
@@ -36,7 +52,7 @@ public class BlogEditCtl {
 
     @DeleteMapping(value = "/wiki/type", produces = {"application/json"})
     @ResponseBody
-    public ResponseEntity<List<BlogBoxVo>> deleteBlogType(@Valid @RequestBody() BlogTypeIn input,
+    public ResponseEntity<List<BlogBoxVo>> deleteWikiType(@Valid @RequestBody() BlogTypeIn input,
         @CurrentUser Tenant tenant) {
         try {
             List<BlogBoxVo> result = blogEditService.deleteBlogType(input.getBtId(), tenant);
@@ -72,35 +88,17 @@ public class BlogEditCtl {
 
     @PostMapping(value = "/wiki/type/sort", produces = {"application/json"})
     @ResponseBody
-    public ResponseEntity<List<BlogBoxVo>> sortBlogType(@Valid @RequestBody() SortData input,
+    public ResponseEntity<List<BlogBoxVo>> sortWikiType(@Valid @RequestBody() SortData input,
         @CurrentUser Tenant tenant) {
 
         List<BlogBoxVo> vo = blogEditService.sortBlogType(input, tenant);
         return new ResponseEntity<>(vo, HttpStatus.OK);
     }
 
-    /**
-     * bidで該当blogの内容を取得する
-     */
-    @GetMapping("/wiki/{id}")
-    @ResponseBody
-    public ResponseEntity<BlogVo> getBlogContent(@PathVariable(value = "id") String id, @CurrentUser Tenant tenant)
-        throws Exception {
-        BlogVo result = blogEditService.getWiki(id, tenant);
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
     @PostMapping("/wiki")
     @ResponseBody
     public ResponseEntity<BlogVo> createWiki(@Valid @RequestBody BlogIn input, @CurrentUser Tenant tenant) {
         return new ResponseEntity<>(blogEditService.insertContent(input, tenant), HttpStatus.OK);
-    }
-
-    @PutMapping("/wiki")
-    @ResponseBody
-    public ResponseEntity<Void> updateWiki(@Valid @RequestBody BlogIn input) {
-        blogEditService.updateContent(input);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/wiki")
@@ -111,9 +109,24 @@ public class BlogEditCtl {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @PutMapping("/wiki")
+    @ResponseBody
+    public ResponseEntity<Void> updateWiki(@Valid @RequestBody BlogIn input) {
+        blogEditService.updateContent(input);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/wiki/{id}")
+    @ResponseBody
+    public ResponseEntity<BlogVo> getWiki(@PathVariable(value = "id") String id, @CurrentUser Tenant tenant)
+        throws Exception {
+        BlogVo result = blogEditService.getWiki(id, tenant);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
     @PostMapping(value = "/wiki/{btId}", produces = {"application/json"})
     @ResponseBody
-    public ResponseEntity<Void> sortBlog(@PathVariable(value = "btId") String btId,
+    public ResponseEntity<Void> sortWiki(@PathVariable(value = "btId") String btId,
         @Valid @RequestBody SortData sortData, @CurrentUser Tenant tenant) {
 
         blogEditService.sortWiki(sortData, tenant);
@@ -122,7 +135,7 @@ public class BlogEditCtl {
 
     @GetMapping("/wiki/list")
     @ResponseBody
-    public ResponseEntity<List<BlogBoxVo>> blogView(@CurrentUser Tenant tenant) {
+    public ResponseEntity<List<BlogBoxVo>> wikiList(@CurrentUser Tenant tenant) {
 
         return new ResponseEntity<>(blogEditService.listAll(tenant), HttpStatus.OK);
     }

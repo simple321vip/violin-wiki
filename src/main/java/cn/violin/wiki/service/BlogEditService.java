@@ -26,7 +26,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -265,40 +264,41 @@ public class BlogEditService {
     /**
      * delete process and sort process
      *
-     * @param wiki 删除wiki对象
+     * @param deleteObject 删除wiki对象
      * @param tenant 租户对象
      *
      * @return BlogBoxVo
      */
     @Transactional
-    public BlogBoxVo deleteWiki(BlogIn wiki, Tenant tenant) throws Exception {
-        Query query = Query.query(Criteria.where(COLUMN_TENANT_ID).is(tenant.getTenantId()));
-        query.addCriteria(Criteria.where(COLUMN_WIKI_TYPE_ID).is(wiki.getBtId()));
+    public BlogBoxVo deleteWiki(BlogIn deleteObject, Tenant tenant) throws Exception {
+        Query selectQuery = Query.query(Criteria.where(COLUMN_TENANT_ID).is(tenant.getTenantId()));
+        selectQuery.with(Sort.by(COLUMN_ORDER).ascending());
+        selectQuery.addCriteria(Criteria.where(COLUMN_WIKI_TYPE_ID).is(deleteObject.getBtId()));
 
         // judge
-        long count = mongoTemplate.count(query, BlogInfo.class);
-        if (count <= 1) {
+        List<BlogInfo> wikiList = mongoTemplate.find(selectQuery, BlogInfo.class);
+        if (wikiList.size() <= 1) {
             throw new Exception("削除でき来ない");
         }
 
         // delete
-        Query query2 = Query.query(Criteria.where(COLUMN_WIKI_ID).is(wiki.getBid()));
-        mongoTemplate.remove(query2, BlogInfo.class);
+        Query deleteQuery = Query.query(Criteria.where(COLUMN_WIKI_ID).is(deleteObject.getBid()));
+        mongoTemplate.remove(deleteQuery, BlogInfo.class);
 
         // sort
-        List<BlogInfo> blogs = mongoTemplate.find(query, BlogInfo.class);
         AtomicInteger index = new AtomicInteger(0);
-        List<BlogVo> blogVos = blogs.stream().sorted(Comparator.comparing(BlogInfo::getOrder)).map((blog) -> {
-            Criteria criteria = Criteria.where(COLUMN_WIKI_ID).is(blog.getBid());
-            Query query4 = Query.query(criteria);
-            Update update = Update.update(COLUMN_WIKI_ID, blog.getBid()).set(COLUMN_ORDER, index.intValue());
-            mongoTemplate.updateFirst(query4, update, BlogInfo.class);
-            blog.setOrder(index.intValue());
-            index.getAndIncrement();
-            return BlogVo.builder().bid(blog.getBid()).title(blog.getTitle())
-                .content(new String(blog.getContent().getData(), StandardCharsets.UTF_8)).btId(blog.getBtId())
-                .order(blog.getOrder()).build();
-        }).collect(Collectors.toList());
+        List<BlogVo> blogVos =
+            wikiList.stream().filter(wiki -> !wiki.getBid().equals(deleteObject.getBid())).map((blog) -> {
+                Criteria criteria = Criteria.where(COLUMN_WIKI_ID).is(blog.getBid());
+                Query updateQuery = Query.query(criteria);
+                Update update = Update.update(COLUMN_WIKI_ID, blog.getBid()).set(COLUMN_ORDER, index.intValue());
+                mongoTemplate.updateFirst(updateQuery, update, BlogInfo.class);
+                blog.setOrder(index.intValue());
+                index.getAndIncrement();
+                return BlogVo.builder().bid(blog.getBid()).title(blog.getTitle())
+                    .content(new String(blog.getContent().getData(), StandardCharsets.UTF_8)).btId(blog.getBtId())
+                    .order(blog.getOrder()).build();
+            }).collect(Collectors.toList());
 
         return BlogBoxVo.builder().blogVoList(blogVos).build();
     }
