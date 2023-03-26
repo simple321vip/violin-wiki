@@ -20,6 +20,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/api/v1/author")
+@CrossOrigin
 public class BlogEditCtl {
 
     @Autowired
@@ -89,28 +90,28 @@ public class BlogEditCtl {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PutMapping("/blog/content")
+    @PostMapping("/wiki")
     @ResponseBody
-    public ResponseEntity<BlogVo> newBlog(@Valid @RequestBody BlogIn input, @CurrentUser Tenant tenant) {
+    public ResponseEntity<BlogVo> createWiki(@Valid @RequestBody BlogIn input, @CurrentUser Tenant tenant) {
         return new ResponseEntity<>(blogEditService.insertContent(input, tenant), HttpStatus.OK);
     }
 
-    @PostMapping("/blog/content")
+    @PutMapping("/wiki")
     @ResponseBody
-    public ResponseEntity<Void> updateBlog(@Valid @RequestBody BlogIn input) {
+    public ResponseEntity<Void> updateWiki(@Valid @RequestBody BlogIn input) {
         blogEditService.updateContent(input);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/wiki")
     @ResponseBody
-    public ResponseEntity<BlogBoxVo> deleteBlog(@Valid @RequestBody BlogIn input, @CurrentUser Tenant user)
+    public ResponseEntity<BlogBoxVo> deleteWiki(@Valid @RequestBody BlogIn input, @CurrentUser Tenant user)
         throws Exception {
         BlogBoxVo result = blogEditService.deleteWiki(input, user);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/blogs/{btId}", produces = {"application/json"})
+    @PostMapping(value = "/wiki/{btId}", produces = {"application/json"})
     @ResponseBody
     public ResponseEntity<Void> sortBlog(@PathVariable(value = "btId") String btId,
         @Valid @RequestBody SortData sortData, @CurrentUser Tenant tenant) {
@@ -119,7 +120,7 @@ public class BlogEditCtl {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/blog/list")
+    @GetMapping("/wiki/list")
     @ResponseBody
     public ResponseEntity<List<BlogBoxVo>> blogView(@CurrentUser Tenant tenant) {
 

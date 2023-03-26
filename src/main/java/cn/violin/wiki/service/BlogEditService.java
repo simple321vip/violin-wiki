@@ -86,29 +86,26 @@ public class BlogEditService {
     public List<BlogBoxVo> deleteBlogType(String btId, Tenant tenant) throws Exception {
 
         Query query = Query.query(Criteria.where(COLUMN_TENANT_ID).is(tenant.getTenantId()));
+        query.with(Sort.by(COLUMN_ORDER).ascending());
         List<BlogType> blogTypes = mongoTemplate.find(query, BlogType.class);
         if (blogTypes.size() > 1) {
 
             // delete
-            Query query1 = Query.query(Criteria.where(COLUMN_WIKI_TYPE_ID).is(btId));
+            Query query1 = Query.query(Criteria.where(COLUMN_WIKI_TYPE_ID).is(btId)
+                .andOperator(Criteria.where(COLUMN_TENANT_ID).is(tenant.getTenantId())));
+
             mongoTemplate.remove(query1, "t_blog");
             mongoTemplate.remove(query1, "t_blog_type");
 
-            // sort
-            AtomicInteger index = new AtomicInteger(0);
-            blogTypes.stream().sorted(Comparator.comparing(BlogType::getOrder)).forEach((blogType) -> {
-                Query query2 = Query.query(Criteria.where(COLUMN_WIKI_TYPE_ID).is(blogType.getBtId()));
-                Update update = Update.update(COLUMN_ORDER, index.intValue());
-                mongoTemplate.updateFirst(query2, update, BlogType.class);
-                blogType.setOrder(index.intValue());
-                index.getAndIncrement();
-            });
-
+            String[] btIds =
+                blogTypes.stream().filter(e -> !e.getBtId().equals(btId)).map(BlogType::getBtId).toArray(String[]::new);
+            SortData sortData = new SortData();
+            sortData.setBtIds(btIds);
+            this.sortBlogType(sortData, tenant);
+            return this.listAll(tenant);
         } else {
             throw new Exception("削除でき来ない");
         }
-
-        return this.listAll(tenant);
     }
 
     /**
@@ -344,6 +341,7 @@ public class BlogEditService {
         } else {
             String BtId = wikiTypeList.get(0).getBtId();
             BlogBoxVo vo = this.getWikiList(BtId, tenant);
+            vo.setBtName(wikiTypeList.get(0).getBtName());
             wikiTypeList.set(0, vo);
         }
         return wikiTypeList;
