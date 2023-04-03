@@ -8,7 +8,6 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class BlogVo {
     @JsonProperty("bid")
     private String bid;
