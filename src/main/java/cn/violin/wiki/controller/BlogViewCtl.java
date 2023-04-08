@@ -16,7 +16,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/api/v1/reader")
-// @CrossOrigin
+@CrossOrigin
 public class BlogViewCtl {
 
     @Autowired
@@ -69,7 +69,7 @@ public class BlogViewCtl {
      * @return Void
      */
     @GetMapping("/blogs/publish/all")
-    public ResponseEntity<Void> publishAll(@CurrentUser Tenant tenant) {
+    public ResponseEntity<Void> publishAll(@CurrentUser Tenant tenant) throws Exception {
         blogViewService.publishAll(tenant);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -81,20 +81,20 @@ public class BlogViewCtl {
      * @return Void
      */
     @GetMapping("/blogs/publish/{bid}")
-    public ResponseEntity<Void> publish(@PathVariable(value = "bid") String bid, @CurrentUser Tenant tenant) {
+    public ResponseEntity<Void> publish(@PathVariable(value = "bid") String bid, @CurrentUser Tenant tenant) throws Exception {
         blogViewService.publish(bid, tenant);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
-     * @param
+     * @param name name
      * @param tenant tenant
      *
      * @return Void
      */
     @PutMapping("/docs/{wiki_name}")
     public ResponseEntity<Void> putWikiName(@PathVariable(value = "wiki_name") String name, @CurrentUser Tenant tenant) {
-        blogViewService.putWiki(name, tenant);
+        blogViewService.putWiki();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -103,7 +103,7 @@ public class BlogViewCtl {
      *
      * @return BlogVo
      */
-    @GetMapping("/blogs/count")
+    @GetMapping("/wiki/count")
     public ResponseEntity<BlogVo> getWikiCount(@CurrentUser Tenant tenant) {
 
         long count = blogViewService.getWikiCount(tenant);

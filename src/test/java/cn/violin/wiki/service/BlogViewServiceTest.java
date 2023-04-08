@@ -16,7 +16,7 @@ public class BlogViewServiceTest {
     private BlogViewService blogViewService;
 
     @Test
-    public void Test_publishAll() {
+    public void Test_publishAll() throws Exception {
 
         Tenant tenant = new Tenant();
         tenant.setTenantId("3272499474");

@@ -1,5 +1,6 @@
 package cn.violin.wiki.service;
 
+import cn.violin.wiki.entity.Profile;
 import cn.violin.wiki.task.FileExportTask;
 import cn.violin.wiki.entity.BlogInfo;
 import cn.violin.wiki.entity.BlogType;
@@ -26,6 +27,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
+import static cn.violin.wiki.utils.Constant.*;
+
 @Service
 @RequiredArgsConstructor
 public class BlogViewService {
@@ -45,31 +48,12 @@ public class BlogViewService {
         if (StringUtils.hasLength(btId)) {
             criteria.and("btId").is(btId);
         }
-//        if (StringUtils.hasLength(keyWord)) {
-//
-//        }
-//        if (startDay != null) {
-//
-//        }
-//        if (endDay != null) {
-//
-//        }
         Query query = Query.query(criteria);
-
-        // select count
-//        long total = mongoTemplate.count(query, BlogType.class);
-
-        // page
-//        Integer skip = tenant.getPageNo() * tenant.getPageSize();
-//        query.skip(skip).limit(tenant.getPageSize());
-
-        // sort
-//        query.with(Sort.by(Sort.Order.desc("updateDateTime")));
 
         List<BlogType> bts = mongoTemplate.find(query, BlogType.class);
         List<String> btIds = bts.stream().map(BlogType::getBtId).collect(Collectors.toList());
 
-        Criteria criteria2 = Criteria.where("btId").in(btIds);
+        Criteria criteria2 = Criteria.where(COLUMN_WIKI_TYPE_ID).in(btIds);
         Query query2 = Query.query(criteria2);
         List<BlogInfo> docs = mongoTemplate.find(query2, BlogInfo.class);
         return docs.stream().map(doc -> BlogVo.builder()
@@ -80,7 +64,7 @@ public class BlogViewService {
     }
 
     public BlogVo selectBlog(String bid) {
-        Criteria criteria2 = Criteria.where("bid").in(bid);
+        Criteria criteria2 = Criteria.where(COLUMN_WIKI_ID).in(bid);
         Query query2 = Query.query(criteria2);
         BlogInfo doc = mongoTemplate.findOne(query2, BlogInfo.class);
         return BlogVo.builder()
@@ -110,25 +94,23 @@ public class BlogViewService {
     /**
      * publish
      */
-    public void publishAll(Tenant tenant) {
+    public void publishAll(Tenant tenant) throws Exception {
 
-        Criteria criteria = Criteria.where("owner").is(tenant.getTenantId());
+        Criteria criteria = Criteria.where(COLUMN_TENANT_ID).is(tenant.getTenantId());
         Query query = Query.query(criteria);
 
-        List<BlogType> bts = mongoTemplate.find(query, BlogType.class);
+        List<BlogType> bts = mongoTemplate.find(query.with(Sort.by(Sort.Order.asc(COLUMN_ORDER))), BlogType.class);
         List<String> btIds = bts.stream().map(BlogType::getBtId).collect(Collectors.toList());
 
-        Criteria criteria2 = Criteria.where("btId").in(btIds);
+        Criteria criteria2 = Criteria.where(COLUMN_WIKI_TYPE_ID).in(btIds);
         Query query2 = Query.query(criteria2);
-        query2.with(Sort.by(Sort.Order.asc("order")));
+        query2.with(Sort.by(Sort.Order.asc(COLUMN_ORDER)));
         List<BlogInfo> docs = mongoTemplate.find(query2, BlogInfo.class);
 
-        Criteria criteria3 = Criteria.where("tenantId").is(tenant.getTenantId());
-        Query query3 = Query.query(criteria3);
-        Tenant tenant1 = mongoTemplate.findOne(query3, Tenant.class);
-
-        if (tenant1 == null){
-            System.out.println("500 inner error");
+        // 租户上下文存在确认
+        Profile profile = mongoTemplate.findOne(query, Profile.class);
+        if (profile == null){
+            throw new Exception("租户上下文不存在，请联系管理员。");
         }
 
         LinkedHashMap<String, List<BlogInfo>> collect
@@ -137,7 +119,7 @@ public class BlogViewService {
         ExecutorService es = Executors.newFixedThreadPool(4);
 
         Object lock = new Object();
-        String wikiWorkSpace = docsifyConf.getDOCSIFY_WORKSPACE() + tenant1.getWikiName() + File.separator;
+        String wikiWorkSpace = docsifyConf.getDOCSIFY_WORKSPACE() + profile.getName() + File.separator;
         docs.forEach(vo -> es.submit(new FileExportTask(vo, lock, wikiWorkSpace)));
 
         // update _sidebar.md
@@ -158,7 +140,7 @@ public class BlogViewService {
                 values.forEach(value -> {
                     try {
                         finalWriter.newLine();
-                        finalWriter.write("  * [" + value.getTitle() + "](" + tenant1.getWikiName() + "/" + btId + "/" + value.getBid() + ".md" + ")");
+                        finalWriter.write("  * [" + value.getTitle() + "](" + profile.getName() + "/" + btId + "/" + value.getBid() + ".md" + ")");
                         finalWriter.newLine();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -181,73 +163,85 @@ public class BlogViewService {
      * publish
      * @param bid bid
      */
-    public void publish(String bid, Tenant tenant) {
+    public void publish(String bid, Tenant tenant) throws Exception {
 
-        Criteria criteria = Criteria.where("bid").is(bid).andOperator(Criteria.where("owner").is(tenant.getTenantId()));
+        Criteria criteria = Criteria.where(COLUMN_TENANT_ID).is(tenant.getTenantId());
         Query query = Query.query(criteria);
-        BlogInfo doc = mongoTemplate.findOne(query, BlogInfo.class);
 
+        // 租户上下文存在确认
+        Profile profile = mongoTemplate.findOne(query, Profile.class);
+        if (profile == null){
+            throw new Exception("租户上下文不存在，请联系管理员。");
+        }
+
+        String tenantContext = profile.getName();
+
+        // Wiki情報 取得
+        Criteria criteria1 = Criteria.where(COLUMN_WIKI_ID).is(bid).andOperator(Criteria.where(COLUMN_TENANT_ID).is(tenant.getTenantId()));
+        Query query1 = Query.query(criteria1);
+        BlogInfo wiki = mongoTemplate.findOne(query1, BlogInfo.class);
+        assert wiki != null;
+
+        // Wiki 发布
         BufferedWriter writer;
         try {
-            String filePath = docsifyConf.getDOCSIFY_WORKSPACE() + doc.getBtId() + File.separator + doc.getBid() + ".md";
+
+            // /docsify/docs/docs/guan/001/00001.md
+            String filePath = docsifyConf.getDOCSIFY_WORKSPACE() + tenantContext + File.separator + wiki.getBtId() + File.separator + wiki.getBid() + ".md";
             File file = new File(filePath);
-            writer = new BufferedWriter(new FileWriter(filePath + "_bk"));
 
-            writer.write(new String(doc.getContent().getData(), StandardCharsets.UTF_8));
-            writer.close();
-
+            // 如果 wiki 文件存在 则将该wiki文件重命名为 wiki_bk，然后创建新的wiki文件，成功后则删除_bk文件。
+            // 如果 wiki 文件不存在， 则创建新的wiki 文件。
             if (file.exists()) {
-                file.delete();
+                if (!file.renameTo(new File(filePath + "_bk"))) {
+                    throw new Exception("Wiki 发布 ERROR，无法重命名WIKI文件。");
+                }
             }
 
-            File newFile = new File(filePath + "_bk");
-            newFile.renameTo(file);
+            // 将发布内容写入 Wiki 文件
+            writer = new BufferedWriter(new FileWriter(filePath));
+            writer.write(new String(wiki.getContent().getData(), StandardCharsets.UTF_8));
+            writer.close();
+
+            // 将 wiki title 更新到 sidebar.md
+            BufferedReader reader;
+            BufferedWriter writer2;
+            File sidebar = new File(docsifyConf.getDOCSIFY_WORKSPACE() + tenantContext + File.separator + SIDEBAR_FILENAME);
+            reader = new BufferedReader(new FileReader(sidebar));
+            String record;
+            StringBuilder builder = new StringBuilder();
+            while ((record = reader.readLine()) != null) {
+                if (record.contains(bid)) {
+                    record = "  * [" + wiki.getTitle() + "](" + wiki.getBtId() + "/" + bid + ".md" + ")";
+                }
+                builder.append(record);
+                builder.append(System.lineSeparator());
+            }
+            writer2 = new BufferedWriter(new FileWriter(sidebar));
+            writer2.write(builder.toString());
+            reader.close();
+            writer2.close();
+
+            File deleteFile = new File(filePath + "_bk");
+            if (deleteFile.exists()) {
+                if (!deleteFile.delete()) {
+                    throw new Exception("Wiki_bk 删除 ERROR，无法删除WIKI_bk文件。");
+                }
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        BufferedReader reader;
-        BufferedWriter writer2;
-        synchronized (lock) {
-            try {
-                File sidebar = new File(docsifyConf.getDOCSIFY_WORKSPACE() + SIDEBAR_FILENAME);
-                reader = new BufferedReader(new FileReader(sidebar));
-                String record;
-                StringBuilder builder = new StringBuilder();
-                while ((record = reader.readLine()) != null) {
-                    if (record.contains(bid)) {
-                        record = "  * [" + doc.getTitle() + "](" + doc.getBtId() + "/" + bid + ".md" + ")";
-                    }
-                    builder.append(record);
-                    builder.append(System.lineSeparator());
-                }
-                writer2 = new BufferedWriter(new FileWriter(sidebar));
-                writer2.write(builder.toString());
-                reader.close();
-                writer2.close();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
-    public void putWiki(String name, Tenant tenant) {
-        Criteria criteria = Criteria.where("owner").is(tenant.getTenantId());
-        Query query = Query.query(criteria);
-//        Update update = Update.update("btId", input.getBtId())
-//                .set("btName", input.getBtName());
-//        mongoTemplate.updateFirst(query)
+    public void putWiki() {
     }
 
     public long getWikiCount(Tenant tenant) {
         Criteria criteria = Criteria.where("owner").is(tenant.getTenantId());
         Query query = Query.query(criteria);
 
-        long count = mongoTemplate.count(query, BlogInfo.class);
-
-        return count;
+        return mongoTemplate.count(query, BlogInfo.class);
     }
 
 }

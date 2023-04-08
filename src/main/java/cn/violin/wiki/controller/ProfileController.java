@@ -53,17 +53,17 @@ public class ProfileController {
 
     @PostMapping(value = "/profile/judge", produces = {"application/json"})
     @ResponseBody
-    public ResponseEntity<Boolean> handleProfileName(@Valid @RequestBody() ProfileIn input, @CurrentUser Tenant tenant) {
+    public ResponseEntity<Integer> handleProfileName(@Valid @RequestBody() ProfileIn input, @CurrentUser Tenant tenant) {
 
-        boolean flag = profileService.handleProfileName(input);
+        int flag = profileService.handleProfileName(input);
         return new ResponseEntity<>(flag, HttpStatus.OK);
     }
 
     @PutMapping(value = "/profile/publish", produces = {"application/json"})
     @ResponseBody
-    public ResponseEntity<ProfileVo> publishProfile(@Valid @RequestBody() ProfileIn input, @CurrentUser Tenant tenant) {
-        ProfileVo vo = profileService.updateProfile(input, tenant);
-        return new ResponseEntity<>(vo, HttpStatus.OK);
+    public ResponseEntity<Void> publishProfile(@CurrentUser Tenant tenant) throws Exception {
+        profileService.publishProfile(tenant);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
