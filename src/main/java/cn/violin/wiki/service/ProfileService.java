@@ -31,8 +31,6 @@ public class ProfileService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    private final Object lock = new Object();
-
     @Autowired
     private DocsifyConf docsifyConf;
 
