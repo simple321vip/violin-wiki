@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static cn.violin.wiki.utils.Constant.*;
+
 import static cn.violin.common.utils.CommonConstant.*;
 
 @Service
@@ -53,7 +55,7 @@ public class BlogEditService {
     @Transactional
     public BlogBoxVo insertBlogType(BlogTypeIn input, Tenant tenant) {
         BlogType model = new BlogType();
-        String btId = numberService.getNumberId(NumberEnum.T_BLOG_TYPE);
+        String btId = LocalDateTime.now().format(FORMATTER_DATETIME) + numberService.getNumberId(NumberEnum.T_BLOG_TYPE);
         model.setBtName(WORD_1);
         if (StringUtils.hasLength(input.getBtName())) {
             model.setBtName(input.getBtName());
