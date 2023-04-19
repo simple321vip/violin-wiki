@@ -36,7 +36,7 @@ import static cn.violin.common.utils.CommonConstant.*;
 
 @Service
 @RequiredArgsConstructor
-public class BlogEditService {
+public class WikiEditService {
 
     private final JPAQueryFactory jpaQueryFactory;
 

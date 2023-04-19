@@ -6,10 +6,12 @@ import cn.violin.wiki.entity.BlogInfo;
 import cn.violin.wiki.entity.BlogType;
 import cn.violin.wiki.vo.BlogBoxVo;
 import cn.violin.wiki.vo.BlogVo;
-import cn.violin.common.config.DocsifyConf;
+import cn.violin.common.config.PersistentVolumeClaimConfig;
 import cn.violin.common.entity.Tenant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -25,52 +27,78 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static cn.violin.common.utils.CommonConstant.LAST_UPDATE_DATETIME;
 import static cn.violin.wiki.utils.Constant.*;
 
 @Service
 @RequiredArgsConstructor
-public class BlogViewService {
+public class WikiViewService {
 
     public static final String SIDEBAR_FILENAME = "_sidebar.md";
-
-    private final Object lock = new Object();
 
     @Autowired
     private MongoTemplate mongoTemplate;
 
     @Autowired
-    private DocsifyConf docsifyConf;
+    private PersistentVolumeClaimConfig persistentVolumeClaimConfig;
 
     public List<BlogVo> selectBlogs(String btId, String keyWord, LocalDate startDay, LocalDate endDay, Tenant tenant) {
-        Criteria criteria = Criteria.where("owner").is(tenant.getTenantId());
-        if (StringUtils.hasLength(btId)) {
-            criteria.and("btId").is(btId);
-        }
-        Query query = Query.query(criteria);
 
-        List<BlogType> bts = mongoTemplate.find(query, BlogType.class);
+        // wiki type 查询
+        Query wikiTypeQuery = new Query();
+
+        // 默认 组合ID 查询。
+        wikiTypeQuery.addCriteria(Criteria.where(COLUMN_TENANT_ID).is(tenant.getTenantId()));
+
+        // 指定 wiki 种别 查询
+        if (StringUtils.hasLength(btId)) {
+            wikiTypeQuery.addCriteria(Criteria.where(COLUMN_WIKI_TYPE_ID).is(btId));
+        }
+
+        List<BlogType> bts = mongoTemplate.find(wikiTypeQuery, BlogType.class);
         List<String> btIds = bts.stream().map(BlogType::getBtId).collect(Collectors.toList());
 
-        Criteria criteria2 = Criteria.where(COLUMN_WIKI_TYPE_ID).in(btIds);
-        Query query2 = Query.query(criteria2);
-        List<BlogInfo> docs = mongoTemplate.find(query2, BlogInfo.class);
-        return docs.stream().map(doc -> BlogVo.builder()
-                .bid(doc.getBid())
-                .title(doc.getTitle())
-                .content(new String(doc.getContent().getData(), StandardCharsets.UTF_8))
-                .build()).collect(Collectors.toList());
+        // wiki 查询
+        Query wikiQuery = Query.query(Criteria.where(COLUMN_WIKI_TYPE_ID).in(btIds));
+
+        // 标题 关键字 查询
+        if (StringUtils.hasLength(keyWord)) {
+            Pattern pattern = Pattern.compile("^.*" + keyWord + ".*$", Pattern.CASE_INSENSITIVE);
+            // TODO 曖昧検索
+            wikiQuery.addCriteria(Criteria.where(COLUMN_TITLE).regex(pattern));
+        }
+
+        // 更新日期区间查询
+        if (startDay != null) {
+            wikiQuery.addCriteria(Criteria.where(LAST_UPDATE_DATETIME).gte(startDay));
+        }
+        if (endDay != null) {
+            wikiQuery.addCriteria(Criteria.where(LAST_UPDATE_DATETIME).lte(endDay));
+        }
+
+        // 分页查询
+        Pageable pageable =
+            PageRequest.of(tenant.getPageNo(), tenant.getPageSize(), Sort.by(LAST_UPDATE_DATETIME).ascending());
+        wikiQuery.with(pageable);
+
+        List<BlogInfo> docs = mongoTemplate.find(wikiQuery, BlogInfo.class);
+
+        return docs.stream()
+            .map(doc -> BlogVo.builder().bid(doc.getBid()).title(doc.getTitle())
+                .content(new String(doc.getContent().getData(), StandardCharsets.UTF_8)).build())
+            .collect(Collectors.toList());
+
     }
 
     public BlogVo selectBlog(String bid) {
         Criteria criteria2 = Criteria.where(COLUMN_WIKI_ID).in(bid);
         Query query2 = Query.query(criteria2);
         BlogInfo doc = mongoTemplate.findOne(query2, BlogInfo.class);
-        return BlogVo.builder()
-                .bid(doc.getBid())
-                .title(doc.getTitle())
-                .content(new String(doc.getContent().getData(), StandardCharsets.UTF_8)).build();
+        return BlogVo.builder().bid(doc.getBid()).title(doc.getTitle())
+            .content(new String(doc.getContent().getData(), StandardCharsets.UTF_8)).build();
 
     }
 
@@ -84,12 +112,9 @@ public class BlogViewService {
         Query query = Query.query(criteria);
 
         List<BlogType> bts = mongoTemplate.find(query, BlogType.class);
-        return bts.stream().map(bt -> BlogBoxVo.builder()
-                .btId(bt.getBtId())
-                .btName(bt.getBtName()).build()
-        ).collect(Collectors.toList());
+        return bts.stream().map(bt -> BlogBoxVo.builder().btId(bt.getBtId()).btName(bt.getBtName()).build())
+            .collect(Collectors.toList());
     }
-
 
     /**
      * publish
@@ -109,17 +134,17 @@ public class BlogViewService {
 
         // 租户上下文存在确认
         Profile profile = mongoTemplate.findOne(query, Profile.class);
-        if (profile == null){
+        if (profile == null) {
             throw new Exception("租户上下文不存在，请联系管理员。");
         }
 
-        LinkedHashMap<String, List<BlogInfo>> collect
-                = docs.stream().collect(Collectors.groupingBy(BlogInfo::getBtId, LinkedHashMap::new, Collectors.toList()));
+        LinkedHashMap<String, List<BlogInfo>> collect =
+            docs.stream().collect(Collectors.groupingBy(BlogInfo::getBtId, LinkedHashMap::new, Collectors.toList()));
 
         ExecutorService es = Executors.newFixedThreadPool(4);
 
         Object lock = new Object();
-        String wikiWorkSpace = docsifyConf.getDOCSIFY_WORKSPACE() + profile.getName() + File.separator;
+        String wikiWorkSpace = persistentVolumeClaimConfig.getDOCSIFY_PVC() + profile.getName() + File.separator;
         docs.forEach(vo -> es.submit(new FileExportTask(vo, lock, wikiWorkSpace)));
 
         // update _sidebar.md
@@ -140,7 +165,8 @@ public class BlogViewService {
                 values.forEach(value -> {
                     try {
                         finalWriter.newLine();
-                        finalWriter.write("  * [" + value.getTitle() + "](" + profile.getName() + "/" + btId + "/" + value.getBid() + ".md" + ")");
+                        finalWriter.write("  * [" + value.getTitle() + "](" + profile.getName() + "/" + btId + "/"
+                            + value.getBid() + ".md" + ")");
                         finalWriter.newLine();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -161,6 +187,7 @@ public class BlogViewService {
 
     /**
      * publish
+     * 
      * @param bid bid
      */
     public void publish(String bid, Tenant tenant) throws Exception {
@@ -170,14 +197,15 @@ public class BlogViewService {
 
         // 租户上下文存在确认
         Profile profile = mongoTemplate.findOne(query, Profile.class);
-        if (profile == null){
+        if (profile == null) {
             throw new Exception("租户上下文不存在，请联系管理员。");
         }
 
         String tenantContext = profile.getName();
 
         // Wiki情報 取得
-        Criteria criteria1 = Criteria.where(COLUMN_WIKI_ID).is(bid).andOperator(Criteria.where(COLUMN_TENANT_ID).is(tenant.getTenantId()));
+        Criteria criteria1 = Criteria.where(COLUMN_WIKI_ID).is(bid)
+            .andOperator(Criteria.where(COLUMN_TENANT_ID).is(tenant.getTenantId()));
         Query query1 = Query.query(criteria1);
         BlogInfo wiki = mongoTemplate.findOne(query1, BlogInfo.class);
         assert wiki != null;
@@ -187,7 +215,8 @@ public class BlogViewService {
         try {
 
             // /docsify/docs/docs/guan/001/00001.md
-            String filePath = docsifyConf.getDOCSIFY_WORKSPACE() + tenantContext + File.separator + wiki.getBtId() + File.separator + wiki.getBid() + ".md";
+            String filePath = persistentVolumeClaimConfig.getDOCSIFY_PVC() + tenantContext + File.separator + wiki.getBtId()
+                + File.separator + wiki.getBid() + ".md";
             File file = new File(filePath);
 
             // 如果 wiki 文件存在 则将该wiki文件重命名为 wiki_bk，然后创建新的wiki文件，成功后则删除_bk文件。
@@ -206,7 +235,8 @@ public class BlogViewService {
             // 将 wiki title 更新到 sidebar.md
             BufferedReader reader;
             BufferedWriter writer2;
-            File sidebar = new File(docsifyConf.getDOCSIFY_WORKSPACE() + tenantContext + File.separator + SIDEBAR_FILENAME);
+            File sidebar =
+                new File(persistentVolumeClaimConfig.getDOCSIFY_PVC() + tenantContext + File.separator + SIDEBAR_FILENAME);
             reader = new BufferedReader(new FileReader(sidebar));
             String record;
             StringBuilder builder = new StringBuilder();
@@ -234,8 +264,7 @@ public class BlogViewService {
         }
     }
 
-    public void putWiki() {
-    }
+    public void putWiki() {}
 
     public long getWikiCount(Tenant tenant) {
         Criteria criteria = Criteria.where("owner").is(tenant.getTenantId());

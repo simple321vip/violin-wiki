@@ -1,7 +1,7 @@
 package cn.violin.wiki.controller;
 
 import cn.violin.wiki.io.SortData;
-import cn.violin.wiki.service.BlogEditService;
+import cn.violin.wiki.service.WikiEditService;
 import cn.violin.wiki.io.BlogIn;
 import cn.violin.wiki.io.BlogTypeIn;
 import cn.violin.wiki.vo.BlogBoxVo;
@@ -37,16 +37,16 @@ import java.util.List;
 @Controller
 @RequestMapping("/api/v1/author")
 @CrossOrigin
-public class BlogEditCtl {
+public class WikiEditController {
 
     @Autowired
-    private BlogEditService blogEditService;
+    private WikiEditService wikiEditService;
 
     @PostMapping(value = "/wiki/type", produces = {"application/json"})
     @ResponseBody
     public ResponseEntity<BlogBoxVo> createWikiType(@Valid @RequestBody() BlogTypeIn input,
         @CurrentUser Tenant tenant) {
-        BlogBoxVo vo = blogEditService.insertBlogType(input, tenant);
+        BlogBoxVo vo = wikiEditService.insertBlogType(input, tenant);
         return new ResponseEntity<>(vo, HttpStatus.OK);
     }
 
@@ -55,7 +55,7 @@ public class BlogEditCtl {
     public ResponseEntity<List<BlogBoxVo>> deleteWikiType(@Valid @RequestBody() BlogTypeIn input,
         @CurrentUser Tenant tenant) {
         try {
-            List<BlogBoxVo> result = blogEditService.deleteBlogType(input.getBtId(), tenant);
+            List<BlogBoxVo> result = wikiEditService.deleteBlogType(input.getBtId(), tenant);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -65,7 +65,7 @@ public class BlogEditCtl {
     @PutMapping(value = "/wiki/type", produces = {"application/json"})
     @ResponseBody
     public ResponseEntity<Void> updateWikiType(@Valid @RequestBody() BlogTypeIn input, @CurrentUser Tenant tenant) {
-        blogEditService.updateWikiType(input, tenant);
+        wikiEditService.updateWikiType(input, tenant);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -74,7 +74,7 @@ public class BlogEditCtl {
     public ResponseEntity<BlogBoxVo> getWikiList(@NotNull @PathVariable(value = "btId") String btId,
         @CurrentUser Tenant tenant) {
 
-        BlogBoxVo vo = blogEditService.getWikiList(btId, tenant);
+        BlogBoxVo vo = wikiEditService.getWikiList(btId, tenant);
         return new ResponseEntity<>(vo, HttpStatus.OK);
     }
 
@@ -82,7 +82,7 @@ public class BlogEditCtl {
     @ResponseBody
     public ResponseEntity<List<BlogBoxVo>> getWikiTypeList(@CurrentUser Tenant tenant) {
 
-        List<BlogBoxVo> vo = blogEditService.getWikiTypeList(tenant);
+        List<BlogBoxVo> vo = wikiEditService.getWikiTypeList(tenant);
         return new ResponseEntity<>(vo, HttpStatus.OK);
     }
 
@@ -91,28 +91,28 @@ public class BlogEditCtl {
     public ResponseEntity<List<BlogBoxVo>> sortWikiType(@Valid @RequestBody() SortData input,
         @CurrentUser Tenant tenant) {
 
-        List<BlogBoxVo> vo = blogEditService.sortBlogType(input, tenant);
+        List<BlogBoxVo> vo = wikiEditService.sortBlogType(input, tenant);
         return new ResponseEntity<>(vo, HttpStatus.OK);
     }
 
     @PostMapping("/wiki")
     @ResponseBody
     public ResponseEntity<BlogVo> createWiki(@Valid @RequestBody BlogIn input, @CurrentUser Tenant tenant) {
-        return new ResponseEntity<>(blogEditService.insertContent(input, tenant), HttpStatus.OK);
+        return new ResponseEntity<>(wikiEditService.insertContent(input, tenant), HttpStatus.OK);
     }
 
     @DeleteMapping("/wiki")
     @ResponseBody
     public ResponseEntity<BlogBoxVo> deleteWiki(@Valid @RequestBody BlogIn input, @CurrentUser Tenant user)
         throws Exception {
-        BlogBoxVo result = blogEditService.deleteWiki(input, user);
+        BlogBoxVo result = wikiEditService.deleteWiki(input, user);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PutMapping("/wiki")
     @ResponseBody
     public ResponseEntity<Void> updateWiki(@Valid @RequestBody BlogIn input) {
-        blogEditService.updateContent(input);
+        wikiEditService.updateContent(input);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -120,7 +120,7 @@ public class BlogEditCtl {
     @ResponseBody
     public ResponseEntity<BlogVo> getWiki(@PathVariable(value = "id") String id, @CurrentUser Tenant tenant)
         throws Exception {
-        BlogVo result = blogEditService.getWiki(id, tenant);
+        BlogVo result = wikiEditService.getWiki(id, tenant);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -129,7 +129,7 @@ public class BlogEditCtl {
     public ResponseEntity<Void> sortWiki(@PathVariable(value = "btId") String btId,
         @Valid @RequestBody SortData sortData, @CurrentUser Tenant tenant) {
 
-        blogEditService.sortWiki(sortData, tenant);
+        wikiEditService.sortWiki(sortData, tenant);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -137,6 +137,6 @@ public class BlogEditCtl {
     @ResponseBody
     public ResponseEntity<List<BlogBoxVo>> wikiList(@CurrentUser Tenant tenant) {
 
-        return new ResponseEntity<>(blogEditService.listAll(tenant), HttpStatus.OK);
+        return new ResponseEntity<>(wikiEditService.listAll(tenant), HttpStatus.OK);
     }
 }

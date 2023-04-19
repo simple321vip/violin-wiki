@@ -13,4 +13,5 @@ public class Constant {
     public final static String COLUMN_TENANT_ID = "owner";
     public final static String COLUMN_WIKI_ID = "bid";
     public final static String COLUMN_WIKI_TYPE_ID = "btId";
+    public final static String COLUMN_TITLE = "title";
 }

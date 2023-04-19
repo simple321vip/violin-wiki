@@ -1,8 +1,5 @@
 package cn.violin.wiki.controller;
 
-import cn.violin.common.annotation.CurrentUser;
-import cn.violin.common.entity.Tenant;
-import cn.violin.wiki.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,17 +8,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-@RequestMapping("/api/v1/image")
+import cn.violin.common.annotation.CurrentUser;
+import cn.violin.common.entity.Tenant;
+import cn.violin.wiki.service.WikiImageService;
+
+@RequestMapping("/api/v1/author")
 public class WikiImageController {
 
     @Autowired
-    private ImageService imageService;
+    private WikiImageService wikiImageService;
 
-    @PostMapping(value = "/wiki", produces = {"application/json"})
+    @PostMapping(value = "/image", produces = {"application/json"})
     @ResponseBody
-    public ResponseEntity<Void> uploadImg(MultipartFile file, String wikiId, @CurrentUser Tenant tenant) {
+    public ResponseEntity<String> uploadImg(MultipartFile file, @CurrentUser Tenant tenant) {
 
-        imageService.doUploadImage(file, wikiId, tenant);
-        return new ResponseEntity<>(HttpStatus.OK);
+        String path = wikiImageService.doUploadImage(file, tenant);
+        return new ResponseEntity<>(path, HttpStatus.OK);
     }
 }

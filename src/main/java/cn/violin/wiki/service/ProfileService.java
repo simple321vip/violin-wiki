@@ -1,6 +1,6 @@
 package cn.violin.wiki.service;
 
-import cn.violin.common.config.DocsifyConf;
+import cn.violin.common.config.PersistentVolumeClaimConfig;
 import cn.violin.common.entity.Tenant;
 import cn.violin.wiki.entity.Profile;
 import cn.violin.wiki.io.ProfileIn;
@@ -32,7 +32,7 @@ public class ProfileService {
     private MongoTemplate mongoTemplate;
 
     @Autowired
-    private DocsifyConf docsifyConf;
+    private PersistentVolumeClaimConfig persistentVolumeClaimConfig;
 
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
     public ProfileVo createProfile(ProfileIn input, Tenant tenant) throws Exception {
@@ -132,7 +132,7 @@ public class ProfileService {
             throw new Exception("发布 wiki 个人首页失败， 没有找到 wiki 首页");
         }
 
-        String filePath = docsifyConf.getDOCSIFY_WORKSPACE() + profile.getName() + File.separator + "README.md";
+        String filePath = persistentVolumeClaimConfig.getDOCSIFY_PVC() + profile.getName() + File.separator + "README.md";
         File backup;
         BufferedWriter writer;
         try {
@@ -160,7 +160,7 @@ public class ProfileService {
     }
 
     private boolean buildProfileFolder(ProfileIn input) {
-        String namespace = docsifyConf.getDOCSIFY_WORKSPACE() + input.getName();
+        String namespace = persistentVolumeClaimConfig.getDOCSIFY_PVC() + input.getName();
         File file = new File(namespace);
         if (!file.exists()) {
             return file.mkdirs();

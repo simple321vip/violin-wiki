@@ -10,17 +10,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest( classes = ViolinWikiApplication.class)
-public class BlogViewServiceTest {
+public class WikiViewServiceTest {
 
     @Autowired
-    private BlogViewService blogViewService;
+    private WikiViewService wikiViewService;
 
     @Test
     public void Test_publishAll() throws Exception {
 
         Tenant tenant = new Tenant();
         tenant.setTenantId("3272499474");
-        blogViewService.publishAll(tenant);
+        wikiViewService.publishAll(tenant);
     }
 
 }
