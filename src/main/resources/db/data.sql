@@ -1,1 +1,1 @@
-select * from t_blog_seq
+select 1 = 1

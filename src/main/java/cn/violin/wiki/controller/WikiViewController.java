@@ -1,10 +1,13 @@
 package cn.violin.wiki.controller;
 
+import cn.violin.wiki.service.WikiBoxService;
+import cn.violin.wiki.service.WikiService;
 import cn.violin.wiki.service.WikiViewService;
-import cn.violin.wiki.vo.BlogBoxVo;
-import cn.violin.wiki.vo.BlogVo;
+import cn.violin.wiki.vo.WikiBoxVo;
+import cn.violin.wiki.vo.WikiVo;
 import cn.violin.common.annotation.CurrentUser;
 import cn.violin.common.entity.Tenant;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -19,11 +22,18 @@ import static cn.violin.common.utils.CommonConstant.YYYY_MM_DD_HH_MM_SS;
 
 @Controller
 @RequestMapping("/api/v1/reader")
+@AllArgsConstructor
 @CrossOrigin
 public class WikiViewController {
 
     @Autowired
     private WikiViewService wikiViewService;
+
+    @Autowired
+    private WikiBoxService wikiBoxService;
+
+    @Autowired
+    private WikiService wikiService;
 
     /**
      * 在线显示文件
@@ -32,7 +42,7 @@ public class WikiViewController {
      */
     @GetMapping("/blogs")
     @ResponseBody
-    public ResponseEntity<List<BlogVo>> lists(@RequestParam(value = "btId", required = false) String btId,
+    public ResponseEntity<List<WikiVo>> lists(@RequestParam(value = "btId", required = false) String btId,
                                               @RequestParam(value = "key_word", required = false) String keyWord,
                                               @RequestParam(value = "start_day", required = false) @DateTimeFormat(pattern = YYYY_MM_DD_HH_MM_SS) LocalDate startDay,
                                               @RequestParam(value = "end_day", required = false) @DateTimeFormat(pattern = YYYY_MM_DD_HH_MM_SS) LocalDate endDay,
@@ -41,7 +51,7 @@ public class WikiViewController {
                                               @CurrentUser Tenant tenant) {
         tenant.setPageNo(pageNum);
         tenant.setPageSize(pageSize);
-        List<BlogVo> vos = wikiViewService.selectBlogs(btId, keyWord, startDay, endDay, tenant);
+        List<WikiVo> vos = wikiViewService.selectBlogs(btId, keyWord, startDay, endDay, tenant);
         return new ResponseEntity<>(vos, HttpStatus.OK);
     }
 
@@ -52,8 +62,8 @@ public class WikiViewController {
      */
     @GetMapping("/blog/{bid}")
     @ResponseBody
-    public ResponseEntity<BlogVo> oneBlog(@PathVariable(value = "bid") String bid, @CurrentUser Tenant tenant) {
-        BlogVo vo = wikiViewService.selectBlog(bid);
+    public ResponseEntity<WikiVo> oneBlog(@PathVariable(value = "bid") String bid, @CurrentUser Tenant tenant) throws Exception {
+        WikiVo vo = wikiService.get(bid, tenant);
         return new ResponseEntity<>(vo, HttpStatus.OK);
     }
 
@@ -65,8 +75,8 @@ public class WikiViewController {
      */
     @GetMapping("/blog_type")
     @ResponseBody
-    public ResponseEntity<List<BlogBoxVo>> btLists(@CurrentUser Tenant tenant) {
-        List<BlogBoxVo> vos = wikiViewService.selectBtName(tenant);
+    public ResponseEntity<List<WikiBoxVo>> btLists(@CurrentUser Tenant tenant) {
+        List<WikiBoxVo> vos = wikiBoxService.getWikiTypeList(tenant);
         return new ResponseEntity<>(vos, HttpStatus.OK);
     }
 
@@ -111,10 +121,10 @@ public class WikiViewController {
      * @return BlogVo
      */
     @GetMapping("/wiki/count")
-    public ResponseEntity<BlogVo> getWikiCount(@CurrentUser Tenant tenant) {
+    public ResponseEntity<WikiVo> getWikiCount(@CurrentUser Tenant tenant) {
 
         long count = wikiViewService.getWikiCount(tenant);
-        BlogVo vo = BlogVo.builder().count(count).build();
+        WikiVo vo = WikiVo.builder().count(count).build();
 
         return new ResponseEntity<>(vo, HttpStatus.OK);
     }

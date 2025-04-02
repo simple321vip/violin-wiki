@@ -1,4 +1,4 @@
-package cn.violin.wiki.io;
+package cn.violin.wiki.form;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

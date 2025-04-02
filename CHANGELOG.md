@@ -1,3 +1,10 @@
+# 1.2
+    
+    1. 删除Jenkinfile
+    2. 数据库由原有的mongodb+mysql转为postgres
+    3. JDK由11　→　17
+    4. 项目重构
+
 ## 1.1.1
 
   1. 修改 Jenkinsfile，增加获取github release tag 处理，来实现 自动化打包，并且更新 tag 到 cicd 工程。

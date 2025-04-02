@@ -1,17 +1,19 @@
 package cn.violin.wiki.task;
 
-import cn.violin.wiki.entity.BlogInfo;
+import cn.violin.wiki.entity.Wiki;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 @Getter
 @Setter
-public class FileExportTask implements Runnable{
+public class FileExportTask implements Runnable {
 
-    private BlogInfo blogVo;
+    private Wiki blogVo;
 
     private String workspace;
 
@@ -19,11 +21,12 @@ public class FileExportTask implements Runnable{
 
     /**
      * コンストラクタ
-     * @param blogVo blogVo
+     *
+     * @param blogVo    blogVo
      * @param workspace workspace
-     * @param lock lock
+     * @param lock      lock
      */
-    public FileExportTask(BlogInfo blogVo, Object lock, String workspace) {
+    public FileExportTask(Wiki blogVo, Object lock, String workspace) {
         this.blogVo = blogVo;
         this.workspace = workspace;
         this.lock = lock;
@@ -42,7 +45,7 @@ public class FileExportTask implements Runnable{
             String filePath = this.workspace + this.blogVo.getBtId() + File.separator + this.blogVo.getBid() + ".md";
             File file = new File(filePath);
             writer = new BufferedWriter(new FileWriter(filePath + "_bk"));
-            writer.write(new String(this.blogVo.getContent().getData(), StandardCharsets.UTF_8));
+            writer.write(this.blogVo.getContent());
             writer.close();
 
             if (file.exists()) {

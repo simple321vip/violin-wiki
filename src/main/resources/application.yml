@@ -5,8 +5,9 @@ server:
 spring:
   profiles:
     default: dev
-  jpa:
-    defer-datasource-initialization: true
-    hibernate:
-      ddl-auto: update # 自动创建表以及更新表结构，生产环境慎用
-    show-sql: true # 打印执行的SQL
+
+kubernetes:
+  persistent-volume-claim:
+    docsify-data-volume: E:\\
+    nginx-static-data-volume: E:\\app\\data
+

@@ -10,7 +10,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BlogBoxVo {
+public class WikiBoxVo {
 
     @JsonProperty("btId")
     private String btId;
@@ -19,7 +19,7 @@ public class BlogBoxVo {
     private String btName;
 
     @JsonProperty("blog_list")
-    private List<BlogVo> blogVoList;
+    private List<WikiVo> wikiVoList;
 
     @JsonProperty("order")
     private int order;

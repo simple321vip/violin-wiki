@@ -5,11 +5,15 @@ import cn.violin.wiki.dao.BlogSeqRepo;
 import cn.violin.wiki.dao.BlogTypeSeqRepo;
 import cn.violin.wiki.entity.BlogTypeSeq;
 import cn.violin.wiki.utils.NumberEnum;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@AllArgsConstructor
+@NoArgsConstructor
 public class NumberService {
 
     @Autowired

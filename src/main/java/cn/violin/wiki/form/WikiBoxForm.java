@@ -1,4 +1,4 @@
-package cn.violin.wiki.io;
+package cn.violin.wiki.form;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BlogTypeIn {
+public class WikiBoxForm {
 
     @JsonProperty("btId")
     private String btId;

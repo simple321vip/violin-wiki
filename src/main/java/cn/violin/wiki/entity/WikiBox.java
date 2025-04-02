@@ -1,21 +1,32 @@
 package cn.violin.wiki.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "t_blog_type")
-public class BlogType {
+@Entity
+@Table(name = "T_WIKI_BOX")
+@Builder
+public class WikiBox {
     @Id
     private String btId;
+
+    @Column(name = "comment")
     private String btName;
-    private String owner;
+
+    @Column(name = "tenant_id")
+    private String tenantId;
+
+    @Column(name = "update_time")
     private String updateTime;
+
+    @Column(name = "order")
     private int order;
 }
