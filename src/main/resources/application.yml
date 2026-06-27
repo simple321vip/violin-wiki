@@ -2,12 +2,21 @@ server:
   port: 8081
   servlet:
     context-path: /wiki
+
 spring:
+  application:
+    name: violin-wiki
   profiles:
-    default: dev
+    # local: 本机独立调试
+    # dev:   共享开发环境
+    # prod:  生产环境（K8s，由 Secret / ConfigMap 注入）
+    active: local
+  messages:
+    basename: classpath:messages-common,classpath:messages
+    encoding: UTF-8
+    cache-duration: 1h
 
-kubernetes:
-  persistent-volume-claim:
-    docsify-data-volume: E:\\
-    nginx-static-data-volume: E:\\app\\data
-
+# ============== violin 框架公共配置 ==============
+violin:
+  auth:
+    exclude-paths: "/api/v1/wiki-categories/**"

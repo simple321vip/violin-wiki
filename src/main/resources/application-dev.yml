@@ -1,0 +1,46 @@
+# ============================================================
+# violin-wiki dev profile — 共享开发环境
+# ============================================================
+
+server:
+  port: 8081
+  servlet:
+    context-path: /wiki
+
+spring:
+  application:
+    name: violin-wiki-dev
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:192.168.3.49}:${DB_PORT:5432}/${DB_NAME:violin_dev}?currentSchema=wiki_dev
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+  flyway:
+    enabled: true
+    schemas: wiki_dev
+    default-schema: wiki_dev
+    baseline-on-migrate: true
+    locations: classpath:db/migration-wiki
+  messages:
+    basename: classpath:messages-common,classpath:messages
+    encoding: UTF-8
+    cache-duration: 1h
+
+violin:
+  jwt:
+    secret: ${VIOLIN_JWT_SECRET}
+    expiration-ms: 86400000
+  cors:
+    allowed-origins: "https://*.violin-work.online"
+  snowflake:
+    worker-id: ${VIOLIN_SNOWFLAKE_WORKER_ID:12}
+  auth:
+    exclude-paths: "/api/v1/wiki-categories/**"
+  storage:
+    docsify-volume: /data/docsify
+    nginx-static-volume: /data/nginx
+
+logging:
+  level:
+    cn.violin: INFO
+    cn.violin.wiki: DEBUG
