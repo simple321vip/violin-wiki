@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 文章业务实现。
+ * Article business implementation.
  */
 @Service
 @RequiredArgsConstructor
@@ -97,12 +97,12 @@ public class EssayServiceImpl implements EssayService {
     @Transactional
     public void sortEssays(String categoryId, String[] ids) {
         if (ids == null || ids.length == 0) {
-            throw new BusinessException("COMMON_INVALID_PARAM", "排序ID数组不能为空");
+            throw new BusinessException("COMMON_INVALID_PARAM", "sort ids must not be empty");
         }
 
         java.util.Set<String> dedup = new java.util.HashSet<>(java.util.Arrays.asList(ids));
         if (dedup.size() != ids.length) {
-            throw new BusinessException("COMMON_INVALID_PARAM", "排序ID数组存在重复值");
+            throw new BusinessException("COMMON_INVALID_PARAM", "sort ids contain duplicates");
         }
 
         java.util.Map<String, Integer> idToOrder = new HashMap<>(ids.length);
@@ -112,13 +112,13 @@ public class EssayServiceImpl implements EssayService {
 
         int updated = essayMapper.batchUpdateSortOrder(idToOrder, currentCustomerId());
         if (updated != ids.length) {
-            throw new BusinessException("COMMON_OPERATION_FAILED", "排序更新失败，影响行数与预期不符");
+            throw new BusinessException("COMMON_OPERATION_FAILED", "sort update failed: affected rows mismatch");
         }
     }
 
     private String currentCustomerId() {
         String id = RequestContext.getCustomerId();
-        if (id == null) throw new IllegalStateException("RequestContext.customerId 未设置");
+        if (id == null) throw new IllegalStateException("RequestContext.customerId is not set");
         return id;
     }
 

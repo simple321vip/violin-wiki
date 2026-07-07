@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 分类业务实现。
+ * Category business implementation.
  */
 @Service
 @RequiredArgsConstructor
@@ -79,7 +79,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         List<CategoryEntity> all = categoryMapper.selectList(null);
         if (all.size() == 1) {
-            throw new BusinessException("COMMON_OPERATION_FAILED", "不可删除，请至少保留一个分类");
+            throw new BusinessException("COMMON_OPERATION_FAILED", "Cannot delete: keep at least one category");
         }
 
         categoryMapper.deleteById(id);
@@ -98,12 +98,12 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     public void sortCategories(String[] ids) {
         if (ids == null || ids.length == 0) {
-            throw new BusinessException("COMMON_INVALID_PARAM", "排序ID数组不能为空");
+            throw new BusinessException("COMMON_INVALID_PARAM", "sort ids must not be empty");
         }
 
         List<CategoryEntity> all = categoryMapper.selectList(null);
         if (all.size() != ids.length) {
-            throw new BusinessException("COMMON_OPERATION_FAILED", "数据不完整，无法排序");
+            throw new BusinessException("COMMON_OPERATION_FAILED", "data incomplete, cannot sort");
         }
 
         java.util.Map<String, CategoryEntity> idToCategory = new java.util.HashMap<>();
@@ -114,7 +114,7 @@ public class CategoryServiceImpl implements CategoryService {
         for (int i = 0; i < ids.length; i++) {
             CategoryEntity c = idToCategory.get(ids[i]);
             if (c == null) {
-                throw new BusinessException("COMMON_INVALID_PARAM", "排序ID不存在: " + ids[i]);
+                throw new BusinessException("COMMON_INVALID_PARAM", "sort id not found: " + ids[i]);
             }
             c.setSortOrder(i + 1);
             categoryMapper.updateById(c);
@@ -123,7 +123,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     private String currentCustomerId() {
         String id = RequestContext.getCustomerId();
-        if (id == null) throw new IllegalStateException("RequestContext.customerId 未设置");
+        if (id == null) throw new IllegalStateException("RequestContext.customerId is not set");
         return id;
     }
 

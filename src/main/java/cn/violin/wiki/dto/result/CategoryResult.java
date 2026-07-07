@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * 分类响应（对外暴露）。
+ * Category response payload (exposed to clients).
  */
 @Data
 @Builder
@@ -26,7 +26,7 @@ public class CategoryResult {
     private String updatedBy;
     private LocalDateTime updatedAt;
 
-    /** 关联文章（懒加载场景用）。 */
+ /** Associated essays (lazy-loading / hierarchical response). */
     private List<EssayResult> essays;
 
     public static CategoryResult from(CategoryEntity c) {

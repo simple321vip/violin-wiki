@@ -1,3 +1,8 @@
+# ============================================================
+# violin-wiki common configuration
+# ============================================================
+# Spring Boot defaults are inherited from violin-parent.
+
 server:
   port: 8081
   servlet:
@@ -7,16 +12,65 @@ spring:
   application:
     name: violin-wiki
   profiles:
-    # local: 本机独立调试
-    # dev:   共享开发环境
-    # prod:  生产环境（K8s，由 Secret / ConfigMap 注入）
+    # local: standalone debug (own schema / worker-id / SQL trace)
+    # dev:   shared development (dev Postgres + dev Authentik)
+    # prod:  production (K8s, env-driven)
     active: local
   messages:
-    basename: classpath:messages-common,classpath:messages
+    basename: classpath:messages-common
     encoding: UTF-8
     cache-duration: 1h
 
-# ============== violin 框架公共配置 ==============
+# ============== violin framework ==============
 violin:
+  jwt:
+    profile: ${SPRING_PROFILES_ACTIVE:local}
+    issuer: ${VIOLIN_JWT_ISSUER:violin-iam}
+    audience: ${VIOLIN_JWT_AUDIENCE:violin-services}
+    jwks-url: ${VIOLIN_JWT_JWKS_URL:http://localhost:8080/violin-iam/.well-known/jwks.json}
+    refresh-seconds: ${VIOLIN_JWT_REFRESH_SECONDS:300}
+    clock-skew-seconds: ${VIOLIN_JWT_CLOCK_SKEW_SECONDS:30}
   auth:
-    exclude-paths: "/api/v1/wiki-categories/**"
+    exclude-paths: "/api/v1/wiki-categories/**,/error"
+    anonymous-message-code: AUTHORIZATION_MISSING
+  iam:
+    url: ${VIOLIN_IAM_URL:http://localhost:8080}
+    context-path: ${VIOLIN_IAM_CONTEXT_PATH:/violin-iam}
+    service-id: ${VIOLIN_IAM_SERVICE_ID:violin-wiki}
+    service-token-secret: ${VIOLIN_IAM_SERVICE_TOKEN_SECRET:dev_default_wiki_iam_service_token_secret_hex_64_chars_aaaa}
+  wiki:
+    permission:
+      enabled: ${VIOLIN_WIKI_PERMISSION_ENABLED:false}
+      cache:
+        seconds: ${VIOLIN_WIKI_PERMISSION_CACHE_SECONDS:30}
+        max-size: ${VIOLIN_WIKI_PERMISSION_CACHE_MAX_SIZE:10000}
+  core:
+    verified-customer:
+      enabled: ${VIOLIN_VERIFIED_CUSTOMER_ENABLED:true}
+      cache:
+        seconds: ${VIOLIN_VERIFIED_CUSTOMER_CACHE_SECONDS:30}
+        max-size: ${VIOLIN_VERIFIED_CUSTOMER_CACHE_MAX_SIZE:10000}
+
+# ============== management endpoints ==============
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+      probes:
+        enabled: true
+      group:
+        liveness:
+          include: livenessState
+        readiness:
+          include: readinessState,db
+  info:
+    enabled: false
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true

@@ -6,7 +6,7 @@ import cn.violin.wiki.dto.result.CategoryResult;
 import java.util.List;
 
 /**
- * 分类业务接口。
+ * Category business interface.
  */
 public interface CategoryService {
 

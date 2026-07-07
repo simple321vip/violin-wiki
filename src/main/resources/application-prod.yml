@@ -1,5 +1,5 @@
 # ============================================================
-# violin-wiki prod profile — 生产环境
+# violin-wiki prod profile — production environment
 # ============================================================
 
 server:
@@ -22,23 +22,27 @@ spring:
     baseline-on-migrate: true
     locations: classpath:db/migration-wiki
   messages:
-    basename: classpath:messages-common,classpath:messages
+    basename: classpath:messages-common
     encoding: UTF-8
     cache-duration: 1h
 
+# ============== violin framework ==============
 violin:
   jwt:
-    secret: ${VIOLIN_JWT_SECRET}
-    expiration-ms: 86400000
-  cors:
-    allowed-origins: "https://*.violin-work.online"
+    profile: prod
+    issuer: ${VIOLIN_JWT_ISSUER:violin-iam}
+    audience: ${VIOLIN_JWT_AUDIENCE:violin-services}
+    jwks-url: ${VIOLIN_JWT_JWKS_URL:https://iam.violin-work.online/violin-iam/.well-known/jwks.json}
   snowflake:
     worker-id: ${VIOLIN_SNOWFLAKE_WORKER_ID:22}
-  auth:
-    exclude-paths: "/api/v1/wiki-categories/**"
-  storage:
-    docsify-volume: /data/docsify
-    nginx-static-volume: /data/nginx
+  iam:
+    url: ${VIOLIN_IAM_URL:https://iam.violin-work.online}
+    context-path: ${VIOLIN_IAM_CONTEXT_PATH:/violin-iam}
+    service-id: ${VIOLIN_IAM_SERVICE_ID:violin-wiki}
+    service-token-secret: ${VIOLIN_IAM_SERVICE_TOKEN_SECRET:}
+  wiki:
+    permission:
+      enabled: ${VIOLIN_WIKI_PERMISSION_ENABLED:true}
 
 logging:
   level:

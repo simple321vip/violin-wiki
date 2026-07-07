@@ -1,5 +1,6 @@
 package cn.violin.wiki.controller;
 
+import cn.violin.wiki.annotation.RequirePermission;
 import cn.violin.wiki.dto.params.CategoryRequest;
 import cn.violin.wiki.dto.result.CategoryResult;
 import cn.violin.wiki.dto.params.SortRequest;
@@ -13,10 +14,11 @@ import java.util.List;
 
 /**
  * ============================
- * 业务模块：wiki-categories（Wiki 分类）
+ * Domain module: wiki-categories (Wiki category)
  * ============================
  *
- * <p>URL：{@code /api/v1/wiki-categories}（复数 + kebab-case，避免与通用 categories 冲突）。</p>
+ * <p>URL: {@code /api/v1/wiki-categories} (plural + kebab-case, to avoid colliding with the generic
+ * {@code categories} namespace).</p>
  */
 @RestController
 @RequestMapping("/api/v1/wiki-categories")
@@ -36,25 +38,29 @@ public class CategoryController {
     }
 
     @PostMapping
+    @RequirePermission(resource = "wiki-category", verb = "create")
     @ResponseStatus(HttpStatus.CREATED)
     public CategoryResult create(@Valid @RequestBody CategoryRequest request) {
         return service.create(request);
     }
 
     @PutMapping("/{id}")
+    @RequirePermission(resource = "wiki-category", verb = "update")
     public CategoryResult update(@PathVariable String id,
                                  @Valid @RequestBody CategoryRequest request) {
         return service.update(id, request);
     }
 
     @DeleteMapping("/{id}")
+    @RequirePermission(resource = "wiki-category", verb = "delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable String id) {
         service.delete(id);
     }
 
-    /** 分类排序。 */
+    /** Reorder categories. */
     @PostMapping("/sort")
+    @RequirePermission(resource = "wiki-category", verb = "reorder")
     public void sort(@Valid @RequestBody SortRequest request) {
         service.sortCategories(request.getIds());
     }

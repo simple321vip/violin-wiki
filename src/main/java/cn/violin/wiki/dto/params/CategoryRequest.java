@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 创建 / 更新分类请求。
+ * Create / update category request payload.
  */
 @Data
 @NoArgsConstructor

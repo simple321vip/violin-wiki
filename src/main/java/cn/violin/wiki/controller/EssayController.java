@@ -1,5 +1,6 @@
 package cn.violin.wiki.controller;
 
+import cn.violin.wiki.annotation.RequirePermission;
 import cn.violin.wiki.dto.params.EssayRequest;
 import cn.violin.wiki.dto.result.EssayResult;
 import cn.violin.wiki.dto.params.SortRequest;
@@ -13,10 +14,10 @@ import java.util.List;
 
 /**
  * ============================
- * 业务模块：essays（文章）
+ * Domain module: essays (article)
  * ============================
  *
- * <p>URL：{@code /api/v1/essays}（复数 + kebab-case）。</p>
+ * <p>URL: {@code /api/v1/essays} (plural + kebab-case).</p>
  */
 @RestController
 @RequestMapping("/api/v1/essays")
@@ -35,14 +36,16 @@ public class EssayController {
         return service.listByCategory(categoryId);
     }
 
-    /** 创建 / 自动保存（带 id 走 update，否则 insert）。 */
+    /** Create / auto-save (with id -> update, otherwise insert). */
     @PostMapping
+    @RequirePermission(resource = "essay", verb = "create")
     @ResponseStatus(HttpStatus.CREATED)
     public EssayResult create(@Valid @RequestBody EssayRequest request) {
         return service.autoSave(request);
     }
 
     @PutMapping("/{id}")
+    @RequirePermission(resource = "essay", verb = "update")
     public EssayResult update(@PathVariable String id,
                               @Valid @RequestBody EssayRequest request) {
         request.setId(id);
@@ -50,13 +53,15 @@ public class EssayController {
     }
 
     @DeleteMapping("/{id}")
+    @RequirePermission(resource = "essay", verb = "delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable String id) {
         service.delete(id);
     }
 
-    /** 文章排序（按 categoryId 内的 sort_order 重排）。 */
+    /** Reorder essays within a category (rewrites sort_order by ids order). */
     @PostMapping("/sort")
+    @RequirePermission(resource = "essay", verb = "reorder")
     public void sort(@RequestParam String categoryId,
                      @Valid @RequestBody SortRequest request) {
         service.sortEssays(categoryId, request.getIds());

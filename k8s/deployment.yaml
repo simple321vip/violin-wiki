@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: violin-wiki
+  namespace: violin-dev
+  labels:
+    app.kubernetes.io/name: violin-wiki
+    environment: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: violin-wiki
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: violin-wiki
+        environment: dev
+    spec:
+      containers:
+        - name: violin-wiki
+          image: registry.violin-work.online/violin-wiki:2.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8081
+          envFrom:
+            - configMapRef:
+                name: violin-wiki-config
+          env:
+            - name: DB_SCHEMA
+              value: "wiki_dev"
+            - name: VIOLIN_JWT_SECRET  # legacy field; ignored by v2.1, kept as empty
+              value: ""
+          envFromOptional: false
+          readinessProbe:
+            httpGet:
+              path: /wiki/actuator/health/readiness
+              port: 8081
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /wiki/actuator/health/liveness
+              port: 8081
+            initialDelaySeconds: 60
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: violin-wiki
+  namespace: violin-dev
+  labels:
+    app.kubernetes.io/name: violin-wiki
+spec:
+  selector:
+    app.kubernetes.io/name: violin-wiki
+  ports:
+    - name: http
+      port: 8081
+      targetPort: 8081

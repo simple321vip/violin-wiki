@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: violin-wiki-config
+  namespace: violin-dev
+  labels:
+    app.kubernetes.io/name: violin-wiki
+    environment: dev
+data:
+  SPRING_PROFILES_ACTIVE: "dev"
+  DB_HOST: "violin-postgres-dev"
+  DB_PORT: "5432"
+  DB_NAME: "violin_dev"
+  DB_USER: "postgres"
+  VIOLIN_SNOWFLAKE_WORKER_ID: "12"
+
+  # v2.1: JWT verifier uses RS256 + JWKS, so we do NOT set VIOLIN_JWT_SECRET.
+  # Local-cluster IAM endpoint reachable via Cluster DNS.
+  VIOLIN_JWT_ISSUER: "violin-iam"
+  VIOLIN_JWT_AUDIENCE: "violin-services"
+  VIOLIN_JWT_JWKS_URL: "http://violin-iam.violin-home.cn/violin-iam/.well-known/jwks.json"
+
+  # Service-to-service IAM calls require a HMAC secret.
+  # Generate one with: openssl rand -hex 32
+  # Coordinated with iam/dev's secret DEV_IAM_SERVICE_TOKEN_SECRET.
+  # KEPT OUT OF SOURCE: this value lives in the Secret manifest.
+  VIOLIN_IAM_URL: "http://violin-iam.violin-home.cn"
+  VIOLIN_IAM_CONTEXT_PATH: "/violin-iam"
+  VIOLIN_IAM_SERVICE_ID: "violin-wiki"
+  VIOLIN_WIKI_PERMISSION_ENABLED: "false"
+  VIOLIN_VERIFIED_CUSTOMER_ENABLED: "true"
+
+  DB_SCHEMA: "wiki_dev"
+
+  # CORS allowed origins — read by core WebMvcConfig cors filter.
+  VIOLIN_CORS_ALLOWED_ORIGINS: "http://localhost:5173,http://localhost:8080,http://127.0.0.1:5173"

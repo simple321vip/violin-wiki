@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 文章响应（对外暴露）。
+ * Article response payload (exposed to clients).
  */
 @Data
 @Builder

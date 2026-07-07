@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: violin-wiki-config
+  namespace: violin-prod
+  labels:
+    app.kubernetes.io/name: violin-wiki
+    environment: production
+data:
+  SPRING_PROFILES_ACTIVE: "prod"
+  DB_HOST: "violin-postgres"
+  DB_PORT: "5432"
+  DB_NAME: "violin"
+  DB_USER: "postgres"
+  VIOLIN_SNOWFLAKE_WORKER_ID: "22"
+
+  VIOLIN_JWT_ISSUER: "violin-iam"
+  VIOLIN_JWT_AUDIENCE: "violin-services"
+  VIOLIN_JWT_JWKS_URL: "https://iam.violin-work.online/violin-iam/.well-known/jwks.json"
+
+  VIOLIN_IAM_URL: "https://iam.violin-work.online"
+  VIOLIN_IAM_CONTEXT_PATH: "/violin-iam"
+  VIOLIN_IAM_SERVICE_ID: "violin-wiki"
+  VIOLIN_WIKI_PERMISSION_ENABLED: "true"
+  VIOLIN_VERIFIED_CUSTOMER_ENABLED: "true"
+
+  DB_SCHEMA: "wiki"
+
+  # CORS allowed origins — read by core WebMvcConfig cors filter.
+  VIOLIN_CORS_ALLOWED_ORIGINS: "https://*.violin-work.online"

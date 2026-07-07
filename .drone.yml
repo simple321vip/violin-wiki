@@ -1,0 +1,57 @@
+kind: pipeline
+type: kubernetes
+
+name: build-and-deploy-dev
+
+# clone:
+#  disable: true
+
+volumes:
+  - name: maven-cache
+    claim:
+      name: maven-cache-pvc
+  - name: maven-settings
+    config_map:
+      name: violin-maven-settings
+
+service_account_name: drone-builder-sa
+
+trigger:
+  event:
+    - push
+  branch:
+    - dev
+    - master
+    
+steps:
+  - name: compile
+    image: ccr.ccs.tencentyun.com/violin/maven:3.9-eclipse-temurin-22
+    commands:
+      - mkdir -p /root/.m2
+      - cp /config/settings.xml /root/.m2/settings.xml
+      - mvn clean install -U -DskipTests
+    volumes:
+      - name: maven-cache
+        path: /root/.m2
+      - name: maven-settings
+        path: /config
+
+  - name: build
+    # 使用 plugin/kaniko # # # # # #
+    image: ccr.ccs.tencentyun.com/violin/drone-kaniko:latest
+    settings:
+      repo: ccr.ccs.tencentyun.com/violin/violin-wiki
+      tags:
+        - latest
+        - ${DRONE_COMMIT_SHA:0:8}
+      dockerfile: Dockerfile
+      context: .
+      registry: ccr.ccs.tencentyun.com
+      username: 100024540033
+      password:
+        from_secret: docker_password
+
+  - name: deploy
+    image: ccr.ccs.tencentyun.com/violin/kubectl:latest
+    commands:
+      - kubectl set image deployment/violin-wiki violin-wiki=ccr.ccs.tencentyun.com/violin/violin-wiki:${DRONE_COMMIT_SHA:0:8} -n violin

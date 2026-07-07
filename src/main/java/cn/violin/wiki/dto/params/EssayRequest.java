@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 创建 / 更新文章请求。
+ * Create / update article request payload.
  */
 @Data
 @NoArgsConstructor
@@ -23,7 +23,7 @@ public class EssayRequest {
 
     private String content;
 
-    /** 自动保存标识（"1" / "0"）。 */
+    /** Auto-save marker ("1" / "0"). */
     private String autoSave;
 
     private Integer sortOrder;

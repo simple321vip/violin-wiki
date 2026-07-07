@@ -11,13 +11,15 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 文章实体（snake_case 列名 + 审计 + 软删除）。
+ * Article entity (snake_case columns + audit + soft-delete).
  *
- * <p>字段顺序：主键 / 多租户 → 业务 → 审计 → 软删除。</p>
+ * <p>Field order: PK / multi-tenant -> business -> audit -> soft-delete.</p>
  *
- * <p>不继承 BaseEntity：BaseEntity 仍带 JPA 注解 + 字段名（{@code create_by}/{@code create_date}）
- * 与本服务 schema ({@code created_by}/{@code created_at}) 不一致；为保持各服务独立，
- * 这里直接定义所有字段。后续如果 core 重构 BaseEntity，再统一切换。</p>
+ * <p>Does not extend {@code BaseEntity}: the shared {@code BaseEntity} still carries JPA
+ * annotations and column names ({@code create_by} / {@code create_date}) that don't match
+ * this service's schema ({@code created_by} / {@code created_at}). Keeping the fields inline
+ * per service preserves column independence; revisit if {@code core} ever refactors
+ * {@code BaseEntity}.</p>
  */
 @Data
 @TableName("essays")

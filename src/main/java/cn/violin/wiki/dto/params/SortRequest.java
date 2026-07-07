@@ -6,17 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 排序请求（批量更新 sort_order）。
+ * Sort request payload (batch updates sort_order).
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class SortRequest {
 
-    /** 分类排序用。 */
+    /** Category ordering payload. */
     @NotEmpty
     private String[] ids;
 
-    /** 文章排序用（与 categoryId 配合）。 */
+    /** Essay ordering payload (paired with categoryId on the request URI). */
     private String[] essayIds;
 }

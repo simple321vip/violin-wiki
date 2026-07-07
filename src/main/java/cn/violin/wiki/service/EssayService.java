@@ -6,7 +6,7 @@ import cn.violin.wiki.dto.result.EssayResult;
 import java.util.List;
 
 /**
- * 文章业务接口。
+ * Article business interface.
  */
 public interface EssayService {
 

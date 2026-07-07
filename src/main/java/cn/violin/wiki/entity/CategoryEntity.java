@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Wiki 分类实体。
+ * Wiki category entity.
  */
 @Data
 @AllArgsConstructor
@@ -52,7 +52,7 @@ public class CategoryEntity implements Serializable {
     @TableField("deleted_at")
     private LocalDateTime deletedAt;
 
-    /** 关联文章（不持久化）。 */
+    /** Associated essays (not persisted). */
     @TableField(exist = false)
     private List<EssayEntity> essays;
 }

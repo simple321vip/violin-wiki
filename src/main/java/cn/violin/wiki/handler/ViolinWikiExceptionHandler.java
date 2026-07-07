@@ -5,7 +5,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * Wiki 服务专属全局异常处理器：继承 core 的公共模板。
+ * Wiki service global exception handler; extends the {@code core} template.
  */
 @RestControllerAdvice
 public class ViolinWikiExceptionHandler extends GlobalExceptionHandler {
